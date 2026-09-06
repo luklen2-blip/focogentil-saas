@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>FocoGentil — Seu Copiloto de Foco e Clareza</title>
+  <meta name="description" content="Seu copiloto para organizar a mente e o dia. Menos cobrança. Mais clareza. Um passo de cada vez. Idade recomendada: 13+ anos.">
+  <meta name="theme-color" content="#0b141a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  <style>
+    :root {
+      --bg: #0b141a;
+      --card-bg: #111b21;
+      --card-border: #222d34;
+      --primary: #00a884;
+      --primary-hover: #06cf9c;
+      --text: #e9edef;
+      --text-muted: #8696a0;
+      --gold: #ecc94b;
+      --danger: #e53e3e;
+      --blue: #53bdeb;
+      --purple: #805ad5;
+    }
+
+    body.calm-mode {
+      --bg: #121212;
+      --card-bg: #181818;
+      --card-border: #282828;
+      --primary: #25d366;
+      --text: #f5f5f5;
+      --text-muted: #a0a0a0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Top Bar */
+    .topbar {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--card-border);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 17px;
+    }
+    .brand small {
+      display: block;
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: normal;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Seletor de Bateria Mental */
+    .energy-bar {
+      display: flex;
+      background: #202c33;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .energy-pill {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .energy-pill.active {
+      background: var(--primary);
+      color: #111b21;
+      font-weight: 700;
+    }
+
+    .btn-calm {
+      background: #202c33;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+    .btn-calm.active { border-color: var(--primary); color: var(--primary); }
+
+    .user-profile-badge {
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Layout Principal */
+    .container {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 30px 16px 80px 16px;
+      flex: 1;
+    }
+
+    /* Hero Question */
+    .hero-greeting {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+    .hero-greeting h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .hero-greeting p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* 6 Ações Rápidas */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    @media (max-width: 600px) {
+      .quick-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .action-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    .action-card.highlight {
+      border-color: var(--gold);
+      background: rgba(236, 201, 75, 0.05);
+    }
+    .action-icon { font-size: 26px; line-height: 1; }
+    .action-title { font-size: 13px; font-weight: 700; color: #fff; }
+    .action-sub { font-size: 11px; color: var(--text-muted); }
+
+    /* Foco Progressivo (AGORA / PRÓXIMO / DEPOIS) */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .section-header h2 { font-size: 15px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
+
+    .card-now {
+      background: linear-gradient(145deg, #182229 0%, #111b21 100%);
+      border: 2px solid var(--primary);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 18px rgba(0, 168, 132, 0.15);
+      position: relative;
+    }
+    .badge-now {
+      background: var(--primary);
+      color: #111b21;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .now-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .now-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .now-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-main {
+      background: var(--primary);
+      color: #111b21;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s;
+    }
+    .btn-main:hover { background: var(--primary-hover); }
+    .btn-secondary {
+      background: #202c33;
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--primary); }
+
+    .card-upcoming {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13.5px;
+    }
+    .card-upcoming .tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #202c33;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* Modais */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 15px;
+    }
+    .modal-content {
+      background: #111b21;
+      border: 1px solid var(--primary);
+      border-radius: 14px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; color: #fff; }
+    .modal-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.4; }
+
+    .input-box {
+      width: 100%;
+      background: #202c33;
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 12px;
+    }
+    .input-box:focus { border-color: var(--primary); }
+    textarea.input-box { min-height: 110px; resize: vertical; }
+
+    .unblock-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .btn-choice {
+      background: #202c33;
+      border: 1px solid var(--card-border);
+      color: #e9edef;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.15s;
+    }
+    .btn-choice:hover, .btn-choice.selected {
+      border-color: var(--gold);
+      background: rgba(236, 201, 75, 0.1);
+    }
+
+    /* Notificação Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #202c33;
+      border: 1px solid var(--primary);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 13px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1000;
+      animation: fadeIn 0.2s;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+    /* Barra Flutuante de Voz */
+    .voice-dock {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 90;
+    }
+    .btn-voice-float {
+      background: var(--primary);
+      color: #111b21;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 168, 132, 0.4);
+      transition: 0.2s;
+    }
+    .btn-voice-float:hover { transform: scale(1.05); background: var(--primary-hover); }
+    .btn-voice-float.listening {
+      background: var(--danger);
+      animation: pulse 1.2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(229, 62, 62, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0); }
+    }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 10px 14px; }
+      .brand small { display: none; }
+      .btn-calm { display: none; }
+      .energy-pill { padding: 4px 7px; font-size: 11px; }
+      .container { padding: 18px 12px 75px 12px; }
+      .hero-greeting h1 { font-size: 21px; }
+      .hero-greeting p { font-size: 13px; }
+      .quick-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .action-card { padding: 14px 10px; min-height: 85px; }
+      .now-title { font-size: 16px; }
+      .now-actions { flex-direction: column; width: 100%; }
+      .now-actions button { width: 100%; min-height: 44px; }
+      .modal-overlay { padding: 10px; align-items: flex-end; }
+      .modal-content { border-radius: 16px 16px 10px 10px; max-height: 85vh; padding: 20px 16px; }
+      .unblock-options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superior -->
+  <header class="topbar">
+    <a href="/" class="brand">
+      🧠 FocoGentil
+      <small>Um passo de cada vez</small>
+    </a>
+
+    <div class="topbar-right">
+      <!-- Seletor Teoria das Colheres -->
+      <div class="energy-bar" title="Sua energia mental de hoje influencia a recomendação das tarefas">
+        <button class="energy-pill" onclick="setEnergy('baixa')">🔴 Baixa</button>
+        <button class="energy-pill active" onclick="setEnergy('media')">🟡 Média</button>
+        <button class="energy-pill" onclick="setEnergy('alta')">🟢 Alta</button>
+      </div>
+
+      <!-- Interface Calma -->
+      <button class="btn-calm" id="btnCalmMode" onclick="toggleCalmMode()" title="Reduz distrações visuais">Calma</button>
+
+      <!-- Usuário -->
+      <div class="user-profile-badge" id="userBadge" onclick="openProfileModal()">
+        👤 <span id="userNameDisplay">Visitante</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Container Principal -->
+  <main class="container">
+
+    <!-- Saudação Acolhedora -->
+    <div class="hero-greeting">
+      <h1>Como posso deixar seu dia mais leve?</h1>
+      <p id="subGreeting">Você não precisa resolver tudo agora. Vamos cuidar de uma coisa por vez.</p>
+    </div>
+
+    <!-- 6 Ações Rápidas -->
+    <div class="quick-grid">
+      <div class="action-card" onclick="openNewTaskModal()">
+        <div class="action-icon">🎯</div>
+        <div class="action-title">Nova Tarefa</div>
+        <div class="action-sub">Criar um foco</div>
+      </div>
+
+      <div class="action-card highlight" onclick="openUnblockModal()">
+        <div class="action-icon">😵</div>
+        <div class="action-title">Estou Travado</div>
+        <div class="action-sub">Tornar bem menor</div>
+      </div>
+
+      <div class="action-card" onclick="triggerDailyPlan()">
+        <div class="action-icon">📅</div>
+        <div class="action-title">Organizar o Dia</div>
+        <div class="action-sub">Plano mínimo realista</div>
+      </div>
+
+      <div class="action-card highlight" onclick="openBrainDumpModal()">
+        <div class="action-icon">🧠</div>
+        <div class="action-title">Despejar Tudo</div>
+        <div class="action-sub">Tirar da cabeça</div>
+      </div>
+
+      <div class="action-card" onclick="toggleVoiceCapture()">
+        <div class="action-icon" id="micActionIcon">🎙️</div>
+        <div class="action-title">Falar Comigo</div>
+        <div class="action-sub">Fale. Eu organizo.</div>
+      </div>
+
+      <div class="action-card" onclick="openPauseModal()">
+        <div class="action-icon">⏸️</div>
+        <div class="action-title">Pausa Sem Culpa</div>
+        <div class="action-sub">Descanso gentil</div>
+      </div>
+    </div>
+
+    <!-- Foco Atômico: AGORA -->
+    <div class="section-header">
+      <h2>🎯 Foco Principal (Agora)</h2>
+      <span style="font-size: 12px; color: var(--primary);" id="taskCounter">1 tarefa ativa</span>
+    </div>
+
+    <div id="nowContainer">
+      <!-- Card AGORA preenchido dinamicamente -->
+    </div>
+
+    <!-- PRÓXIMO e DEPOIS -->
+    <div class="section-header" style="margin-top: 24px;">
+      <h2>⏳ Próximas Ações</h2>
+    </div>
+    <div id="upcomingContainer">
+      <!-- Lista preenchida dinamicamente -->
+    </div>
+
+    <!-- Card de Compartilhamento WhatsApp & Idade Mínima -->
+    <div style="background: #182229; border: 1px dashed #2a3942; border-radius: 12px; padding: 20px 16px; margin-top: 32px; text-align: center;">
+      <div style="font-size: 24px; margin-bottom: 4px;">📲</div>
+      <div style="font-size: 14px; font-weight: 700; color: #fff;">Quer enviar o FocoGentil para alguém?</div>
+      <p style="font-size: 12.5px; color: var(--text-muted); margin: 6px auto 14px auto; max-width: 500px; line-height: 1.4;">
+        Compartilhe com amigos, colegas de trabalho ou familiares que precisam de apoio no foco e na função executiva. O teste é gratuito e funciona direto no celular! (Recomendado para 13+ anos).
+      </p>
+      <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+        <button onclick="shareAppOnWhatsApp()" class="btn-main" style="background: #25d366; color: #111b21; font-size: 12.5px; padding: 10px 18px; border-radius: 20px; font-weight: 700;">
+          💬 Enviar no WhatsApp
+        </button>
+        <button onclick="copyShareFromApp()" class="btn-secondary" id="btnCopyShareApp" style="font-size: 12px; padding: 10px 16px; border-radius: 20px;">
+          📋 Copiar Link
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Botão Flutuante de Voz -->
+  <div class="voice-dock">
+    <button class="btn-voice-float" id="btnVoiceFloat" title="Fale com seu copiloto" onclick="toggleVoiceCapture()">🎙️</button>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toastMsg">Feito. ✅ Um passo de cada vez.</div>
+
+  <!-- MODAL: Despejar Tudo -->
+  <div class="modal-overlay" id="brainDumpModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('brainDumpModal')">✕</button>
+      <div class="modal-title">🧠 Despejar Tudo</div>
+      <div class="modal-desc">
+        Escreva ou fale tudo o que está entulhando sua mente. Não se preocupe com pontuação ou ordem. A IA vai filtrar e encontrar apenas o próximo passo.
+      </div>
+
+      <textarea id="brainDumpInput" class="input-box" placeholder="Ex: Preciso pagar a conta de luz, responder a mensagem do cliente, preparar a reunião de quinta e lavar a louça..."></textarea>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+        <button class="btn-secondary" onclick="listenForBrainDump()" id="btnVoiceDump">🎙️ Gravar Voz</button>
+        <button class="btn-main" onclick="processBrainDump()">Organizar Pensamentos</button>
+      </div>
+
+      <!-- Resultado do Brain Dump -->
+      <div id="brainDumpResult" style="display: none; margin-top: 18px; border-top: 1px solid var(--card-border); padding-top: 14px;">
+        <div style="color: var(--primary); font-size: 13px; font-weight: 700; margin-bottom: 6px;" id="brainDumpFeedback"></div>
+        <div id="brainDumpNextBox" style="background: #202c33; padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary); margin-bottom: 12px;"></div>
+        <button class="btn-main" style="width: 100%;" onclick="applyBrainDumpTasks()">Adicionar ao Meu Dia</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Estou Travado -->
+  <div class="modal-overlay" id="unblockModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('unblockModal')">✕</button>
+      <div class="modal-title">😵 Está tudo bem. Vamos tornar isso menor.</div>
+      <div class="modal-desc">
+        O que está te travando no momento?
+      </div>
+
+      <div class="unblock-options" id="unblockReasons">
+        <button class="btn-choice" onclick="selectUnblockReason('Não sei por onde começar')">Não sei por onde começar</button>
+        <button class="btn-choice" onclick="selectUnblockReason('Tem coisa demais')">Tem coisa demais</button>
+        <button class="btn-choice" onclick="selectUnblockReason('Estou sem energia')">Estou sem energia</button>
+        <button class="btn-choice" onclick="selectUnblockReason('Estou sem tempo')">Estou sem tempo</button>
+        <button class="btn-choice" onclick="selectUnblockReason('Estou procrastinando')">Estou procrastinando</button>
+        <button class="btn-choice" onclick="selectUnblockReason('Não entendi a tarefa')">Não entendi a tarefa</button>
+        <button class="btn-choice" onclick="selectUnblockReason('Estou ansioso')">Estou ansioso</button>
+        <button class="btn-choice" onclick="selectUnblockReason('Outra coisa')">Outra coisa</button>
+      </div>
+
+      <input type="text" id="unblockTaskInput" class="input-box" placeholder="Qual tarefa você precisa fazer? (Ex: Escrever relatório)">
+
+      <div id="unblockResult" style="display: none; background: #202c33; padding: 16px; border-radius: 10px; margin-top: 12px;">
+        <div id="unblockEmpathy" style="font-size: 13px; color: var(--gold); margin-bottom: 8px;"></div>
+        <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 14px;" id="unblockAction"></div>
+
+        <div style="display: flex; gap: 8px;" id="unblockStep1Actions">
+          <button class="btn-main" onclick="acceptUnblockStep()">COMEÇAR (2 MIN)</button>
+          <button class="btn-secondary" onclick="reduceEvenMore()">AINDA NÃO CONSIGO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Pausa Sem Culpa -->
+  <div class="modal-overlay" id="pauseModal">
+    <div class="modal-content" style="text-align: center;">
+      <button class="modal-close" onclick="closeModal('pauseModal')">✕</button>
+      <div class="modal-title">⏸️ Pausa Sem Culpa</div>
+      <div class="modal-desc">
+        Você não está atrasado. Seu cérebro também precisa de pausas para recarregar a dopamina.
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 8px; margin: 16px 0;" id="pauseDurationButtons">
+        <button class="btn-secondary" onclick="startPause(5)">5 min</button>
+        <button class="btn-secondary" onclick="startPause(10)">10 min</button>
+        <button class="btn-secondary" onclick="startPause(20)">20 min</button>
+        <button class="btn-secondary" onclick="startPause(30)">30 min</button>
+      </div>
+
+      <div id="pauseTimerDisplay" style="display: none; margin-top: 15px;">
+        <div style="font-size: 38px; font-weight: 900; color: var(--primary);" id="pauseCountdown">05:00</div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;" id="pauseStatusMsg">
+          Apenas respire ou beba uma água. Não se cobre.
+        </p>
+        
+        <div id="postPauseActions" style="display: none; margin-top: 18px;">
+          <div style="font-size: 15px; font-weight: bold; color: #fff; margin-bottom: 12px;">Voltamos?</div>
+          <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="btn-main" onclick="resumeFromPause()" style="flex: 1;">[ SIM ] Vamos em frente</button>
+            <button class="btn-secondary" onclick="startPause(5)" style="flex: 1;">[ MAIS 5 MIN ]</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Editar Tarefa -->
+  <div class="modal-overlay" id="editTaskModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('editTaskModal')">✕</button>
+      <div class="modal-title">✏️ Editar Passo</div>
+      <div class="modal-desc">Ajuste o foco para deixá-lo no tamanho certo.</div>
+
+      <input type="hidden" id="editTaskId">
+      <input type="text" id="editTaskTitle" class="input-box" placeholder="Título da tarefa">
+      
+      <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+        <select id="editTaskDuration" class="input-box" style="margin-bottom: 0;">
+          <option value="5">5 minutos</option>
+          <option value="10">10 minutos</option>
+          <option value="20">20 minutos</option>
+          <option value="35">35 minutos</option>
+        </select>
+        <select id="editTaskPriority" class="input-box" style="margin-bottom: 0;">
+          <option value="hoje">Para Hoje</option>
+          <option value="urgente">Urgente</option>
+          <option value="importante">Importante</option>
+          <option value="depois">Para Depois</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <select id="editTaskStatus" class="input-box" style="margin-bottom: 0;">
+          <option value="agora">🎯 Foco Atual (AGORA)</option>
+          <option value="proximo">⏳ Próximo Passo</option>
+          <option value="depois">📦 Para Depois</option>
+          <option value="concluido">✅ Concluído</option>
+        </select>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-main" style="flex: 2;" onclick="saveTaskEdit()">Salvar Alterações</button>
+        <button class="btn-secondary" style="flex: 1; border-color: var(--danger); color: var(--danger);" onclick="deleteTaskFromEdit()">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Onboarding Ultracurto (4 Telas) -->
+  <div class="modal-overlay" id="onboardingModal" style="display: none;">
+    <div class="modal-content" style="max-width: 440px; text-align: center;">
+      
+      <!-- Tela 1 -->
+      <div id="onbStep1">
+        <div style="font-size: 42px; margin-bottom: 10px;">🧠</div>
+        <div class="modal-title" style="font-size: 20px;">Bem-vindo ao FocoGentil.</div>
+        <p style="font-size: 14px; color: var(--text-muted); margin: 12px 0 24px 0; line-height: 1.5;">
+          Você não precisa organizar tudo sozinho. Vamos simplificar seus pensamentos e cuidar de uma coisa por vez.
+        </p>
+        <button class="btn-main" style="width: 100%; font-size: 14px;" onclick="goToOnbStep(2)">Continuar →</button>
+      </div>
+
+      <!-- Tela 2 -->
+      <div id="onbStep2" style="display: none;">
+        <div class="modal-title" style="font-size: 18px; margin-bottom: 8px;">Como está sua energia hoje?</div>
+        <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px;">
+          Não se preocupe em estar com 100%. Nós adaptamos tudo ao seu ritmo.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+          <button class="btn-choice" id="onbEnergyBaixa" onclick="selectOnbEnergy('baixa')" style="text-align: left; padding: 12px;">
+            🔴 <strong>Baixa:</strong> Pouca bateria, preciso de passos muito leves.
+          </button>
+          <button class="btn-choice selected" id="onbEnergyMedia" onclick="selectOnbEnergy('media')" style="text-align: left; padding: 12px;">
+            🟡 <strong>Média:</strong> Dia comum, ritmo moderado.
+          </button>
+          <button class="btn-choice" id="onbEnergyAlta" onclick="selectOnbEnergy('alta')" style="text-align: left; padding: 12px;">
+            🟢 <strong>Alta:</strong> Disposto para focar em tarefas maiores.
+          </button>
+        </div>
+        <button class="btn-main" style="width: 100%;" onclick="goToOnbStep(3)">Avançar →</button>
+      </div>
+
+      <!-- Tela 3 -->
+      <div id="onbStep3" style="display: none;">
+        <div class="modal-title" style="font-size: 18px; margin-bottom: 8px;">O que você mais precisa agora?</div>
+        <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px;">
+          Escolha seu foco imediato:
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+          <button class="btn-choice selected" id="onbNeedFoco" onclick="selectOnbNeed('foco')" style="text-align: left; padding: 12px;">
+            🎯 <strong>Foco:</strong> Quero fazer apenas uma coisa de cada vez.
+          </button>
+          <button class="btn-choice" id="onbNeedOrg" onclick="selectOnbNeed('organizacao')" style="text-align: left; padding: 12px;">
+            📅 <strong>Organização:</strong> Preciso de um plano mínimo para o dia.
+          </button>
+          <button class="btn-choice" id="onbNeedDespejar" onclick="selectOnbNeed('despejar')" style="text-align: left; padding: 12px;">
+            🧠 <strong>Tirar coisas da cabeça:</strong> Minha mente está lotada.
+          </button>
+          <button class="btn-choice" id="onbNeedDestravar" onclick="selectOnbNeed('destravar')" style="text-align: left; padding: 12px;">
+            😵 <strong>Destravar tarefas:</strong> Estou procrastinando ou travado.
+          </button>
+        </div>
+        <button class="btn-main" style="width: 100%;" onclick="goToOnbStep(4)">Avançar →</button>
+      </div>
+
+      <!-- Tela 4 -->
+      <div id="onbStep4" style="display: none;">
+        <div style="font-size: 42px; margin-bottom: 10px;">✨</div>
+        <div class="modal-title" style="font-size: 20px;">Pronto.</div>
+        <p style="font-size: 15px; color: #fff; font-weight: bold; margin: 12px 0 6px 0;">
+          Vamos cuidar de uma coisa por vez.
+        </p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
+          Sem cobrança e sem sobrecarga.
+        </p>
+        <button class="btn-main" style="width: 100%; padding: 14px; font-size: 15px;" onclick="finishOnboarding()">
+          COMEÇAR 🚀
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: Nova Tarefa Manual -->
+  <div class="modal-overlay" id="newTaskModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('newTaskModal')">✕</button>
+      <div class="modal-title">🎯 Novo Foco</div>
+      <div class="modal-desc">Defina um próximo passo claro e simples.</div>
+
+      <input type="text" id="newTaskTitle" class="input-box" placeholder="O que vamos fazer agora?">
+      <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+        <select id="newTaskDuration" class="input-box" style="margin-bottom: 0;">
+          <option value="5">5 minutos (Rápido)</option>
+          <option value="10" selected>10 minutos (Ideal)</option>
+          <option value="20">20 minutos (Médio)</option>
+          <option value="35">35 minutos (Foco profundo)</option>
+        </select>
+        <select id="newTaskPriority" class="input-box" style="margin-bottom: 0;">
+          <option value="hoje" selected>Para Hoje</option>
+          <option value="urgente">Urgente</option>
+          <option value="importante">Importante</option>
+          <option value="depois">Para Depois</option>
+        </select>
+      </div>
+
+      <button class="btn-main" style="width: 100%;" onclick="saveNewTask()">Criar Próximo Passo</button>
+    </div>
+  </div>
+
+  <!-- MODAL: Organizar Meu Dia -->
+  <div class="modal-overlay" id="dailyPlanModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('dailyPlanModal')">✕</button>
+      <div class="modal-title">📅 Seu Plano Mínimo de Hoje</div>
+      <div class="modal-desc" id="planIntroText">
+        Essas são as coisas que realmente importam hoje. O resto pode esperar.
+      </div>
+
+      <div id="dailyPlanTimeline" style="margin: 15px 0;"></div>
+
+      <button class="btn-main" style="width: 100%;" onclick="closeModal('dailyPlanModal')">Entendido. Vamos em frente!</button>
+    </div>
+  </div>
+
+  <!-- MODAL: Autenticação / Perfil -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+      
+      <div id="authForms">
+        <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+          <button class="btn-choice selected" id="tabLogin" onclick="switchAuthTab('login')" style="flex: 1; text-align: center;">Entrar</button>
+          <button class="btn-choice" id="tabRegister" onclick="switchAuthTab('register')" style="flex: 1; text-align: center;">Criar Conta</button>
+        </div>
+
+        <div id="loginForm">
+          <input type="email" id="loginEmail" class="input-box" placeholder="Seu e-mail">
+          <input type="password" id="loginPass" class="input-box" placeholder="Sua senha">
+          <button class="btn-main" style="width: 100%;" onclick="handleLogin()">Entrar no FocoGentil</button>
+        </div>
+
+        <div id="registerForm" style="display: none;">
+          <input type="text" id="regName" class="input-box" placeholder="Como quer ser chamado">
+          <input type="email" id="regEmail" class="input-box" placeholder="Seu melhor e-mail">
+          <input type="password" id="regPass" class="input-box" placeholder="Crie uma senha">
+          <small style="color: var(--text-muted); font-size: 11px; display: block; margin: -4px 0 12px 0;">
+            🧒 Idade recomendada: a partir de 13 anos (com consentimento dos responsáveis para menores de 18 anos).
+          </small>
+          <button class="btn-main" style="width: 100%;" onclick="handleRegister()">Criar Conta Gratuita</button>
+        </div>
+      </div>
+
+      <div id="userProfileArea" style="display: none;">
+        <div class="modal-title">👤 Seu Perfil</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;" id="profileEmailDisplay"></p>
+        <div style="background: #202c33; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 14px;">
+          Plano Ativo: <strong style="color: var(--primary);" id="profilePlanDisplay">Gratuito</strong>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <a href="/checkout.html?plan=mensal" class="btn-main" style="text-decoration: none; font-size: 12px; flex: 1; text-align: center;">🚀 Assinar Pro (R$ 29/mês)</a>
+          <a href="/checkout.html?plan=vitalicio" class="btn-secondary" style="text-decoration: none; font-size: 12px; border-color: var(--gold); color: var(--gold); flex: 1; text-align: center;">💎 Vitalício (R$ 97)</a>
+          <button class="btn-secondary" onclick="handleLogout()" style="width: 100%; margin-top: 4px;">Sair da Conta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = null;
+    let currentEnergy = 'media';
+    let tasks = [];
+    let brainDumpParsed = null;
+    let selectedUnblockReason = 'Não sei por onde começar';
+    let pauseInterval = null;
+
+    // --- Inicialização ---
+    async function init() {
+      // 1. Carrega sessão salva
+      const token = localStorage.getItem('fg_token');
+      if (token) {
+        try {
+          const res = await fetch('/api/auth/me', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            currentUser = await res.json();
+            document.getElementById('userNameDisplay').innerText = currentUser.name || 'Amigo';
+            if (currentUser.energy_level) {
+              setEnergy(currentUser.energy_level, false);
+            }
+          }
+        } catch(e) {}
+      }
+
+      // 2. Carrega tarefas locais ou da API
+      await loadTasks();
+      renderTasks();
+
+      // 3. Onboarding na primeira visita
+      if (!localStorage.getItem('fg_onboarded')) {
+        openOnboarding();
+      }
+    }
+
+    // --- Tarefas ---
+    async function loadTasks() {
+      const token = localStorage.getItem('fg_token');
+      if (token) {
+        try {
+          const res = await fetch('/api/tasks', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            tasks = await res.json();
+            return;
+          }
+        } catch(e) {}
+      }
+
+      // Fallback local caso não esteja logado
+      const saved = localStorage.getItem('fg_local_tasks');
+      if (saved) {
+        try { tasks = JSON.parse(saved); } catch(e) {}
+      } else {
+        tasks = [
+          { id: 't1', title: 'Respirar fundo e abrir o material de trabalho', status: 'agora', duration_minutes: 5, priority: 'hoje' },
+          { id: 't2', title: 'Listar os 3 pontos mais simples da tarefa', status: 'proximo', duration_minutes: 10, priority: 'hoje' },
+          { id: 't3', title: 'Pausa suave para tomar água', status: 'depois', duration_minutes: 5, priority: 'baixa' }
+        ];
+        saveLocalTasks();
+      }
+    }
+
+    function saveLocalTasks() {
+      localStorage.setItem('fg_local_tasks', JSON.stringify(tasks));
+    }
+
+    function renderTasks() {
+      const nowContainer = document.getElementById('nowContainer');
+      const upcomingContainer = document.getElementById('upcomingContainer');
+      const counter = document.getElementById('taskCounter');
+
+      const activeNow = tasks.find(t => t.status === 'agora');
+      const nextTasks = tasks.filter(t => t.status === 'proximo');
+      const futureTasks = tasks.filter(t => t.status === 'depois');
+
+      counter.innerText = `${(activeNow ? 1 : 0) + nextTasks.length} tarefas a caminho`;
+
+      // Renderiza AGORA
+      if (activeNow) {
+        nowContainer.innerHTML = `
+          <div class="card-now">
+            <span class="badge-now">🎯 FAÇA APENAS ISTO AGORA</span>
+            <div class="now-title">${escapeHtml(activeNow.title)}</div>
+            <div class="now-meta">⏱️ Duração recomendada: ${activeNow.duration_minutes} min • Prioridade: ${activeNow.priority}</div>
+            <div class="now-actions">
+              <button class="btn-main" onclick="completeCurrentTask('${activeNow.id}')">Concluir Tarefa ✅</button>
+              <button class="btn-secondary" onclick="openUnblockModal('${escapeHtml(activeNow.title)}')">😵 Estou Travado</button>
+              <button class="btn-secondary" onclick="openEditTaskModal('${activeNow.id}')">✏️ Editar</button>
+              <button class="btn-secondary" onclick="startPause(5)">Pausa de 5 min ⏸️</button>
+            </div>
+          </div>
+        `;
+      } else {
+        nowContainer.innerHTML = `
+          <div class="card-now" style="border-style: dashed; border-color: var(--card-border); text-align: center;">
+            <div style="font-size: 24px; margin-bottom: 6px;">🌱</div>
+            <div class="now-title" style="font-size: 16px;">Sua mente está livre por enquanto!</div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Não há nenhuma tarefa no seu foco imediato.</p>
+            <button class="btn-main" onclick="openNewTaskModal()">Criar Próximo Passo</button>
+          </div>
+        `;
+      }
+
+      // Renderiza Próximos
+      upcomingContainer.innerHTML = '';
+      if (nextTasks.length === 0 && futureTasks.length === 0) {
+        upcomingContainer.innerHTML = `<div style="font-size: 13px; color: var(--text-muted); padding: 8px 0;">Nenhuma outra pendência acumulada.</div>`;
+        return;
+      }
+
+      nextTasks.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'card-upcoming';
+        div.innerHTML = `
+          <div>
+            <strong>Próximo:</strong> ${escapeHtml(t.title)}
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <div class="tag">⏱️ ${t.duration_minutes} min</div>
+            <button onclick="openEditTaskModal('${t.id}')" style="background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-size: 14px; padding: 2px 4px;" title="Editar passo">✏️</button>
+          </div>
+        `;
+        upcomingContainer.appendChild(div);
+      });
+
+      if (futureTasks.length > 0) {
+        const details = document.createElement('details');
+        details.style.marginTop = '10px';
+        details.innerHTML = `
+          <summary style="font-size: 12px; color: var(--text-muted); cursor: pointer; padding: 4px 0;">Ver mais ${futureTasks.length} itens guardados para depois</summary>
+          <div style="margin-top: 8px;">
+            ${futureTasks.map(t => `
+              <div class="card-upcoming" style="opacity: 0.7;">
+                <div>${escapeHtml(t.title)}</div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <div class="tag">${t.duration_minutes} min</div>
+                  <button onclick="openEditTaskModal('${t.id}')" style="background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-size: 14px; padding: 2px 4px;" title="Editar passo">✏️</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        upcomingContainer.appendChild(details);
+      }
+    }
+
+    async function completeCurrentTask(id) {
+      showToast("Feito. ✅ Um passo de cada vez.");
+
+      const token = localStorage.getItem('fg_token');
+      if (token) {
+        try {
+          await fetch(`/api/tasks/${id}/complete`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          await loadTasks();
+          renderTasks();
+          return;
+        } catch(e) {}
+      }
+
+      // Local
+      const idx = tasks.findIndex(t => t.id === id);
+      if (idx !== -1) {
+        tasks[idx].status = 'concluido';
+        const next = tasks.find(t => t.status === 'proximo');
+        if (next) next.status = 'agora';
+        saveLocalTasks();
+        renderTasks();
+      }
+    }
+
+    // --- Energia / Bateria ---
+    async function setEnergy(level, notify = true) {
+      currentEnergy = level;
+      document.querySelectorAll('.energy-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.toLowerCase().includes(level));
+      });
+
+      const token = localStorage.getItem('fg_token');
+      if (token) {
+        try {
+          await fetch('/api/user/energy', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ energy: level })
+          });
+        } catch(e) {}
+      }
+
+      if (notify) {
+        showToast(`Bateria definida como ${level.toUpperCase()}`);
+      }
+    }
+
+    // --- Modo Calmo ---
+    function toggleCalmMode() {
+      document.body.classList.toggle('calm-mode');
+      const isCalm = document.body.classList.contains('calm-mode');
+      document.getElementById('btnCalmMode').classList.toggle('active', isCalm);
+      localStorage.setItem('fg_calm_mode', isCalm ? '1' : '0');
+    }
+    if (localStorage.getItem('fg_calm_mode') === '1') {
+      toggleCalmMode();
+    }
+
+    // --- Despejar Tudo ---
+    function openBrainDumpModal() {
+      document.getElementById('brainDumpInput').value = '';
+      document.getElementById('brainDumpResult').style.display = 'none';
+      openModal('brainDumpModal');
+    }
+
+    async function processBrainDump() {
+      const text = document.getElementById('brainDumpInput').value.trim();
+      if (!text) return;
+
+      const btn = event.target;
+      btn.innerText = "Organizando com IA...";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/ai/brain-dump', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: text, energy: currentEnergy })
+        });
+        brainDumpParsed = await res.json();
+
+        document.getElementById('brainDumpFeedback').innerText = brainDumpParsed.message;
+        document.getElementById('brainDumpNextBox').innerHTML = `
+          <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; font-weight: bold;">Seu Próximo Passo Recomendado:</div>
+          <div style="font-size: 16px; font-weight: bold; color: #fff; margin: 4px 0;">${escapeHtml(brainDumpParsed.recommended_next_step.title)}</div>
+          <div style="font-size: 12px; color: var(--text-muted);">⏱️ Estimativa: ${brainDumpParsed.recommended_next_step.duration_minutes} min</div>
+        `;
+        document.getElementById('brainDumpResult').style.display = 'block';
+      } catch(e) {
+        alert("Erro ao organizar pensamentos.");
+      } finally {
+        btn.innerText = "Organizar Pensamentos";
+        btn.disabled = false;
+      }
+    }
+
+    async function applyBrainDumpTasks() {
+      if (!brainDumpParsed || !brainDumpParsed.tasks) return;
+
+      const token = localStorage.getItem('fg_token');
+      for (const t of brainDumpParsed.tasks) {
+        if (token) {
+          await fetch('/api/tasks', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify(t)
+          });
+        } else {
+          tasks.push({
+            id: 't_' + Date.now() + Math.random(),
+            title: t.title,
+            priority: t.priority,
+            duration_minutes: t.duration_minutes,
+            status: tasks.some(x => x.status === 'agora') ? 'proximo' : 'agora'
+          });
+        }
+      }
+
+      if (!token) saveLocalTasks();
+      else await loadTasks();
+
+      closeModal('brainDumpModal');
+      renderTasks();
+      showToast("Pensamentos organizados no seu dia!");
+    }
+
+    // --- Estou Travado ---
+    function openUnblockModal(defaultTitle = '') {
+      document.getElementById('unblockTaskInput').value = defaultTitle;
+      document.getElementById('unblockResult').style.display = 'none';
+      openModal('unblockModal');
+    }
+
+    function selectUnblockReason(reason) {
+      selectedUnblockReason = reason;
+      document.querySelectorAll('#unblockReasons .btn-choice').forEach(b => {
+        b.classList.toggle('selected', b.innerText === reason);
+      });
+      generateUnblockAdvice(1);
+    }
+
+    async function generateUnblockAdvice(stage) {
+      const task = document.getElementById('unblockTaskInput').value || 'sua tarefa';
+      try {
+        const res = await fetch('/api/ai/unblock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ task: task, reason: selectedUnblockReason, stage: stage })
+        });
+        const data = await res.json();
+        document.getElementById('unblockEmpathy').innerText = data.empathy_message;
+        document.getElementById('unblockAction').innerText = data.action_step;
+        document.getElementById('unblockResult').style.display = 'block';
+      } catch(e) {}
+    }
+
+    function acceptUnblockStep() {
+      const action = document.getElementById('unblockAction').innerText;
+      closeModal('unblockModal');
+      showToast("Começando micro-passo de 2 min. Você consegue!");
+      startPause(2);
+    }
+
+    function reduceEvenMore() {
+      generateUnblockAdvice(2);
+    }
+
+    // --- Organizar Meu Dia (Plano Mínimo) ---
+    async function triggerDailyPlan() {
+      openModal('dailyPlanModal');
+      const timeline = document.getElementById('dailyPlanTimeline');
+      timeline.innerHTML = '<div style="color: var(--text-muted); font-size: 13px;">Calculando plano mínimo com base na sua energia...</div>';
+
+      try {
+        const res = await fetch('/api/ai/daily-plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tasks: tasks, energy: currentEnergy })
+        });
+        const plan = await res.json();
+        document.getElementById('planIntroText').innerText = plan.message;
+
+        timeline.innerHTML = plan.items.map(item => `
+          <div style="display: flex; gap: 12px; margin-bottom: 12px; font-size: 13px; align-items: center;">
+            <div style="color: var(--gold); font-weight: bold; width: 45px;">${item.time}</div>
+            <div style="flex: 1; background: #202c33; padding: 10px; border-radius: 6px; ${item.is_break ? 'border-left: 3px solid var(--primary);' : ''}">
+              <strong>${escapeHtml(item.title)}</strong> (${item.duration_minutes} min)
+            </div>
+          </div>
+        `).join('');
+      } catch(e) {
+        timeline.innerText = "Erro ao gerar plano.";
+      }
+    }
+
+    // --- Pausa Sem Culpa ---
+    function openPauseModal() {
+      document.getElementById('pauseTimerDisplay').style.display = 'none';
+      const postPause = document.getElementById('postPauseActions');
+      if (postPause) postPause.style.display = 'none';
+      openModal('pauseModal');
+    }
+
+    function startPause(minutes) {
+      openModal('pauseModal');
+      document.getElementById('pauseTimerDisplay').style.display = 'block';
+      const postPause = document.getElementById('postPauseActions');
+      if (postPause) postPause.style.display = 'none';
+      let seconds = minutes * 60;
+      if (pauseInterval) clearInterval(pauseInterval);
+
+      updatePauseDisplay(seconds);
+      pauseInterval = setInterval(() => {
+        seconds--;
+        if (seconds <= 0) {
+          clearInterval(pauseInterval);
+          document.getElementById('pauseCountdown').innerText = "Tempo!";
+          if (postPause) postPause.style.display = 'block';
+          showToast("Pausa concluída. Voltamos suavemente?");
+        } else {
+          updatePauseDisplay(seconds);
+        }
+      }, 1000);
+    }
+
+    function resumeFromPause() {
+      if (pauseInterval) clearInterval(pauseInterval);
+      closeModal('pauseModal');
+      showToast("Voltando com calma. Você está no controle.");
+    }
+
+    function updatePauseDisplay(s) {
+      const m = Math.floor(s / 60);
+      const sec = s % 60;
+      document.getElementById('pauseCountdown').innerText = `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    }
+
+    // --- Onboarding Ultracurto (4 Telas) ---
+    let onbSelectedEnergy = 'media';
+    let onbSelectedNeed = 'foco';
+
+    function openOnboarding() {
+      goToOnbStep(1);
+      openModal('onboardingModal');
+    }
+
+    function goToOnbStep(step) {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`onbStep${i}`);
+        if (el) el.style.display = (i === step) ? 'block' : 'none';
+      }
+    }
+
+    function selectOnbEnergy(lvl) {
+      onbSelectedEnergy = lvl;
+      ['Baixa', 'Media', 'Alta'].forEach(k => {
+        const btn = document.getElementById(`onbEnergy${k}`);
+        if (btn) btn.classList.toggle('selected', k.toLowerCase() === lvl.toLowerCase());
+      });
+      setEnergy(lvl, false);
+    }
+
+    function selectOnbNeed(need) {
+      onbSelectedNeed = need;
+      const map = { 'foco': 'onbNeedFoco', 'organizacao': 'onbNeedOrg', 'despejar': 'onbNeedDespejar', 'destravar': 'onbNeedDestravar' };
+      Object.keys(map).forEach(k => {
+        const btn = document.getElementById(map[k]);
+        if (btn) btn.classList.toggle('selected', k === need);
+      });
+    }
+
+    function finishOnboarding() {
+      localStorage.setItem('fg_onboarded', '1');
+      closeModal('onboardingModal');
+      showToast("Bem-vindo! Vamos cuidar de uma coisa por vez.");
+      if (onbSelectedNeed === 'despejar') {
+        openBrainDumpModal();
+      } else if (onbSelectedNeed === 'destravar') {
+        openUnblockModal();
+      } else if (onbSelectedNeed === 'organizacao') {
+        triggerDailyPlan();
+      }
+    }
+
+    // --- Editar Tarefa ---
+    function openEditTaskModal(id) {
+      const task = tasks.find(t => String(t.id) === String(id));
+      if (!task) return;
+      document.getElementById('editTaskId').value = task.id;
+      document.getElementById('editTaskTitle').value = task.title;
+      document.getElementById('editTaskDuration').value = task.duration_minutes || 10;
+      document.getElementById('editTaskPriority').value = task.priority || 'hoje';
+      document.getElementById('editTaskStatus').value = task.status || 'agora';
+      openModal('editTaskModal');
+    }
+
+    async function saveTaskEdit() {
+      const id = document.getElementById('editTaskId').value;
+      const title = document.getElementById('editTaskTitle').value.trim();
+      const duration_minutes = parseInt(document.getElementById('editTaskDuration').value) || 10;
+      const priority = document.getElementById('editTaskPriority').value;
+      const status = document.getElementById('editTaskStatus').value;
+
+      if (!title) {
+        alert("O título da tarefa não pode ser vazio.");
+        return;
+      }
+
+      const token = localStorage.getItem('fg_token');
+      if (token) {
+        try {
+          const res = await fetch(`/api/tasks/${id}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, duration_minutes, priority, status })
+          });
+          if (res.ok) {
+            await loadTasks();
+            closeModal('editTaskModal');
+            renderTasks();
+            showToast("Passo atualizado com sucesso!");
+            return;
+          }
+        } catch(e) {}
+      }
+
+      // Local update fallback
+      const idx = tasks.findIndex(t => String(t.id) === String(id));
+      if (idx !== -1) {
+        tasks[idx].title = title;
+        tasks[idx].duration_minutes = duration_minutes;
+        tasks[idx].priority = priority;
+        tasks[idx].status = status;
+        saveLocalTasks();
+      }
+      closeModal('editTaskModal');
+      renderTasks();
+      showToast("Passo atualizado!");
+    }
+
+    async function deleteTaskFromEdit() {
+      const id = document.getElementById('editTaskId').value;
+      if (!confirm("Tem certeza que deseja excluir esta tarefa?")) return;
+
+      const token = localStorage.getItem('fg_token');
+      if (token) {
+        try {
+          const res = await fetch(`/api/tasks/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            await loadTasks();
+            closeModal('editTaskModal');
+            renderTasks();
+            showToast("Tarefa excluída.");
+            return;
+          }
+        } catch(e) {}
+      }
+
+      // Local delete fallback
+      tasks = tasks.filter(t => String(t.id) !== String(id));
+      if (!tasks.some(t => t.status === 'agora')) {
+        const next = tasks.find(t => t.status === 'proximo');
+        if (next) next.status = 'agora';
+      }
+      saveLocalTasks();
+      closeModal('editTaskModal');
+      renderTasks();
+      showToast("Tarefa excluída.");
+    }
+
+    // --- Captura por Voz (Web Speech API) ---
+    let recognition = null;
+    let isListening = false;
+
+    function toggleVoiceCapture() {
+      const btnFloat = document.getElementById('btnVoiceFloat');
+
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        // Fallback: abre modal de despejar tudo para digitação
+        openBrainDumpModal();
+        showToast("Reconhecimento de voz não suportado pelo navegador. Digite seu pensamento.");
+        return;
+      }
+
+      if (isListening) {
+        if (recognition) recognition.stop();
+        return;
+      }
+
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRec();
+      recognition.lang = 'pt-BR';
+      recognition.interimResults = false;
+
+      recognition.onstart = () => {
+        isListening = true;
+        btnFloat.classList.add('listening');
+        showToast("🎙️ Estou ouvindo... Fale o que está pensando!");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        isListening = false;
+        btnFloat.classList.remove('listening');
+        openBrainDumpModal();
+        document.getElementById('brainDumpInput').value = transcript;
+        processBrainDump();
+      };
+
+      recognition.onerror = () => {
+        isListening = false;
+        btnFloat.classList.remove('listening');
+        showToast("Não consegui ouvir. Tente digitar no Despejar Tudo.");
+      };
+
+      recognition.onend = () => {
+        isListening = false;
+        btnFloat.classList.remove('listening');
+      };
+
+      recognition.start();
+    }
+
+    function listenForBrainDump() {
+      toggleVoiceCapture();
+    }
+
+    // --- Nova Tarefa ---
+    function openNewTaskModal() {
+      document.getElementById('newTaskTitle').value = '';
+      openModal('newTaskModal');
+    }
+
+    async function saveNewTask() {
+      const title = document.getElementById('newTaskTitle').value.trim();
+      const duration = parseInt(document.getElementById('newTaskDuration').value);
+      const priority = document.getElementById('newTaskPriority').value;
+      if (!title) return;
+
+      const token = localStorage.getItem('fg_token');
+      if (token) {
+        await fetch('/api/tasks', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, duration_minutes: duration, priority })
+        });
+        await loadTasks();
+      } else {
+        tasks.push({
+          id: 't_' + Date.now(),
+          title,
+          duration_minutes: duration,
+          priority,
+          status: tasks.some(x => x.status === 'agora') ? 'proximo' : 'agora'
+        });
+        saveLocalTasks();
+      }
+
+      closeModal('newTaskModal');
+      renderTasks();
+      showToast("Novo próximo passo adicionado!");
+    }
+
+    // --- Autenticação ---
+    function openProfileModal() {
+      if (currentUser) {
+        document.getElementById('authForms').style.display = 'none';
+        document.getElementById('userProfileArea').style.display = 'block';
+        document.getElementById('profileEmailDisplay').innerText = currentUser.email || 'Usuário Local';
+        document.getElementById('profilePlanDisplay').innerText = currentUser.plan ? currentUser.plan.toUpperCase() : 'GRATUITO';
+      } else {
+        document.getElementById('authForms').style.display = 'block';
+        document.getElementById('userProfileArea').style.display = 'none';
+      }
+      openModal('authModal');
+    }
+
+    function switchAuthTab(tab) {
+      document.getElementById('tabLogin').classList.toggle('selected', tab === 'login');
+      document.getElementById('tabRegister').classList.toggle('selected', tab === 'register');
+      document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+      document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+    }
+
+    async function handleLogin() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPass').value;
+      if (!email || !password) return alert("Preencha email e senha.");
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (data.token) {
+          localStorage.setItem('fg_token', data.token);
+          currentUser = data.user;
+          document.getElementById('userNameDisplay').innerText = currentUser.name;
+          closeModal('authModal');
+          showToast(`Bem-vindo de volta, ${currentUser.name}!`);
+          await loadTasks();
+          renderTasks();
+        } else {
+          alert(data.error || "Dados incorretos.");
+        }
+      } catch(e) {
+        alert("Erro de conexão ao entrar.");
+      }
+    }
+
+    async function handleRegister() {
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPass').value;
+      if (!name || !email || !password) return alert("Preencha todos os campos.");
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        if (data.token) {
+          localStorage.setItem('fg_token', data.token);
+          currentUser = data.user;
+          document.getElementById('userNameDisplay').innerText = currentUser.name;
+          closeModal('authModal');
+          showToast(`Conta criada com sucesso! Bem-vindo, ${currentUser.name}!`);
+          await loadTasks();
+          renderTasks();
+        } else {
+          alert(data.error || "Erro no cadastro.");
+        }
+      } catch(e) {
+        alert("Erro de conexão no cadastro.");
+      }
+    }
+
+    function handleLogout() {
+      const token = localStorage.getItem('fg_token');
+      if (token) {
+        fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+      }
+      localStorage.removeItem('fg_token');
+      currentUser = null;
+      document.getElementById('userNameDisplay').innerText = "Visitante";
+      closeModal('authModal');
+      showToast("Você saiu da conta.");
+      loadTasks();
+      renderTasks();
+    }
+
+    // --- Helpers de Modal e Toast ---
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function showToast(msg) {
+      const t = document.getElementById('toastMsg');
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3200);
+    }
+    function escapeHtml(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    const PUBLIC_MOBILE_URL = 'https://news-orbit-routine-butter.trycloudflare.com/';
+
+    function getMobileAppShareUrl() {
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return PUBLIC_MOBILE_URL;
+      }
+      return `${window.location.origin}/`;
+    }
+
+    function shareAppOnWhatsApp() {
+      const url = getMobileAppShareUrl();
+      const msg = encodeURIComponent(`Oi! Estou usando o *FocoGentil*, um copiloto com IA feito para organizar a mente e contornar a paralisia do primeiro passo (ótimo para clareza mental e foco). É gratuito e funciona direto no celular (13+ anos). Testa aí no seu smartphone: ${url}`);
+      window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
+    }
+
+    function copyShareFromApp() {
+      const url = getMobileAppShareUrl();
+      const text = `Oi! Conheci o FocoGentil, um copiloto com IA que ajuda a organizar a mente e vencer a paralisia do primeiro passo (ótimo para quem lida com sobrecarga mental, paralisia de tarefas ou falta de foco). O teste é grátis e a idade recomendada é a partir de 13 anos. Testa aí no seu celular: ${url}`;
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+      }
+      const btn = document.getElementById('btnCopyShareApp');
+      if (btn) {
+        btn.innerText = "Link copiado! ✓";
+        btn.style.borderColor = "#25d366";
+        btn.style.color = "#25d366";
+        setTimeout(() => {
+          btn.innerText = "📋 Copiar Link";
+          btn.style.borderColor = "var(--card-border)";
+          btn.style.color = "var(--text-muted)";
+        }, 3000);
+      }
+    }
+
+    // Inicializa na abertura
+    init();
+  </script>
+</body>
+</html>

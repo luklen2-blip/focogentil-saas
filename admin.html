@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo — FocoGentil V2</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+  <style>
+    :root {
+      --bg: #0b141a;
+      --card-bg: #111b21;
+      --card-border: #222d34;
+      --primary: #00a884;
+      --gold: #ecc94b;
+      --text: #e9edef;
+      --text-muted: #8696a0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 24px 16px; max-width: 1000px; margin: 0 auto; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--card-border); }
+    h1 { font-size: 22px; display: flex; align-items: center; gap: 8px; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 28px; }
+    .metric-card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 18px; border-radius: 10px; }
+    .metric-card h3 { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
+    .metric-val { font-size: 24px; font-weight: 800; color: #fff; }
+    .metric-val.green { color: #25d366; }
+    .metric-val.gold { color: var(--gold); }
+    
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+    h2 { font-size: 16px; margin-bottom: 12px; color: #fff; }
+    
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 10px; border-bottom: 1px solid var(--card-border); color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
+    td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    input { width: 100%; background: #202c33; border: 1px solid var(--card-border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-size: 13px; }
+    .btn { background: var(--primary); color: #111b21; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; cursor: pointer; }
+    .btn-outline { background: transparent; border: 1px solid var(--card-border); color: var(--text); padding: 8px 14px; text-decoration: none; border-radius: 6px; font-size: 12px; }
+    .btn-outline:hover { border-color: var(--primary); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>⚙️ Painel de Administração — FocoGentil SaaS</h1>
+    <div style="display: flex; gap: 8px;">
+      <a href="/app" class="btn-outline">Abrir App</a>
+      <a href="/simulador.html" class="btn-outline">Simulador WhatsApp</a>
+      <a href="/checkout.html" class="btn-outline">Checkout</a>
+    </div>
+  </header>
+
+  <!-- Métricas -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <h3>Usuários Cadastrados</h3>
+      <div class="metric-val" id="mUsers">0</div>
+    </div>
+    <div class="metric-card">
+      <h3>Licenças Vitalícias</h3>
+      <div class="metric-val green" id="mLifetime">0</div>
+    </div>
+    <div class="metric-card">
+      <h3>Tarefas Criadas</h3>
+      <div class="metric-val" id="mTasks">0</div>
+    </div>
+    <div class="metric-card">
+      <h3>Tarefas Concluídas</h3>
+      <div class="metric-val green" id="mCompleted">0</div>
+    </div>
+    <div class="metric-card">
+      <h3>Receita Aprovada (PIX/Cartão)</h3>
+      <div class="metric-val gold" id="mRevenue">R$ 0,00</div>
+    </div>
+  </div>
+
+  <!-- Envio do Link e Idade Mínima -->
+  <div class="card" style="border-color: #25d366; background: linear-gradient(135deg, #182721 0%, #111b21 100%);">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+      <h2 style="margin: 0; color: #25d366; display: flex; align-items: center; gap: 8px;">
+        📲 Acessar no Celular & Enviar para as Pessoas
+      </h2>
+      <span style="background: rgba(83, 189, 235, 0.15); border: 1px solid #53bdeb; color: #53bdeb; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">
+        🧒 Idade Recomendada: 13+ anos
+      </span>
+    </div>
+
+    <!-- Explicação Técnica Amigável: Por que localhost não abre no celular -->
+    <div style="background: rgba(0, 0, 0, 0.25); border-left: 4px solid #f39c12; padding: 12px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 12.5px; line-height: 1.5; color: #e9edef;">
+      💡 <strong style="color: #f1c40f;">Por que o endereço "localhost" não abre no celular?</strong><br>
+      O termo <code>localhost</code> significa <em>"este aparelho específico"</em>. Quando digitado no celular, o celular tenta procurar o servidor dentro dele mesmo (onde nada está rodando). Para abrir no celular ou enviar no WhatsApp, você deve usar o <strong>Link Público Seguro (HTTPS)</strong> abaixo, que conecta qualquer celular (4G/5G/Wi-Fi) diretamente ao FocoGentil!
+    </div>
+
+    <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+      <div style="text-align: center; background: #0b141a; padding: 10px; border-radius: 10px; border: 1px solid #2a3942;">
+        <img src="/qrcode_mobile.png" alt="QR Code FocoGentil Mobile" style="width: 130px; height: 130px; border-radius: 6px; background: #fff; padding: 4px; display: block; margin: 0 auto 6px;">
+        <span style="font-size: 11px; color: #25d366; font-weight: bold;">📸 Aponte a câmera do celular</span>
+      </div>
+      <div style="flex: 1; min-width: 250px;">
+        <div style="margin-bottom: 8px; font-size: 13px; color: #fff; font-weight: bold;">
+          🌐 Link Público Global (Para qualquer celular ou WhatsApp):
+        </div>
+        <div style="background: #202c33; padding: 10px 12px; border-radius: 6px; font-family: monospace; font-size: 12.5px; color: #25d366; word-break: break-all; margin-bottom: 10px; border: 1px solid #2a3942;" id="publicLinkDisplay">
+          https://original-villas-removing-valves.trycloudflare.com/
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <a id="btnOpenPublic" href="https://original-villas-removing-valves.trycloudflare.com/" target="_blank" class="btn" style="background: #25d366; color: #111b21; padding: 8px 14px; font-size: 12px; text-decoration: none;">
+            🚀 Abrir Link Público
+          </a>
+          <button onclick="copyPublicLink()" class="btn-outline" id="btnCopyPublic" style="color: #fff; padding: 8px 14px; font-size: 12px; cursor: pointer;">
+            🔗 Copiar Somente o Link
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.5;">
+      <strong>Mensagem formatada para envio no WhatsApp (com o link que funciona em qualquer smartphone):</strong>
+    </p>
+
+    <div style="background: #202c33; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 12px; color: #e9edef; margin-bottom: 14px; line-height: 1.4;" id="adminShareText">
+      Carregando mensagem...
+    </div>
+
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <a id="btnAdminWhatsApp" href="#" target="_blank" class="btn" style="background: #25d366; color: #111b21; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+        💬 Abrir WhatsApp e Enviar Mensagem
+      </a>
+      <button onclick="copyAdminShareText()" class="btn-outline" id="btnAdminCopy" style="color: #fff; cursor: pointer;">
+        📋 Copiar Mensagem Completa
+      </button>
+    </div>
+
+    <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid #2a3942; font-size: 11.5px; color: var(--text-muted);">
+      ⚠️ <strong>Diretriz Legal para Envio:</strong> O uso é recomendado para adolescentes e adultos a partir de <strong>13 anos</strong> (com autorização e supervisão dos pais ou responsáveis para menores de 18 anos, em conformidade com o Art. 14 da LGPD e ECA). Contratação de planos pagos é permitida apenas para <strong>maiores de 18 anos</strong>.
+    </div>
+  </div>
+
+  <!-- Configuração de Cobrança -->
+  <div class="card">
+    <h2>💳 Configurações Comerciais & PIX Oficial</h2>
+    <form onsubmit="saveSettings(event)">
+      <div class="form-row">
+        <div>
+          <label>Valor da Licença Vitalícia (R$)</label>
+          <input type="number" step="0.01" id="cfgPrice" required>
+        </div>
+        <div>
+          <label>Chave PIX Oficial de Recebimento</label>
+          <input type="text" id="cfgPixKey" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label>Nome do Beneficiário (PIX)</label>
+          <input type="text" id="cfgPixName" required>
+        </div>
+        <div>
+          <label>Cidade do Beneficiário (PIX)</label>
+          <input type="text" id="cfgPixCity" required>
+        </div>
+      </div>
+      <button type="submit" class="btn">Salvar Configurações Comerciais</button>
+    </form>
+  </div>
+
+  <!-- Gestão de Pagamentos -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <h2 style="margin: 0;">💳 Transações & Pagamentos Recentes</h2>
+      <button onclick="loadPayments()" class="btn-outline" style="font-size: 11px; padding: 4px 10px; cursor: pointer;">🔄 Atualizar</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID / Data</th>
+          <th>Cliente / Contato</th>
+          <th>Plano</th>
+          <th>Valor</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="paymentsTableBody">
+        <tr><td colspan="6" style="color: var(--text-muted); text-align: center;">Carregando transações...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Usuários Cadastrados -->
+  <div class="card">
+    <h2>👥 Base de Usuários Recentes</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome / Telefone</th>
+          <th>E-mail</th>
+          <th>Plano</th>
+          <th>Energia</th>
+          <th>Data de Entrada</th>
+        </tr>
+      </thead>
+      <tbody id="usersTableBody">
+        <tr><td colspan="5" style="color: var(--text-muted); text-align: center;">Carregando usuários...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    async function loadAdminData() {
+      try {
+        const resStats = await fetch('/api/stats');
+        const stats = await resStats.json();
+
+        document.getElementById('mUsers').innerText = stats.total_users;
+        document.getElementById('mLifetime').innerText = stats.active_lifetime_users;
+        document.getElementById('mTasks').innerText = stats.total_tasks || stats.total_projects;
+        document.getElementById('mCompleted').innerText = stats.completed_tasks || 0;
+        document.getElementById('mRevenue').innerText = Number(stats.total_revenue_brl || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        const resSettings = await fetch('/api/settings');
+        const cfg = await resSettings.json();
+        document.getElementById('cfgPrice').value = cfg.price;
+        document.getElementById('cfgPixKey').value = cfg.pix_key || '';
+        document.getElementById('cfgPixName').value = cfg.pix_name || 'FOCOGENTIL';
+        document.getElementById('cfgPixCity').value = cfg.pix_city || 'SAO PAULO';
+
+        const resUsers = await fetch('/api/admin/users');
+        if (resUsers.ok) {
+          const users = await resUsers.json();
+          renderUsersTable(users);
+        }
+
+        await loadPayments();
+      } catch(e) {
+        console.error("Erro ao carregar dados admin:", e);
+      }
+    }
+
+    async function loadPayments() {
+      const tbody = document.getElementById('paymentsTableBody');
+      try {
+        const res = await fetch('/api/admin/payments');
+        if (res.ok) {
+          const payments = await res.json();
+          renderPaymentsTable(payments);
+        }
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="6" style="color: var(--text-muted); text-align: center;">Erro ao carregar pagamentos.</td></tr>';
+      }
+    }
+
+    function renderPaymentsTable(payments) {
+      const tbody = document.getElementById('paymentsTableBody');
+      if (!payments || payments.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="color: var(--text-muted); text-align: center;">Nenhuma transação registrada ainda.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = payments.map(p => {
+        let statusBadge = '';
+        if (p.status === 'approved') {
+          statusBadge = '<span style="color: #25d366; font-weight: bold; background: rgba(37, 211, 102, 0.15); padding: 2px 8px; border-radius: 12px; font-size: 11px;">✓ Aprovado</span>';
+        } else if (p.status === 'pending') {
+          statusBadge = '<span style="color: var(--gold); font-weight: bold; background: rgba(236, 201, 75, 0.15); padding: 2px 8px; border-radius: 12px; font-size: 11px;">⏳ Pendente</span>';
+        } else {
+          statusBadge = `<span style="color: #e53e3e; font-weight: bold; background: rgba(229, 62, 62, 0.15); padding: 2px 8px; border-radius: 12px; font-size: 11px;">${p.status}</span>`;
+        }
+
+        let actionBtn = '-';
+        if (p.status === 'pending') {
+          actionBtn = `
+            <div style="display: flex; gap: 4px;">
+              <button onclick="updatePaymentStatus('${p.payment_id}', 'approved')" class="btn" style="padding: 4px 8px; font-size: 11px; background: #25d366; color: #111b21;">Aprovar</button>
+              <button onclick="updatePaymentStatus('${p.payment_id}', 'cancelled')" class="btn-outline" style="padding: 4px 8px; font-size: 11px; border-color: #e53e3e; color: #e53e3e;">Cancelar</button>
+            </div>
+          `;
+        }
+
+        return `
+          <tr>
+            <td><strong>${p.payment_id}</strong><br><small style="color: var(--text-muted);">${new Date(p.created_at).toLocaleString('pt-BR')}</small></td>
+            <td><strong>${p.customer_name || 'Cliente'}</strong><br><small style="color: var(--text-muted);">${p.user_phone || p.customer_email || 'Web'}</small></td>
+            <td><strong style="color: ${p.plan === 'vitalicio' ? 'var(--gold)' : '#53bdeb'};">${(p.plan || 'vitalicio').toUpperCase()}</strong></td>
+            <td>${Number(p.amount || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+            <td>${statusBadge}</td>
+            <td>${actionBtn}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function updatePaymentStatus(paymentId, status) {
+      if (!confirm(`Deseja alterar o status do pagamento ${paymentId} para "${status}"?`)) return;
+      try {
+        const res = await fetch('/api/admin/payments/update-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ payment_id: paymentId, status })
+        });
+        const data = await res.json();
+        if (data.success) {
+          await loadAdminData();
+        } else {
+          alert("Erro ao atualizar: " + (data.error || "Tente novamente."));
+        }
+      } catch (err) {
+        alert("Erro na requisição: " + err.message);
+      }
+    }
+
+    function renderUsersTable(users) {
+      const tbody = document.getElementById('usersTableBody');
+      if (!users || users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="color: var(--text-muted); text-align: center;">Nenhum usuário registrado ainda.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = users.map(u => `
+        <tr>
+          <td><strong>${u.name || 'Sem nome'}</strong><br><small style="color: var(--text-muted);">${u.phone_number || 'Web'}</small></td>
+          <td>${u.email || '-'}</td>
+          <td><span style="color: ${u.plan === 'vitalicio' ? 'var(--gold)' : 'var(--primary)'}; font-weight: bold;">${(u.plan || 'gratuito').toUpperCase()}</span></td>
+          <td>${(u.energy_level || 'media').toUpperCase()}</td>
+          <td>${new Date(u.created_at || Date.now()).toLocaleDateString('pt-BR')}</td>
+        </tr>
+      `).join('');
+    }
+
+    async function saveSettings(e) {
+      e.preventDefault();
+      const payload = {
+        price: parseFloat(document.getElementById('cfgPrice').value),
+        pix_key: document.getElementById('cfgPixKey').value.trim(),
+        pix_name: document.getElementById('cfgPixName').value.trim(),
+        pix_city: document.getElementById('cfgPixCity').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert("Configurações atualizadas com sucesso!");
+          loadAdminData();
+        }
+      } catch(err) {
+        alert("Erro ao salvar.");
+      }
+    }
+
+    const PUBLIC_MOBILE_URL = 'https://news-orbit-routine-butter.trycloudflare.com/';
+
+    function getMobileShareUrl() {
+      // Se estiver rodando em localhost no computador, sempre use a URL pública segura para o celular abrir
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return PUBLIC_MOBILE_URL;
+      }
+      return `${window.location.origin}/`;
+    }
+
+    function getShareText() {
+      const url = getMobileShareUrl();
+      return `Oi! Conheci o FocoGentil, um copiloto com IA que ajuda a organizar a mente e vencer a paralisia do primeiro passo (ótimo para quem lida com sobrecarga mental, paralisia de tarefas ou falta de foco). O teste é grátis e a idade recomendada é a partir de 13 anos. Testa aí no seu celular: ${url}`;
+    }
+
+    function updateAdminShare() {
+      const text = getShareText();
+      const display = document.getElementById('adminShareText');
+      if (display) display.innerText = text;
+      const btnWa = document.getElementById('btnAdminWhatsApp');
+      if (btnWa) {
+        btnWa.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+      }
+      const pubDisplay = document.getElementById('publicLinkDisplay');
+      if (pubDisplay) pubDisplay.innerText = getMobileShareUrl();
+      const btnPub = document.getElementById('btnOpenPublic');
+      if (btnPub) btnPub.href = getMobileShareUrl();
+    }
+
+    function copyPublicLink() {
+      const link = getMobileShareUrl();
+      copyToClipboard(link);
+      const btn = document.getElementById('btnCopyPublic');
+      if (btn) {
+        btn.innerText = "Link copiado! ✓";
+        btn.style.borderColor = "#25d366";
+        btn.style.color = "#25d366";
+        setTimeout(() => {
+          btn.innerText = "🔗 Copiar Somente o Link";
+          btn.style.borderColor = "var(--card-border)";
+          btn.style.color = "#fff";
+        }, 3000);
+      }
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+      }
+    }
+
+    function copyAdminShareText() {
+      const text = getShareText();
+      copyToClipboard(text);
+      const btn = document.getElementById('btnAdminCopy');
+      if (btn) {
+        btn.innerText = "Mensagem copiada! ✓";
+        btn.style.borderColor = "#25d366";
+        btn.style.color = "#25d366";
+        setTimeout(() => {
+          btn.innerText = "📋 Copiar Mensagem Completa";
+          btn.style.borderColor = "var(--card-border)";
+          btn.style.color = "#fff";
+        }, 3000);
+      }
+    }
+
+    loadAdminData();
+    updateAdminShare();
+  </script>
+</body>
+</html>

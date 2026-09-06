@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>FocoGentil — Seu copiloto para organizar a mente e o dia</title>
+  <meta name="description" content="Menos cobrança. Mais clareza. Um passo de cada vez. Um copiloto com IA para apoiar sua função executiva, foco e planejamento sem sobrecarga. Idade recomendada: 13+ anos.">
+  
+  <!-- OpenGraph para Pré-Visualização Rica no WhatsApp e Redes Sociais -->
+  <meta property="og:site_name" content="FocoGentil">
+  <meta property="og:title" content="FocoGentil — Organize sua mente. Um passo de cada vez.">
+  <meta property="og:description" content="🧠 Copiloto com IA que transforma pensamentos confusos e tarefas pesadas em ações simples de 2 a 15 minutos. Teste grátis! (Recomendado para 13+ anos)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://focogentil.com.br/">
+  
+  <!-- Mobile e PWA -->
+  <meta name="theme-color" content="#0b141a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+
+  <style>
+    :root {
+      --bg: #0b141a;
+      --card-bg: #111b21;
+      --card-border: #222d34;
+      --primary: #00a884;
+      --primary-hover: #06cf9c;
+      --text: #e9edef;
+      --text-muted: #8696a0;
+      --gold: #ecc94b;
+      --blue: #53bdeb;
+      --whatsapp: #25d366;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+    }
+    .logo span { color: var(--primary); }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .btn-nav {
+      background: var(--primary);
+      color: #111b21;
+      padding: 9px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-nav:hover { background: var(--primary-hover); }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 50px 20px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .badge-wrap {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .badge-slogan {
+      background: rgba(0, 168, 132, 0.12);
+      border: 1px solid rgba(0, 168, 132, 0.4);
+      color: var(--primary);
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .badge-age {
+      background: rgba(83, 189, 235, 0.12);
+      border: 1px solid rgba(83, 189, 235, 0.4);
+      color: var(--blue);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .hero h1 {
+      font-size: clamp(30px, 6vw, 52px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      color: #fff;
+    }
+    .hero p {
+      font-size: clamp(15px, 2.5vw, 18px);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 30px auto;
+      line-height: 1.6;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn-cta-main {
+      background: var(--primary);
+      color: #111b21;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 16px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(0, 168, 132, 0.35);
+      transition: 0.2s;
+      min-height: 48px;
+    }
+    .btn-cta-main:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .btn-cta-secondary {
+      background: #202c33;
+      border: 1px solid #374248;
+      color: #e9edef;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 16px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      min-height: 48px;
+    }
+    .btn-cta-secondary:hover { border-color: var(--primary); }
+
+    /* Seções */
+    .section {
+      padding: 60px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .section-title h2 { font-size: clamp(24px, 4vw, 32px); font-weight: 800; margin-bottom: 8px; }
+    .section-title p { color: var(--text-muted); font-size: 15px; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px 20px;
+      position: relative;
+    }
+    .step-num {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--primary);
+      opacity: 0.4;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .step-card h3 { font-size: 17px; margin-bottom: 8px; }
+    .step-card p { font-size: 13.5px; color: var(--text-muted); }
+
+    /* Destaque: Estou Travado */
+    .unblock-highlight {
+      background: linear-gradient(135deg, #182229 0%, #111b21 100%);
+      border: 1px solid #2a3942;
+      border-radius: 16px;
+      padding: 35px 25px;
+      margin: 40px 0;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+    .unblock-chat-mock {
+      background: #0b141a;
+      border: 1px solid #222d34;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .mock-bubble {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .mock-in { background: #202c33; color: #e9edef; align-self: flex-start; }
+    .mock-out { background: #005c4b; color: #fff; text-align: right; }
+
+    /* Benefícios */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .benefit-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      gap: 14px;
+    }
+    .benefit-icon { font-size: 26px; line-height: 1; }
+    .benefit-item h4 { font-size: 15.5px; margin-bottom: 4px; }
+    .benefit-item p { font-size: 13px; color: var(--text-muted); }
+
+    /* Idade Mínima & Guia de Uso */
+    .age-guide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 25px;
+    }
+    .age-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 26px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .age-card.featured { border-color: var(--blue); }
+    .age-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      background: rgba(83, 189, 235, 0.15);
+      color: var(--blue);
+      align-self: flex-start;
+    }
+    .age-card h3 { font-size: 18px; margin-bottom: 8px; color: #fff; }
+    .age-card p { font-size: 13.5px; color: var(--text-muted); margin-bottom: 15px; }
+    .age-note {
+      background: #182229;
+      border-left: 3px solid var(--blue);
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #cfd8dc;
+      line-height: 1.4;
+    }
+
+    /* Box de Compartilhamento WhatsApp */
+    .share-box {
+      background: linear-gradient(135deg, #182721 0%, #111b21 100%);
+      border: 1px solid rgba(37, 211, 102, 0.35);
+      border-radius: 16px;
+      padding: 35px 24px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .share-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* Planos */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 22px;
+      margin-top: 25px;
+    }
+    .price-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+    .price-card.featured {
+      border-color: var(--primary);
+      box-shadow: 0 4px 25px rgba(0, 168, 132, 0.15);
+    }
+    .ribbon {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: var(--gold);
+      color: #111b21;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+    }
+    .price-val { font-size: 36px; font-weight: 900; color: #fff; margin: 12px 0 6px 0; }
+    .price-val span { font-size: 13px; color: var(--text-muted); font-weight: normal; }
+    .price-features { list-style: none; margin: 18px 0 25px 0; display: flex; flex-direction: column; gap: 9px; font-size: 13px; }
+    .price-features li { display: flex; gap: 8px; }
+    .price-features li span { color: var(--primary); font-weight: bold; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+    .footer-links a { color: var(--text-muted); text-decoration: none; transition: 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .disclaimer {
+      font-size: 11px;
+      max-width: 760px;
+      margin: 15px auto 0 auto;
+      line-height: 1.5;
+      color: #687782;
+    }
+
+    /* Otimizações Específicas para Smartphones */
+    @media (max-width: 768px) {
+      .unblock-highlight { grid-template-columns: 1fr; }
+      .age-guide-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .navbar { padding: 12px 16px; }
+      .nav-links a:not(.btn-nav) { display: none; }
+      .hero { padding: 40px 15px 30px 15px; }
+      .hero-actions { flex-direction: column; width: 100%; }
+      .btn-cta-main, .btn-cta-secondary { width: 100%; }
+      .section { padding: 40px 15px; }
+      .unblock-highlight { padding: 22px 16px; }
+      .share-box { padding: 25px 16px; }
+      .share-actions { flex-direction: column; width: 100%; }
+      .share-actions a, .share-actions button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="logo">
+      🧠 FocoGentil
+    </a>
+    <div class="nav-links">
+      <a href="#como-funciona">Como Funciona</a>
+      <a href="#idade-minima">Idade Mínima</a>
+      <a href="#planos">Planos</a>
+      <a href="/app" class="btn-nav">Abrir Copiloto</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="badge-wrap">
+      <div class="badge-slogan">✨ Menos cobrança. Mais clareza. Um passo de cada vez.</div>
+      <div class="badge-age">🧒 Classificação: A partir de 13 anos</div>
+    </div>
+    <h1>Organize sua mente.<br>Um passo de cada vez.</h1>
+    <p>
+      Um copiloto com inteligência artificial desenhado para apoiar sua função executiva, foco e planejamento — transformando pensamentos confusos em próximos passos microscópicos, sem culpa e sem sobrecarga.
+    </p>
+    <div class="hero-actions">
+      <a href="/app" class="btn-cta-main">
+        🚀 Experimentar Gratuitamente
+      </a>
+      <a href="/checkout.html?plan=vitalicio" class="btn-cta-secondary">
+        💎 Ver Acesso Vitalício
+      </a>
+    </div>
+  </header>
+
+  <!-- Como Funciona -->
+  <section class="section" id="como-funciona">
+    <div class="section-title">
+      <h2>Como o FocoGentil funciona</h2>
+      <p>Um fluxo cognitivo feito para contornar a paralisia do primeiro clique.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3>Despeje seus pensamentos</h3>
+        <p>Escreva livremente ou fale por voz tudo o que está entulhando sua cabeça. Sem se preocupar com ordem ou pontuação.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3>A IA organiza</h3>
+        <p>O FocoGentil interpreta seu desabafo, categoriza as prioridades e calcula estimativas realistas de tempo.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3>Descubra o Próximo Passo</h3>
+        <p>Você não é bombardeado com uma lista opressora. O sistema destaca apenas UMA coisa para focar agora.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <h3>Ação de baixa fricção</h3>
+        <p>Passos de 2 a 15 minutos que respeitam seu nível de bateria mental diário (Teoria das Colheres).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Estou Travado -->
+  <section class="section" id="estou-travado">
+    <div class="unblock-highlight">
+      <div>
+        <div style="color: var(--gold); font-size: 12.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
+          😵 Modo Especial: Estou Travado
+        </div>
+        <h2 style="font-size: clamp(22px, 3.5vw, 30px); font-weight: 900; margin-bottom: 12px; line-height: 1.2;">
+          Não consegue começar? Nós tornamos isso menor.
+        </h2>
+        <p style="color: var(--text-muted); font-size: 14.5px; margin-bottom: 20px;">
+          Em vez de se culpar por procrastinar, clique em <strong>"Estou travado"</strong>. A IA identifica se é cansaço, sobrecarga ou ansiedade e reduz a tarefa até ela virar um micropasso que você consegue fazer em 2 minutos.
+        </p>
+        <a href="/app" class="btn-cta-main" style="padding: 12px 24px; font-size: 14px;">
+          Experimentar no Celular ou Computador
+        </a>
+      </div>
+
+      <div class="unblock-chat-mock">
+        <div class="mock-bubble mock-out">
+          "Preciso fazer o relatório e não consigo começar."
+        </div>
+        <div class="mock-bubble mock-in">
+          🧠 <strong>FocoGentil:</strong><br>
+          Está tudo bem. Não vamos fazer o relatório inteiro.<br><br>
+          <strong>Primeiro passo (2 min):</strong><br>
+          Apenas abra o documento em branco e respire.<br><br>
+          <span style="background: var(--primary); color: #111b21; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold;">[ COMEÇAR ]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DE IDADE MÍNIMA & USO SEGURO -->
+  <section class="section" id="idade-minima">
+    <div class="section-title">
+      <h2>🧒 Idade Mínima & Diretrizes de Uso Seguro</h2>
+      <p>Desenvolvido com carinho, acessibilidade e proteção à privacidade (LGPD).</p>
+    </div>
+
+    <div class="age-guide-grid">
+      <!-- 13 a 17 anos -->
+      <div class="age-card">
+        <div>
+          <div class="age-badge">13 a 17 Anos • Jovens & Estudantes</div>
+          <h3>Apoio aos Estudos e Rotina Escolar</h3>
+          <p>
+            Excelente para estudantes com TDAH, autismo ou sobrecarga que travam para começar trabalhos, lições de casa e preparação para o ENEM.
+          </p>
+        </div>
+        <div class="age-note">
+          <strong>Proteção e Consentimento:</strong> Jovens de 13 a 17 anos podem utilizar o copiloto com a anuência e supervisão dos pais ou responsáveis legais (em conformidade com a LGPD e o ECA).
+        </div>
+      </div>
+
+      <!-- 18+ anos -->
+      <div class="age-card featured">
+        <div>
+          <div class="age-badge" style="background: var(--primary); color: #111b21;">18+ Anos • Adultos & Profissionais</div>
+          <h3>Trabalho, Rotina & Gestão da Vida</h3>
+          <p>
+            Alívio para a sobrecarga mental de quem precisa conciliar prazos profissionais, tarefas da casa e projetos pessoais sem esgotamento cognitivo.
+          </p>
+        </div>
+        <div class="age-note" style="border-left-color: var(--primary);">
+          <strong>Autonomia e Pagamentos:</strong> Usuários a partir de 18 anos possuem plena autonomia para contratação dos planos Pro e Vitalício.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO COMPARTILHAR NO WHATSAPP (PARA ENVIAR PARA AS PESSOAS) -->
+  <section class="section" style="padding-top: 10px;">
+    <div class="share-box">
+      <div style="font-size: 34px; margin-bottom: 6px;">📲</div>
+      <h2 style="font-size: clamp(20px, 3.5vw, 28px); font-weight: 800; margin-bottom: 8px;">
+        Quer enviar o FocoGentil para alguém?
+      </h2>
+      <p style="color: var(--text-muted); font-size: 14.5px; max-width: 620px; margin: 0 auto 22px auto;">
+        Compartilhe com amigos, colegas de trabalho ou familiares que precisam de apoio no foco e na organização diária. O teste inicial é gratuito e funciona direto no celular!
+      </p>
+      
+      <div class="share-actions">
+        <a id="btnShareWhatsApp" href="https://api.whatsapp.com/send?text=Oi!%20Conheci%20o%20*FocoGentil*%2C%20um%20copiloto%20com%20IA%20que%20ajuda%20a%20organizar%20a%20mente%20e%20vencer%20a%20paralisia%20do%20primeiro%20passo%20(ótimo%20para%20quem%20lida%20com%20sobrecarga%20mental%20ou%20falta%20de%20foco).%20O%20teste%20é%20grátis%20e%20a%20idade%20mínima%20recomendada%20é%2013%20anos.%20Testa%20aí%3A%20https%3A%2F%2Ffocogentil.com.br%2F" target="_blank" class="btn-cta-main" style="background: var(--whatsapp); color: #111b21;">
+          💬 Enviar Convite no WhatsApp
+        </a>
+        <button onclick="copyShareText()" class="btn-cta-secondary" id="btnCopyShare">
+          📋 Copiar Link e Mensagem
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefícios -->
+  <section class="section">
+    <div class="section-title">
+      <h2>Feito para a Função Executiva</h2>
+      <p>Estrutura pensada para mentes com TDAH, autismo e sobrecarga cognitiva.</p>
+    </div>
+
+    <div class="benefits-grid">
+      <div class="benefit-item">
+        <div class="benefit-icon">🔋</div>
+        <div>
+          <h4>Teoria das Colheres</h4>
+          <p>Adapta a exigência do dia conforme sua energia: Baixa 🔴, Média 🟡 ou Alta 🟢.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">🎯</div>
+        <div>
+          <h4>Foco Atômico (Agora / Próximo)</h4>
+          <p>Nunca mais olhe para listas infinitas. Veja apenas o que importa no momento.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">🎙️</div>
+        <div>
+          <h4>Captura por Voz no Celular</h4>
+          <p>Fale naturalmente e deixe o copiloto transcrever e estruturar seus compromissos.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">⏸️</div>
+        <div>
+          <h4>Pausa Sem Culpa</h4>
+          <p>Temporizadores acolhedores que reconhecem que descanso faz parte da produtividade.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">💬</div>
+        <div>
+          <h4>WhatsApp ou Navegador</h4>
+          <p>Acesse pelo navegador do smartphone ou continue diretamente pelo WhatsApp.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">🔒</div>
+        <div>
+          <h4>Privacidade e LGPD</h4>
+          <p>Seus pensamentos e dados isolados com segurança, sem venda de informações.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Planos -->
+  <section class="section" id="planos">
+    <div class="section-title">
+      <h2>Planos Transparentes e Diretos</h2>
+      <p>Escolha a forma que melhor apoia o seu momento.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Gratuito -->
+      <div class="price-card">
+        <div>
+          <h3>Plano Gratuito</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Para testar e criar clareza imediata.</p>
+          <div class="price-val">R$ 0 <span>/ grátis</span></div>
+          <ul class="price-features">
+            <li><span>✓</span> Tarefas essenciais estruturadas</li>
+            <li><span>✓</span> Foco AGORA e PRÓXIMO</li>
+            <li><span>✓</span> Teoria das Colheres (Energia)</li>
+            <li><span>✓</span> Temporizador de pausas gentis</li>
+            <li><span>✓</span> Apoio de IA introdutório</li>
+            <li><span>✓</span> <strong>Idade mínima: 13+ anos</strong></li>
+          </ul>
+        </div>
+        <a href="/app" class="btn-cta-secondary" style="text-align: center; display: block; font-size: 14px;">
+          Começar Grátis
+        </a>
+      </div>
+
+      <!-- Vitalício (Destaque) -->
+      <div class="price-card featured">
+        <div class="ribbon">Acesso Vitalício 💎</div>
+        <div>
+          <h3>Pagamento Único</h3>
+          <p style="font-size: 13px; color: var(--gold); margin-top: 4px;">Sem mensalidades. Sem assinaturas.</p>
+          <div class="price-val">R$ 97 <span>/ pagamento único</span></div>
+          <ul class="price-features">
+            <li><span>✓</span> <strong>Tudo do Plano Pro para sempre</strong></li>
+            <li><span>✓</span> <strong>Despejar Tudo Ilimitado</strong></li>
+            <li><span>✓</span> <strong>Modo "Estou Travado" profundo</strong></li>
+            <li><span>✓</span> <strong>Captura por voz completa no celular</strong></li>
+            <li><span>✓</span> <strong>Integração com WhatsApp Oficial</strong></li>
+            <li><span>✓</span> Pagamento exclusivo por PIX ou Cartão 1x</li>
+          </ul>
+        </div>
+        <a href="/checkout.html?plan=vitalicio" class="btn-cta-main" style="text-align: center; display: block; font-size: 14px;">
+          Garantir Acesso Vitalício
+        </a>
+      </div>
+
+      <!-- Pro -->
+      <div class="price-card">
+        <div>
+          <h3>Plano Pro Mensal</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Para uso contínuo e flexível.</p>
+          <div class="price-val">R$ 29 <span>/ mês</span></div>
+          <ul class="price-features">
+            <li><span>✓</span> Despejar tudo com IA</li>
+            <li><span>✓</span> Modo Estou Travado ilimitado</li>
+            <li><span>✓</span> Planejamento automático diário</li>
+            <li><span>✓</span> Transcrição por voz</li>
+            <li><span>✓</span> Cancele a qualquer momento em 1 clique</li>
+          </ul>
+        </div>
+        <a href="/checkout.html?plan=mensal" class="btn-cta-secondary" style="text-align: center; display: block; font-size: 14px; border-color: var(--primary); color: #fff;">
+          💳 Assinar Pro (R$ 29/mês)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div style="font-weight: 700; color: #fff; font-size: 16px;">🧠 FocoGentil</div>
+    <div style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Menos cobrança. Mais clareza. Um passo de cada vez.</div>
+    <div class="footer-links">
+      <a href="/app">Abrir Copiloto</a>
+      <a href="#planos">Planos</a>
+      <a href="/checkout.html">Checkout</a>
+      <a href="/termos.html">Termos de Uso</a>
+      <a href="/privacidade.html">Política de Privacidade (LGPD)</a>
+    </div>
+    <div class="disclaimer">
+      <strong>Classificação Indicativa & Idade Mínima:</strong> Recomendado para pessoas a partir de 13 anos. Usuários entre 13 e 17 anos devem utilizar o software com conhecimento e consentimento prévio dos pais ou responsáveis legais. A contratação financeira de planos pagos é restrita a maiores de 18 anos ou assistidos por responsáveis.<br><br>
+      <strong>Aviso Ético:</strong> O FocoGentil é uma ferramenta de software voltada ao planejamento pessoal, organização mental e suporte à função executiva. Não é e não deve ser interpretado como aconselhamento, diagnóstico, psicoterapia ou tratamento médico de TDAH, TEA ou qualquer outra condição de saúde.
+    </div>
+    <div style="margin-top: 15px; font-size: 12px; color: #54656f;">
+      © 2026 FocoGentil. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script>
+    const PUBLIC_MOBILE_URL = 'https://news-orbit-routine-butter.trycloudflare.com/';
+
+    function getMobileIndexShareUrl() {
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return PUBLIC_MOBILE_URL;
+      }
+      return `${window.location.origin}/`;
+    }
+
+    function copyShareText() {
+      const url = getMobileIndexShareUrl();
+      const text = `Oi! Conheci o FocoGentil, um copiloto com IA que ajuda a organizar a mente e vencer a paralisia do primeiro passo (ótimo para quem lida com sobrecarga mental, paralisia de tarefas ou falta de foco). O teste é grátis e a idade recomendada é a partir de 13 anos. Testa aí no celular: ${url}`;
+      
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+      }
+
+      const btn = document.getElementById('btnCopyShare');
+      btn.innerText = "Mensagem copiada! ✓";
+      btn.style.borderColor = "#25d366";
+      btn.style.color = "#25d366";
+      setTimeout(() => {
+        btn.innerText = "📋 Copiar Link e Mensagem";
+        btn.style.borderColor = "#374248";
+        btn.style.color = "#e9edef";
+      }, 3000);
+    }
+
+    // Atualiza o link do botão de compartilhamento dinamicamente com a URL atual
+    window.addEventListener('DOMContentLoaded', () => {
+      const currentUrl = getMobileIndexShareUrl();
+      const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(`Oi! Conheci o *FocoGentil*, um copiloto com IA que ajuda a organizar a mente e vencer a paralisia do primeiro passo (ótimo para quem lida com sobrecarga mental, paralisia de tarefas ou falta de foco). O teste é grátis e a idade recomendada é a partir de 13 anos. Testa aí no seu celular: ${currentUrl}`)}`;
+      const btn = document.getElementById('btnShareWhatsApp');
+      if (btn) btn.href = shareUrl;
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocoGentil - Copiloto de Produtividade Neurodivergente</title>
+  <style>
+    :root {
+      --wa-header: #005c4b;
+      --wa-bg: #efeae2;
+      --wa-chat-bg: #e5ddd5;
+      --wa-bubble-in: #ffffff;
+      --wa-bubble-out: #d9fdd3;
+      --accent: #25d366;
+      --neuro-purple: #6b46c1;
+      --neuro-yellow: #ecc94b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #111b21; color: #333; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* Top Control Banner */
+    .top-bar {
+      background: #202c33;
+      color: #e9edef;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #374248;
+      font-size: 14px;
+    }
+    .top-bar .badge {
+      background: #00a884;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .top-bar a {
+      color: #53bdeb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .top-actions { display: flex; gap: 10px; align-items: center; }
+    .btn-action {
+      background: #00a884;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .btn-action:hover { background: #06cf9c; }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #00a884;
+      color: #00a884;
+    }
+
+    /* Main Container */
+    .container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      background: #fff;
+    }
+
+    /* Sidebar: Neuro Controls & Info */
+    .sidebar {
+      width: 340px;
+      background: #111b21;
+      color: #d1d7db;
+      padding: 20px;
+      border-right: 1px solid #222d34;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+    .sidebar h2 { font-size: 16px; color: #e9edef; display: flex; align-items: center; gap: 8px; }
+    .energy-card {
+      background: #202c33;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #00a884;
+    }
+    .energy-card h3 { font-size: 13px; color: #8696a0; text-transform: uppercase; margin-bottom: 10px; }
+    .energy-selector {
+      display: flex;
+      gap: 8px;
+    }
+    .energy-btn {
+      flex: 1;
+      padding: 8px 4px;
+      border: 1px solid #374248;
+      border-radius: 6px;
+      background: #111b21;
+      color: #aebac1;
+      cursor: pointer;
+      font-size: 12px;
+      text-align: center;
+      transition: 0.2s;
+    }
+    .energy-btn.active {
+      border-color: #00a884;
+      background: #00a884;
+      color: #111b21;
+      font-weight: bold;
+    }
+    .stats-card {
+      background: #202c33;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .stats-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .stats-value { color: #00a884; font-weight: bold; }
+
+    /* Chat Area */
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--wa-bg);
+      position: relative;
+    }
+    .chat-header {
+      background: var(--wa-header);
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #25d366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .chat-header-info h3 { font-size: 16px; margin-bottom: 2px; }
+    .chat-header-info p { font-size: 12px; color: #b7e6dc; }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-image: radial-gradient(#d3cbbe 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .msg {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.45;
+      position: relative;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+    .msg.in {
+      background: var(--wa-bubble-in);
+      align-self: flex-start;
+      border-top-left-radius: 0;
+    }
+    .msg.out {
+      background: var(--wa-bubble-out);
+      align-self: flex-end;
+      border-top-right-radius: 0;
+    }
+    .msg-time {
+      font-size: 10px;
+      color: #888;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    /* Quick Reply Pill Buttons */
+    .quick-replies {
+      padding: 8px 16px;
+      background: rgba(239, 234, 226, 0.95);
+      border-top: 1px solid #d1cbbe;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .pill-btn {
+      background: #ffffff;
+      border: 1px solid #00a884;
+      color: #005c4b;
+      padding: 6px 14px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: 0.15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .pill-btn:hover {
+      background: #00a884;
+      color: #fff;
+    }
+
+    /* Chat Input Bar */
+    .chat-input-bar {
+      background: #f0f2f5;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-top: 1px solid #d1d7db;
+    }
+    .input-field {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #fff;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      outline: none;
+    }
+    .btn-send, .btn-mic {
+      background: #00a884;
+      color: #fff;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+    .btn-mic { background: #54656f; }
+    .btn-mic:hover { background: #00a884; }
+
+    /* Modal de Checkout Embutido */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 15px;
+    }
+    .modal-box {
+      background: #111b21;
+      border: 1px solid #00a884;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      position: relative;
+      color: #e9edef;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: transparent;
+      border: none;
+      color: #8696a0;
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-close-btn:hover { color: #fff; }
+    .checkout-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .checkout-tab {
+      background: #202c33;
+      border: 1px solid #374248;
+      color: #aebac1;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      transition: 0.2s;
+    }
+    .checkout-tab.active {
+      border-color: #00a884;
+      background: rgba(0, 168, 132, 0.15);
+      color: #25d366;
+    }
+    .checkout-price-box {
+      background: #202c33;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 12px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .checkout-price-val { font-size: 24px; font-weight: 800; color: #25d366; }
+    .modal-form-group { margin-bottom: 12px; }
+    .modal-form-group label { display: block; font-size: 12px; color: #8696a0; margin-bottom: 4px; }
+    .modal-input {
+      width: 100%;
+      background: #202c33;
+      border: 1px solid #374248;
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      outline: none;
+    }
+    .modal-input:focus { border-color: #00a884; }
+    .pix-box {
+      background: #182229;
+      border: 1px solid #2a3942;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .qr-img {
+      width: 190px;
+      height: 190px;
+      background: #fff;
+      padding: 8px;
+      border-radius: 6px;
+      margin: 10px auto;
+      display: block;
+    }
+    .pix-copia-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .pix-code-field {
+      flex: 1;
+      background: #202c33;
+      border: 1px solid #374248;
+      color: #cfd8dc;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: monospace;
+      outline: none;
+    }
+    .btn-copy-pix {
+      background: #32bcad;
+      color: #111b21;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .btn-confirm-checkout {
+      width: 100%;
+      background: #25d366;
+      color: #111b21;
+      border: none;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: 0.2s;
+    }
+    .btn-confirm-checkout:hover { background: #1ebd5a; }
+    .checkout-bubble-box {
+      background: #202c33;
+      border: 1px solid #ecc94b;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      color: #e9edef;
+    }
+
+    @media (max-width: 768px) {
+      .top-bar { flex-direction: column; gap: 8px; align-items: flex-start; padding: 10px 12px; }
+      .top-actions { flex-wrap: wrap; gap: 6px; }
+      .container { flex-direction: column; }
+      .sidebar { width: 100%; max-height: 180px; padding: 12px; border-right: none; border-bottom: 1px solid #222d34; }
+      .chat-panel { flex: 1; min-height: 400px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Simulation Banner -->
+  <div class="top-bar">
+    <div>
+      <strong>🧠 FocoGentil - Simulador do WhatsApp</strong>
+      <span class="badge" id="licenseStatus" style="background: #1f6feb;">⏳ Teste Grátis: 30:00 restantes</span>
+    </div>
+    <div class="top-actions">
+      <button class="btn-action btn-outline" style="border-color: #ecc94b; color: #ecc94b;" onclick="simulateExpireTrial()" title="Simula o fim dos 30 minutos para testar o pedido de pagamento">Expirar 30 min ⏱️</button>
+      <button class="btn-action btn-outline" onclick="simulateResetTrial()" title="Reinicia o contador de 30 minutos">Reiniciar 30 min 🔄</button>
+      <button class="btn-action" onclick="simulatePaymentActivation()">Liberar Vitalício (PIX) 💎</button>
+      <button class="btn-action btn-outline" style="border-color: #53bdeb; color: #53bdeb; font-weight: bold;" onclick="openCheckoutModal()" title="Abrir checkout direto na tela">Checkout 🛍️</button>
+      <button class="btn-action btn-outline" style="border-color: #8696a0; color: #cfd8dc;" onclick="goToCheckout()" title="Abrir página completa de checkout">Página Cheia ↗</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>🧠 Ajustes Neurodivergentes</h2>
+      
+      <div class="energy-card">
+        <h3>Teoria das Colheres (Bateria)</h3>
+        <div class="energy-selector">
+          <button class="energy-btn" onclick="setEnergy('baixa')">🔴 Baixa</button>
+          <button class="energy-btn active" onclick="setEnergy('media')">🟡 Média</button>
+          <button class="energy-btn" onclick="setEnergy('alta')">🟢 Alta</button>
+        </div>
+        <p style="font-size: 11px; color: #8696a0; margin-top: 8px;">
+          Se a energia estiver baixa, o copiloto oferece o menor passo imaginável (2 min) sem esforço cognitivo.
+        </p>
+      </div>
+
+      <div class="stats-card">
+        <h3 style="color: #8696a0; font-size: 12px; margin-bottom: 10px; text-transform: uppercase;">Métricas do Sistema</h3>
+        <div class="stats-row"><span>Licença Ativa:</span><span class="stats-value" id="statLifetime">Sim (Vitalício)</span></div>
+        <div class="stats-row"><span>Mensalidades:</span><span class="stats-value" style="color: #25d366;">R$ 0,00 (Nenhuma)</span></div>
+        <div class="stats-row"><span>Projetos Fatiados:</span><span class="stats-value" id="statProjects">1</span></div>
+        <div class="stats-row"><span>Lembretes Gentis:</span><span class="stats-value" id="statReminders">1</span></div>
+      </div>
+
+      <div style="font-size: 12px; color: #8696a0; line-height: 1.5;">
+        <strong style="color: #e9edef;">Por que funciona para TDAH?</strong><br>
+        O cérebro neurodivergente trava por "cegueira temporal" e sobrecarga sensorial. O FocoGentil cria a dopamina do primeiro clique com passos de 3 minutos e opções sem cobrança.
+      </div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div class="chat-area">
+      <div class="chat-header">
+        <div class="avatar">🧠</div>
+        <div class="chat-header-info">
+          <h3>FocoGentil Copilot</h3>
+          <p>online • seu parceiro de foco sem julgamentos</p>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatBox">
+        <div class="msg in">
+          👋 Olá! Eu sou seu copiloto neurodivergente.<br><br>
+          Em qual projeto ou tarefa você está pensando hoje? Me mande uma mensagem ou clique no microfone se preferir falar!
+          <div class="msg-time">12:00</div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="quick-replies">
+        <button class="pill-btn" onclick="sendQuickReply('1')">1 - ✅ Concluí o Passo 1!</button>
+        <button class="pill-btn" onclick="sendQuickReply('2')">2 - 🤏 Travei: dividir em etapas menores</button>
+        <button class="pill-btn" onclick="sendQuickReply('3')">3 - ⏸️ Pausa de 30 min sem culpa</button>
+      </div>
+
+      <!-- Input Bar -->
+      <div class="chat-input-bar">
+        <button class="btn-mic" title="Simular gravação de áudio do WhatsApp (ideal para TDAH)" onclick="simulateVoiceNote()">🎤</button>
+        <input type="text" id="userInput" class="input-field" placeholder="Ex: Preciso organizar meu armário e terminar a planilha financeira..." onkeypress="handleKey(event)">
+        <button class="btn-send" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Checkout Embutido -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeCheckoutModal()">✕</button>
+      <div style="font-size: 11px; color: #ecc94b; font-weight: 700; text-transform: uppercase;">
+        💎 Pagamento Único • Sem Mensalidade
+      </div>
+      <h2 style="font-size: 20px; margin: 4px 0 8px 0; color: #e9edef;">Checkout FocoGentil Copilot</h2>
+      <p style="font-size: 12.5px; color: #8696a0; line-height: 1.4;">
+        Acesso vitalício ao copiloto no WhatsApp para organização neurodivergente sem cobranças recorrentes.
+      </p>
+
+      <div class="checkout-price-box">
+        <div>
+          <div style="font-size: 11px; color: #8696a0;">Valor do Acesso Vitalício:</div>
+          <div class="checkout-price-val" id="modalDisplayPrice">R$ 97,00</div>
+        </div>
+        <span style="font-size: 11px; background: rgba(37,211,102,0.15); color: #25d366; border: 1px solid #25d366; padding: 4px 10px; border-radius: 12px; font-weight: bold;">
+          Sem Assinatura
+        </span>
+      </div>
+
+      <div class="modal-form-group">
+        <label>Seu Nome</label>
+        <input type="text" id="modalUserName" class="modal-input" value="Luciano">
+      </div>
+
+      <div class="modal-form-group">
+        <label>WhatsApp para Ativação (com DDD)</label>
+        <input type="tel" id="modalUserPhone" class="modal-input" value="+5511999998888">
+      </div>
+
+      <div class="checkout-tabs">
+        <div class="checkout-tab active" id="tabPix" onclick="switchCheckoutTab('pix')">⚡ PIX Instantâneo</div>
+        <div class="checkout-tab" id="tabCard" onclick="switchCheckoutTab('card')">💳 Cartão de Crédito (1x)</div>
+      </div>
+
+      <!-- Área PIX -->
+      <div id="pixArea" class="pix-box">
+        <div style="font-size: 12px; color: #32bcad; font-weight: bold;">QR Code PIX Oficial (Banco Central)</div>
+        <p style="font-size: 11px; color: #8696a0; margin-top: 2px;">
+          Escaneie com qualquer app de banco (Nubank, Itaú, BB, Inter, etc.)
+        </p>
+
+        <img id="modalPixQrImg" class="qr-img" alt="QR Code PIX">
+
+        <div style="font-size: 11px; color: #8696a0; text-align: left; margin-top: 6px;">Código PIX Copia e Cola:</div>
+        <div class="pix-copia-row">
+          <input type="text" id="modalPixCode" class="pix-code-field" readonly>
+          <button class="btn-copy-pix" id="btnCopyModalPix" onclick="copyModalPixCode()">Copiar</button>
+        </div>
+
+        <button class="btn-confirm-checkout" onclick="confirmModalPix()">
+          ✅ Já fiz o PIX! Liberar WhatsApp Vitalício
+        </button>
+        <div style="font-size: 11px; color: #8696a0; margin-top: 8px;">
+          Beneficiário: <strong id="modalPixBeneficiary" style="color: #e9edef;">FOCOGENTIL</strong>
+        </div>
+      </div>
+
+      <!-- Área Cartão -->
+      <div id="cardArea" class="pix-box" style="display: none;">
+        <div style="font-size: 13px; color: #53bdeb; font-weight: bold; margin-bottom: 6px;">
+          💳 Pagamento Único via Cartão de Crédito (1x)
+        </div>
+        <p style="font-size: 12px; color: #8696a0; margin-bottom: 12px;">
+          Cobrança pontual em 1x sem mensalidades futuras ou renovações automáticas.
+        </p>
+        <div class="modal-form-group" style="text-align: left;">
+          <label>Número do Cartão (Simulação de Cartão Seguro)</label>
+          <input type="text" class="modal-input" value="•••• •••• •••• 4242" readonly style="color: #8696a0;">
+        </div>
+        <button class="btn-confirm-checkout" onclick="confirmModalCard()">
+          💳 Pagar em 1x e Liberar WhatsApp Vitalício
+        </button>
+      </div>
+
+      <div style="text-align: center; margin-top: 14px;">
+        <a href="javascript:void(0)" onclick="goToCheckout()" style="font-size: 12px; color: #53bdeb; text-decoration: none;">
+          🔗 Preferir abrir a página completa de checkout em tela cheia (`/checkout.html`)
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const userPhone = "+5511999998888";
+    let currentEnergy = "media";
+
+    function setEnergy(level) {
+      currentEnergy = level;
+      document.querySelectorAll('.energy-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.toLowerCase().includes(level));
+      });
+      addMessage(`[Ajuste de Bateria] Energia definida como ${level.toUpperCase()}`, 'out');
+    }
+
+    function addMessage(text, type = 'in') {
+      const chatBox = document.getElementById('chatBox');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `msg ${type}`;
+      
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      msgDiv.innerHTML = text.replace(/\n/g, '<br>') + `<div class="msg-time">${timeStr}</div>`;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function addCheckoutNotice(text) {
+      const chatBox = document.getElementById('chatBox');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'msg in';
+      
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      msgDiv.innerHTML = `
+        <div style="color: #e53e3e; font-weight: bold; margin-bottom: 6px;">🔒 Teste Gratuito de 30 minutos esgotado!</div>
+        ${text.replace(/\n/g, '<br>')}
+        <div class="checkout-bubble-box">
+          <div style="font-weight: 700; color: #ecc94b; margin-bottom: 4px;">⚡ Liberar Acesso Vitalício (Sem Mensalidades):</div>
+          <div style="font-size: 12px; color: #cfd8dc; margin-bottom: 8px;">Escolha entre PIX Instantâneo ou Cartão de Crédito em 1x.</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn-action" onclick="openCheckoutModal()" style="font-size: 12px; padding: 7px 14px; background: #00a884; cursor: pointer;">⚡ Pagar com PIX ou Cartão</button>
+            <button class="btn-action btn-outline" onclick="goToCheckout()" style="font-size: 12px; padding: 7px 14px; border-color: #53bdeb; color: #53bdeb; cursor: pointer;">🛍️ Abrir em Tela Cheia</button>
+          </div>
+        </div>
+        <div class="msg-time">${timeStr}</div>
+      `;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function sendMessage(text = null, isAudio = false) {
+      const input = document.getElementById('userInput');
+      const message = text || input.value.trim();
+      if (!message && !isAudio) return;
+
+      if (!text) input.value = '';
+      addMessage(isAudio ? "🎤 [Nota de Voz Enviada via WhatsApp]" : message, 'out');
+
+      try {
+        const res = await fetch('/api/simulate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: userPhone,
+            message: message,
+            energy: currentEnergy,
+            is_audio: isAudio
+          })
+        });
+        const data = await res.json();
+        
+        if (data.trial_status) {
+          applyTrialStatus(data.trial_status);
+        }
+
+        if (data.is_authorized === false) {
+          setTimeout(() => {
+            addCheckoutNotice(data.response_text);
+            openCheckoutModal();
+            updateStats();
+          }, 400);
+          return;
+        }
+
+        setTimeout(() => {
+          addMessage(data.response_text, 'in');
+          updateStats();
+        }, 400);
+
+      } catch (err) {
+        addMessage("⚠️ Falha na conexão com o copiloto.", 'in');
+      }
+    }
+
+    function sendQuickReply(option) {
+      sendMessage(option);
+    }
+
+    function simulateVoiceNote() {
+      sendMessage("Nota de voz gravada pelo usuário", true);
+    }
+
+    function handleKey(e) {
+      if (e.key === 'Enter') sendMessage();
+    }
+
+    let remainingSeconds = 1800; // 30 minutos padrão
+    let isLifetime = false;
+
+    function applyTrialStatus(status) {
+      const badge = document.getElementById('licenseStatus');
+      isLifetime = status.is_lifetime;
+
+      if (status.is_lifetime) {
+        badge.innerText = "💎 Acesso Vitalício Ativo ✅";
+        badge.style.background = "#25d366";
+        document.getElementById('statLifetime').innerText = "Sim (Vitalício)";
+        return;
+      }
+
+      if (status.in_trial) {
+        remainingSeconds = status.remaining_seconds;
+        badge.style.background = "#1f6feb";
+        updateCountdownText();
+        document.getElementById('statLifetime').innerText = "Período de Teste (30m)";
+      } else {
+        remainingSeconds = 0;
+        badge.innerText = "⏱️ Teste Expirado (Aguardando Pagamento)";
+        badge.style.background = "#e53e3e";
+        document.getElementById('statLifetime').innerText = "Expirado (Comprar Vitalício)";
+      }
+    }
+
+    function updateCountdownText() {
+      if (isLifetime) return;
+      const badge = document.getElementById('licenseStatus');
+      if (remainingSeconds > 0) {
+        const m = Math.floor(remainingSeconds / 60);
+        const s = remainingSeconds % 60;
+        badge.innerText = `⏳ Teste Grátis: ${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')} restantes`;
+      } else {
+        badge.innerText = "⏱️ Teste Expirado (Aguardando Pagamento)";
+        badge.style.background = "#e53e3e";
+      }
+    }
+
+    // Cronômetro local a cada 1 segundo
+    setInterval(() => {
+      if (!isLifetime && remainingSeconds > 0) {
+        remainingSeconds--;
+        updateCountdownText();
+      }
+    }, 1000);
+
+    async function loadTrialStatus() {
+      try {
+        const res = await fetch(`/api/trial-status?phone=${encodeURIComponent(userPhone)}`);
+        const status = await res.json();
+        applyTrialStatus(status);
+      } catch(e) {}
+    }
+
+    let currentModalTab = 'pix';
+    let modalPixData = null;
+
+    function openCheckoutModal() {
+      const modal = document.getElementById('checkoutModal');
+      modal.style.display = 'flex';
+      loadCheckoutModalData();
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').style.display = 'none';
+    }
+
+    function goToCheckout() {
+      window.location.href = '/checkout.html?phone=' + encodeURIComponent(userPhone);
+    }
+
+    async function loadCheckoutModalData() {
+      try {
+        const res = await fetch('/api/settings');
+        const settings = await res.json();
+        const formatted = Number(settings.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById('modalDisplayPrice').innerText = formatted;
+
+        const userName = document.getElementById('modalUserName').value || 'Luciano';
+        const userPh = document.getElementById('modalUserPhone').value || userPhone;
+
+        const pixRes = await fetch('/api/pix/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: userPh,
+            name: userName,
+            amount: settings.price
+          })
+        });
+        modalPixData = await pixRes.json();
+        document.getElementById('modalPixQrImg').src = modalPixData.qr_code_url;
+        document.getElementById('modalPixCode').value = modalPixData.pix_code;
+        document.getElementById('modalPixBeneficiary').innerText = modalPixData.merchant_name || 'FOCOGENTIL';
+      } catch (e) {
+        console.error("Erro ao carregar checkout modal:", e);
+      }
+    }
+
+    function switchCheckoutTab(tab) {
+      currentModalTab = tab;
+      document.getElementById('tabPix').classList.toggle('active', tab === 'pix');
+      document.getElementById('tabCard').classList.toggle('active', tab === 'card');
+      document.getElementById('pixArea').style.display = tab === 'pix' ? 'block' : 'none';
+      document.getElementById('cardArea').style.display = tab === 'card' ? 'block' : 'none';
+    }
+
+    function copyModalPixCode() {
+      const codeInput = document.getElementById('modalPixCode');
+      codeInput.select();
+      navigator.clipboard.writeText(codeInput.value);
+      const btn = document.getElementById('btnCopyModalPix');
+      btn.innerText = "Copiado! ✓";
+      btn.style.background = "#25d366";
+      setTimeout(() => {
+        btn.innerText = "Copiar";
+        btn.style.background = "#32bcad";
+      }, 3000);
+    }
+
+    async function confirmModalPix() {
+      if (!modalPixData) return;
+      const btn = document.querySelector('#pixArea .btn-confirm-checkout');
+      if (btn) {
+        btn.innerText = "Validando ativação vitalícia...";
+        btn.disabled = true;
+      }
+
+      try {
+        const res = await fetch('/api/pix/confirm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: userPhone,
+            name: document.getElementById('modalUserName').value,
+            amount: modalPixData.amount
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeCheckoutModal();
+          isLifetime = true;
+          const badge = document.getElementById('licenseStatus');
+          badge.innerText = "💎 Acesso Vitalício Ativo ✅";
+          badge.style.background = "#25d366";
+          document.getElementById('statLifetime').innerText = "Sim (Vitalício)";
+          addMessage("🎉 *Pagamento PIX Confirmado com Sucesso!*\nSeu Acesso Vitalício está 100% liberado sem nenhuma mensalidade.", 'in');
+          updateStats();
+        } else {
+          alert("Erro ao validar pagamento PIX.");
+        }
+      } catch (err) {
+        alert("Erro de conexão ao validar PIX.");
+      } finally {
+        if (btn) {
+          btn.innerText = "✅ Já fiz o PIX! Liberar WhatsApp Vitalício";
+          btn.disabled = false;
+        }
+      }
+    }
+
+    async function confirmModalCard() {
+      const btn = document.querySelector('#cardArea .btn-confirm-checkout');
+      if (btn) {
+        btn.innerText = "Processando pagamento em 1x...";
+        btn.disabled = true;
+      }
+
+      try {
+        const res = await fetch('/api/webhook/payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone_number: userPhone,
+            customer_name: document.getElementById('modalUserName').value,
+            payment_id: "CARD_MODAL_" + Date.now(),
+            amount: modalPixData ? modalPixData.amount : 97.00,
+            provider: "mercadopago",
+            is_recurring: false
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeCheckoutModal();
+          isLifetime = true;
+          const badge = document.getElementById('licenseStatus');
+          badge.innerText = "💎 Acesso Vitalício Ativo ✅";
+          badge.style.background = "#25d366";
+          document.getElementById('statLifetime').innerText = "Sim (Vitalício)";
+          addMessage("🎉 *Pagamento em 1x no Cartão Aprovado!*\nSeu Acesso Vitalício foi ativado sem mensalidades.", 'in');
+          updateStats();
+        } else {
+          alert("Erro ao processar cartão.");
+        }
+      } catch (err) {
+        alert("Erro de conexão com o cartão.");
+      } finally {
+        if (btn) {
+          btn.innerText = "💳 Pagar em 1x e Liberar WhatsApp Vitalício";
+          btn.disabled = false;
+        }
+      }
+    }
+
+    async function simulateExpireTrial() {
+      const res = await fetch('/api/simulate/expire-trial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: userPhone })
+      });
+      const data = await res.json();
+      applyTrialStatus(data.trial_status);
+      addCheckoutNotice("⏱️ [Simulação] O período de 30 minutos de teste foi finalizado! A partir de agora, o acesso é liberado exclusivamente via PIX ou Cartão (1x).");
+      openCheckoutModal();
+    }
+
+    async function simulateResetTrial() {
+      const res = await fetch('/api/simulate/reset-trial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: userPhone })
+      });
+      const data = await res.json();
+      applyTrialStatus(data.trial_status);
+      addMessage("🔄 [Simulação] Período de teste de 30 minutos reiniciado com sucesso! Pode fatiar tarefas normalmente.", 'out');
+    }
+
+    async function simulatePaymentActivation() {
+      const res = await fetch('/api/webhook/payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone_number: userPhone,
+          payment_id: "PIX_" + Date.now(),
+          amount: 97.00,
+          customer_name: "Você (Simulação)",
+          provider: "mercadopago",
+          is_recurring: false
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        isLifetime = true;
+        const badge = document.getElementById('licenseStatus');
+        badge.innerText = "💎 Acesso Vitalício Ativo ✅";
+        badge.style.background = "#25d366";
+        addMessage("🎉 *Pagamento Único Confirmado!* Seu acesso vitalício está 100% liberado sem mensalidades.", 'in');
+        updateStats();
+      }
+    }
+
+    async function updateStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const stats = await res.json();
+        document.getElementById('statProjects').innerText = stats.total_projects;
+        document.getElementById('statReminders').innerText = stats.total_reminders;
+      } catch(e) {}
+    }
+
+    // Inicialização sem forçar pagamento: inicia no teste de 30 minutos
+    loadTrialStatus();
+    updateStats();
+  </script>
+</body>
+</html>

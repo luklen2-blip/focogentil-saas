@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Checkout Seguro - FocoGentil | Escolha seu Plano</title>
+  <meta name="theme-color" content="#0b141a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  <style>
+    :root {
+      --primary: #00a884;
+      --primary-hover: #06cf9c;
+      --primary-dark: #005c4b;
+      --bg: #0b141a;
+      --card-bg: #111b21;
+      --card-border: #222d34;
+      --text: #e9edef;
+      --text-muted: #8696a0;
+      --gold: #ecc94b;
+      --pix-cyan: #32bcad;
+      --blue: #53bdeb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 25px 15px 50px 15px; display: flex; flex-direction: column; align-items: center; }
+
+    /* Seletor de Plano Superior */
+    .plan-switch-box {
+      max-width: 920px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .plan-switch-btn {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .plan-switch-btn:hover { border-color: #374248; }
+    .plan-switch-btn.active {
+      border-color: var(--primary);
+      background: #182229;
+      box-shadow: 0 4px 14px rgba(0, 168, 132, 0.2);
+    }
+    .plan-switch-btn.active .plan-badge-pill {
+      background: var(--primary);
+      color: #111b21;
+    }
+    .plan-title-box h3 { font-size: 16px; color: #fff; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+    .plan-title-box p { font-size: 12px; color: var(--text-muted); }
+    .plan-price-callout { text-align: right; }
+    .plan-price-callout .val { font-size: 19px; font-weight: 800; color: #25d366; }
+    .plan-price-callout .period { font-size: 11px; color: var(--text-muted); }
+    .plan-badge-pill {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #202c33;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .checkout-wrapper {
+      max-width: 920px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr 1.05fr;
+      gap: 25px;
+    }
+    @media (max-width: 768px) {
+      .plan-switch-box { grid-template-columns: 1fr; }
+      .checkout-wrapper { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 26px;
+    }
+
+    h1 { font-size: 23px; color: var(--text); margin-bottom: 10px; line-height: 1.25; }
+    .badge-highlight {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .badge-vitalicio {
+      background: rgba(236, 201, 75, 0.15);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+    .badge-mensal {
+      background: rgba(83, 189, 235, 0.15);
+      color: var(--blue);
+      border: 1px solid var(--blue);
+    }
+
+    .features-list {
+      list-style: none;
+      margin: 18px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .features-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 13.5px;
+      color: #cfd8dc;
+      line-height: 1.4;
+    }
+    .features-list li span { color: var(--primary); font-weight: bold; }
+
+    .guarantee-box {
+      background: #182229;
+      border-left: 4px solid var(--primary);
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+    .guarantee-box strong { color: #fff; }
+
+    /* Form Side */
+    .price-tag {
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .price-current { font-size: 32px; font-weight: 800; color: #25d366; }
+    .price-info { font-size: 11px; color: var(--gold); font-weight: 600; margin-top: 2px; }
+
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; }
+    input {
+      width: 100%;
+      background: #202c33;
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 11px 13px;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.15s;
+    }
+    input:focus { border-color: var(--primary); }
+
+    .payment-methods {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .pay-btn {
+      background: #202c33;
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 12px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      text-align: center;
+      font-weight: 600;
+      transition: 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .pay-btn:hover { border-color: #374248; }
+    .pay-btn.selected {
+      border-color: var(--pix-cyan);
+      background: rgba(50, 188, 173, 0.15);
+      color: var(--pix-cyan);
+    }
+    .pay-btn small { font-size: 10.5px; opacity: 0.8; font-weight: normal; }
+
+    /* Caixa de Campos do Cartão */
+    .card-fields-box {
+      background: #182229;
+      border: 1px solid #2a3942;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 16px;
+    }
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .security-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    /* Caixa de Informação do PIX */
+    .pix-info-box {
+      background: #182229;
+      border: 1px dashed var(--pix-cyan);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: #cfd8dc;
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: #111b21;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-submit:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+    /* Modal de Pagamento PIX com QR Code Real */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 15px;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--pix-cyan);
+      padding: 24px;
+      border-radius: 12px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px; right: 15px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .qr-container {
+      background: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 15px 0 10px 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .qr-img {
+      width: 190px;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .pix-copia-box {
+      background: #202c33;
+      border: 1px solid #374248;
+      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pix-code-input {
+      background: transparent;
+      border: none;
+      color: #cfd8dc;
+      font-size: 11px;
+      font-family: monospace;
+      width: 100%;
+      outline: none;
+    }
+    .btn-copy {
+      background: var(--pix-cyan);
+      color: #111b21;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .btn-confirm-pix {
+      width: 100%;
+      background: #25d366;
+      color: #111b21;
+      border: none;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.2s;
+    }
+    .btn-confirm-pix:hover { background: #1ebd5a; }
+
+    /* Modal de Configuração do Administrador */
+    .admin-modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--gold);
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Customer Navbar -->
+  <div style="max-width: 920px; width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <a href="/" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 19px; color: #fff; text-decoration: none;">
+      🧠 FocoGentil
+    </a>
+    <a href="/" style="color: var(--text-muted); font-size: 13px; text-decoration: none; transition: 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">
+      ← Voltar para o Início
+    </a>
+  </div>
+
+  <!-- SELETOR DE PLANO (TABS SUPERIORES) -->
+  <div class="plan-switch-box">
+    <!-- Opção 1: Vitalício -->
+    <div class="plan-switch-btn active" id="tabVitalicio" onclick="switchPlan('vitalicio')">
+      <div class="plan-title-box">
+        <h3>
+          💎 Vitalício
+          <span class="plan-badge-pill">Sem Mensalidade</span>
+        </h3>
+        <p>Acesso completo para sempre sem renovações</p>
+      </div>
+      <div class="plan-price-callout">
+        <div class="val" id="tabVitalicioPrice">R$ 97,00</div>
+        <div class="period">pagamento único</div>
+      </div>
+    </div>
+
+    <!-- Opção 2: Pro Mensal -->
+    <div class="plan-switch-btn" id="tabMensal" onclick="switchPlan('mensal')">
+      <div class="plan-title-box">
+        <h3>
+          🚀 Pro Mensal
+          <span class="plan-badge-pill" style="color: var(--blue);">Flexível</span>
+        </h3>
+        <p>Assinatura mensal • Cancele quando quiser</p>
+      </div>
+      <div class="plan-price-callout">
+        <div class="val">R$ 29,00</div>
+        <div class="period">por mês</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="checkout-wrapper">
+    <!-- Informações do Produto (Esquerda) -->
+    <div class="card">
+      <div id="productBadge" class="badge-highlight badge-vitalicio">💎 Pagamento Único • Acesso Vitalício</div>
+      <h1 id="productTitle">FocoGentil Copilot para WhatsApp e Web</h1>
+      <p id="productDesc" style="color: var(--text-muted); font-size: 13.5px; line-height: 1.5;">
+        O primeiro copiloto conversacional desenhado para quem busca clareza mental, foco no próximo passo e alívio da sobrecarga diária.
+      </p>
+
+      <ul class="features-list" id="featuresList">
+        <li><span>✓</span> <strong>Quebra de Inércia:</strong> Decomposição de tarefas em micropassos de 2 a 15 min com ignição imediata.</li>
+        <li><span>✓</span> <strong>Modo Estou Travado:</strong> Apoio imediato quando a tarefa parece pesada demais ou a energia está baixa.</li>
+        <li><span>✓</span> <strong>Bateria Mental:</strong> Ajusta a exigência diária ao seu nível de energia sem cobranças duras.</li>
+        <li><span>✓</span> <strong>Comandos por Voz e Texto:</strong> Fale ou digite no WhatsApp e Web para a IA organizar seus pensamentos.</li>
+        <li id="featGuarantee"><span>✓</span> <strong>Sem Mensalidades:</strong> Um único pagamento com acesso garantido sem assinaturas.</li>
+      </ul>
+
+      <div class="guarantee-box" id="guaranteeBox">
+        <strong>🔒 Compromisso Sem Vínculo Contínuo:</strong>
+        Você não terá renovação automática nem cobranças extras. Uma compra = acesso para sempre.
+      </div>
+    </div>
+
+    <!-- Formulário de Compra (Direita) -->
+    <div class="card">
+      <div class="price-tag">
+        <div>
+          <div style="color: var(--text-muted); font-size: 12px;" id="priceTagLabel">Valor com Acesso Vitalício:</div>
+          <div class="price-current" id="displayPrice">R$ 97,00</div>
+          <div class="price-info" id="displayPriceSub">⚡ Pagamento Único • Sem Mensalidade</div>
+        </div>
+      </div>
+
+      <form id="checkoutForm" onsubmit="handleCheckoutSubmit(event)">
+        <!-- Dados do Usuário -->
+        <div class="form-group">
+          <label for="name">Seu Nome Completo</label>
+          <input type="text" id="name" required placeholder="Como gosta de ser chamado" value="Luciano">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Seu Melhor E-mail</label>
+          <input type="email" id="email" inputmode="email" required placeholder="seu.email@exemplo.com" value="luciano@exemplo.com">
+          <small style="color: var(--text-muted); font-size: 11px; margin-top: 3px; display: block;">
+            Para envio do comprovante e acesso ao painel web.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Número do WhatsApp (com DDD)</label>
+          <input type="tel" id="phone" inputmode="tel" required placeholder="+55 11 99999-8888" value="+5511999998888">
+          <small style="color: var(--text-muted); font-size: 11px; margin-top: 3px; display: block;">
+            É neste número que o copiloto com IA será ativado imediatamente.
+          </small>
+        </div>
+
+        <!-- Forma de Pagamento -->
+        <label style="margin-top: 15px;">Forma de Pagamento</label>
+        <div class="payment-methods">
+          <!-- Botão Método 1 -->
+          <div class="pay-btn selected" id="methodBtn1" onclick="selectPaymentMethod('primary')">
+            <span id="methodLabel1">⚡ PIX Instantâneo</span>
+            <small id="methodSub1">Ativação imediata</small>
+          </div>
+          <!-- Botão Método 2 -->
+          <div class="pay-btn" id="methodBtn2" onclick="selectPaymentMethod('secondary')">
+            <span id="methodLabel2">💳 Cartão de Crédito</span>
+            <small id="methodSub2">1x sem juros</small>
+          </div>
+        </div>
+
+        <!-- Campos de Cartão de Crédito (Exibido quando Cartão está selecionado) -->
+        <div id="cardFieldsBox" class="card-fields-box" style="display: none;">
+          <div class="form-group">
+            <label for="cardNumber">Número do Cartão</label>
+            <input type="text" id="cardNumber" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCardNumber(this)">
+          </div>
+
+          <div class="form-group">
+            <label for="cardName">Nome Impresso no Cartão</label>
+            <input type="text" id="cardName" placeholder="Nome completo igual ao cartão">
+          </div>
+
+          <div class="card-grid-2">
+            <div class="form-group">
+              <label for="cardExpiry">Validade (MM/AA)</label>
+              <input type="text" id="cardExpiry" inputmode="numeric" placeholder="12/28" maxlength="5" oninput="formatCardExpiry(this)">
+            </div>
+            <div class="form-group">
+              <label for="cardCvv">CVV</label>
+              <input type="text" id="cardCvv" inputmode="numeric" placeholder="123" maxlength="4">
+            </div>
+          </div>
+
+          <div class="security-badge">
+            <span>🔒</span>
+            <span id="cardSecurityNote">Seus dados são protegidos com criptografia SSL de 256 bits ponta a ponta.</span>
+          </div>
+        </div>
+
+        <!-- Informações do PIX (Exibido quando PIX está selecionado) -->
+        <div id="pixInfoBox" class="pix-info-box">
+          <span id="pixInfoText">
+            ⚡ Ao clicar abaixo, um QR Code oficial do Banco Central e o código Copia e Cola serão gerados na tela para pagamento imediato no seu banco.
+          </span>
+        </div>
+
+        <!-- Aviso Legal de Idade Mínima -->
+        <div style="background: #182229; border: 1px solid #2a3942; border-radius: 8px; padding: 12px; margin-bottom: 14px; font-size: 11.5px; color: var(--text-muted); line-height: 1.4;">
+          <strong style="color: #53bdeb; display: block; margin-bottom: 3px;">🧒 Diretriz de Idade Mínima & Pagamento:</strong>
+          Uso recomendado a partir de <strong>13 anos</strong> (com consentimento dos pais ou responsáveis para menores de 18 anos). A contratação dos planos pagos é exclusiva para <strong>maiores de 18 anos</strong> ou assistidos pelo titular financeiro.
+        </div>
+
+        <!-- Botão Principal de Submissão -->
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <span id="btnIcon">⚡</span> <span id="btnText">Gerar PIX e Liberar Acesso Vitalício</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal PIX Oficial com QR Code e Copia e Cola -->
+  <div class="modal" id="pixModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closePixModal()">✕</button>
+      <div style="font-size: 12px; color: var(--pix-cyan); font-weight: bold; text-transform: uppercase;">
+        ⚡ Pague via PIX Instantâneo
+      </div>
+      <h2 style="font-size: 24px; margin: 6px 0;" id="pixModalAmount">R$ 97,00</h2>
+      
+      <div id="pixStatusBadge" style="background: rgba(236, 201, 75, 0.15); border: 1px solid var(--gold); color: var(--gold); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px;">
+        ⏳ Status: Aguardando Pagamento (Pendente)
+      </div>
+
+      <p style="font-size: 12.5px; color: var(--text-muted);" id="pixModalDesc">
+        Abra o app do seu banco (Nubank, Itaú, Inter, Bradesco, etc.) e escaneie o QR Code abaixo:
+      </p>
+
+      <div class="qr-container">
+        <img id="pixQrImage" class="qr-img" alt="QR Code PIX">
+      </div>
+
+      <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 6px;">
+        Ou use o código <strong>PIX Copia e Cola</strong>:
+      </p>
+
+      <div class="pix-copia-box">
+        <input type="text" id="pixCopiaCola" class="pix-code-input" readonly>
+        <button class="btn-copy" id="btnCopyPix" onclick="copyPixCode()">Copiar Código</button>
+      </div>
+
+      <button class="btn-confirm-pix" id="btnCheckPix" onclick="checkPaymentStatus(true)">
+        🔄 Verificar Confirmação do Pagamento
+      </button>
+
+      <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.4;" id="pixWaitingHelpText">
+        Assim que sua transferência for processada pela instituição financeira, o FocoGentil será liberado automaticamente.
+      </p>
+
+      <small style="display: block; font-size: 11px; color: var(--text-muted); margin-top: 10px;">
+        Beneficiário: <strong id="pixBeneficiary">FOCOGENTIL</strong> • Chave: <span id="pixKeyDisplay"></span>
+      </small>
+    </div>
+  </div>
+
+  <!-- Modal de Sucesso Final -->
+  <div class="modal" id="successModal">
+    <div class="modal-content">
+      <h2 style="color: #25d366;" id="successTitle">🎉 Pagamento Confirmado!</h2>
+      <p style="margin: 14px 0; color: #cfd8dc; font-size: 13.5px; line-height: 1.5;" id="successDesc">
+        Seu pagamento foi aprovado com sucesso pela instituição financeira. Seu acesso completo ao FocoGentil já está liberado!
+      </p>
+      <div style="background: #202c33; padding: 14px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; text-align: left;">
+        <div>📱 WhatsApp Ativado: <strong id="activatedPhone" style="color: #25d366;"></strong></div>
+        <div style="margin-top: 4px;">✉️ E-mail: <strong id="activatedEmail" style="color: #53bdeb;"></strong></div>
+        <div style="margin-top: 4px;">🏷️ Plano: <strong id="activatedPlan" style="color: var(--gold);"></strong></div>
+        <div style="margin-top: 4px;">💰 Valor: <strong id="activatedAmount" style="color: #25d366;"></strong></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <a href="/app" class="btn-submit" style="text-decoration: none;">
+          🚀 Acessar o FocoGentil Agora
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentSettings = { price: 97.00, pix_key: 'contato.focogentil@gmail.com', pix_name: 'FOCOGENTIL', pix_city: 'SAO PAULO' };
+    let currentPlan = 'vitalicio'; // 'vitalicio' | 'mensal'
+    let selectedMethod = 'pix'; // 'pix' | 'card'
+    let currentGeneratedPix = null;
+
+    // Alterna entre Plano Vitalício e Plano Mensal
+    function switchPlan(plan) {
+      currentPlan = plan;
+
+      const tabVit = document.getElementById('tabVitalicio');
+      const tabMen = document.getElementById('tabMensal');
+      const productBadge = document.getElementById('productBadge');
+      const productTitle = document.getElementById('productTitle');
+      const productDesc = document.getElementById('productDesc');
+      const featGuarantee = document.getElementById('featGuarantee');
+      const guaranteeBox = document.getElementById('guaranteeBox');
+      const priceTagLabel = document.getElementById('priceTagLabel');
+      const displayPrice = document.getElementById('displayPrice');
+      const displayPriceSub = document.getElementById('displayPriceSub');
+      const btnEditPrice = document.getElementById('btnEditPrice');
+
+      const methodBtn1 = document.getElementById('methodBtn1');
+      const methodBtn2 = document.getElementById('methodBtn2');
+      const methodLabel1 = document.getElementById('methodLabel1');
+      const methodSub1 = document.getElementById('methodSub1');
+      const methodLabel2 = document.getElementById('methodLabel2');
+      const methodSub2 = document.getElementById('methodSub2');
+
+      if (plan === 'mensal') {
+        tabVit.classList.remove('active');
+        tabMen.classList.add('active');
+
+        productBadge.className = 'badge-highlight badge-mensal';
+        productBadge.innerText = '🚀 Assinatura Mensal • Sem Fidelidade';
+        productTitle.innerText = 'FocoGentil Pro — Assinatura Mensal';
+        productDesc.innerText = 'Tenha acesso contínuo a todas as ferramentas cognitivas de IA, Despejar Tudo ilimitado, Modo Estou Travado e copiloto de WhatsApp com total flexibilidade.';
+        featGuarantee.innerHTML = '<span>✓</span> <strong>Cancele Quando Quiser:</strong> Sem carência, sem contratos longos e com cancelamento em 1 clique.';
+        guaranteeBox.innerHTML = '<strong>🔄 Liberdade Total:</strong> Cobrança recorrente de R$ 29,00 por mês. Você pode pausar ou cancelar a qualquer momento sem custos adicionais.';
+
+        priceTagLabel.innerText = 'Assinatura Plano Pro:';
+        displayPrice.innerHTML = 'R$ 29,00 <span style="font-size: 14px; font-weight: normal; color: var(--text-muted);">/ mês</span>';
+        displayPriceSub.innerText = '🔄 Renovação automática • Cancele quando quiser';
+        btnEditPrice.style.display = 'none';
+
+        // Métodos de Pagamento para Plano Mensal:
+        // Método 1: Cartão de Crédito Recorrente (recomendado para assinatura)
+        // Método 2: PIX Mensal (com renovação a cada 30 dias)
+        methodLabel1.innerText = '💳 Cartão Recorrente';
+        methodSub1.innerText = 'R$ 29,00/mês automático';
+        methodLabel2.innerText = '⚡ PIX Mensal';
+        methodSub2.innerText = 'Renovação a cada 30 dias';
+
+        // Por padrão no mensal, selecionamos Cartão Recorrente
+        selectPaymentMethod('primary');
+      } else {
+        tabMen.classList.remove('active');
+        tabVit.classList.add('active');
+
+        productBadge.className = 'badge-highlight badge-vitalicio';
+        productBadge.innerText = '💎 Pagamento Único • Acesso Vitalício';
+        productTitle.innerText = 'FocoGentil Copilot para WhatsApp e Web';
+        productDesc.innerText = 'O primeiro copiloto conversacional desenhado especificamente para pessoas com TDAH, autismo e disfunção executiva. Um único investimento para ter tudo para sempre.';
+        featGuarantee.innerHTML = '<span>✓</span> <strong>Sem Mensalidades:</strong> Um único pagamento com acesso garantido sem assinaturas.';
+        guaranteeBox.innerHTML = '<strong>🔒 Compromisso Sem Vínculo Contínuo:</strong> Você não terá renovação automática nem cobranças extras. Uma compra = acesso para sempre.';
+
+        priceTagLabel.innerText = 'Valor com Acesso Vitalício:';
+        const formatted = Number(currentSettings.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        displayPrice.innerText = formatted;
+        displayPriceSub.innerText = '⚡ Pagamento Único • Sem Mensalidade';
+        btnEditPrice.style.display = 'inline-block';
+
+        // Métodos de Pagamento para Plano Vitalício:
+        // Método 1: PIX Instantâneo
+        // Método 2: Cartão (1x)
+        methodLabel1.innerText = '⚡ PIX Instantâneo';
+        methodSub1.innerText = 'Ativação imediata';
+        methodLabel2.innerText = '💳 Cartão (1x)';
+        methodSub2.innerText = 'Pagamento único sem juros';
+
+        // Por padrão no vitalício, selecionamos PIX
+        selectPaymentMethod('primary');
+      }
+    }
+
+    // Seleciona a opção de pagamento (primary ou secondary)
+    function selectPaymentMethod(choice) {
+      const btn1 = document.getElementById('methodBtn1');
+      const btn2 = document.getElementById('methodBtn2');
+      const cardBox = document.getElementById('cardFieldsBox');
+      const pixBox = document.getElementById('pixInfoBox');
+      const btnSubmit = document.getElementById('btnSubmit');
+      const btnIcon = document.getElementById('btnIcon');
+      const btnText = document.getElementById('btnText');
+      const pixInfoText = document.getElementById('pixInfoText');
+      const cardSecurityNote = document.getElementById('cardSecurityNote');
+
+      if (currentPlan === 'mensal') {
+        if (choice === 'primary') {
+          // Cartão Recorrente
+          selectedMethod = 'card';
+          btn1.classList.add('selected');
+          btn2.classList.remove('selected');
+          cardBox.style.display = 'block';
+          pixBox.style.display = 'none';
+
+          cardSecurityNote.innerText = 'Cobrança recorrente mensal de R$ 29,00 com cancelamento em 1 clique.';
+          btnIcon.innerText = '💳';
+          btnText.innerText = 'Assinar Plano Pro (R$ 29,00 / mês)';
+        } else {
+          // PIX Mensal
+          selectedMethod = 'pix';
+          btn2.classList.add('selected');
+          btn1.classList.remove('selected');
+          cardBox.style.display = 'none';
+          pixBox.style.display = 'block';
+
+          pixInfoText.innerText = '⚡ Pague R$ 29,00 via PIX para liberar seus primeiros 30 dias imediatos. Ao final de cada ciclo, você receberá uma chave PIX amigável de renovação sem cobranças automáticas forçadas.';
+          btnIcon.innerText = '⚡';
+          btnText.innerText = 'Pagar 1º Mês via PIX (R$ 29,00)';
+        }
+      } else {
+        // Vitalício
+        if (choice === 'primary') {
+          // PIX Instantâneo
+          selectedMethod = 'pix';
+          btn1.classList.add('selected');
+          btn2.classList.remove('selected');
+          cardBox.style.display = 'none';
+          pixBox.style.display = 'block';
+
+          const formatted = Number(currentSettings.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+          pixInfoText.innerText = `⚡ Ao clicar no botão abaixo, geraremos o QR Code oficial do Banco Central no valor de ${formatted} para ativação vitalícia instantânea.`;
+          btnIcon.innerText = '⚡';
+          btnText.innerText = `Gerar PIX e Liberar Acesso Vitalício (${formatted})`;
+        } else {
+          // Cartão 1x
+          selectedMethod = 'card';
+          btn2.classList.add('selected');
+          btn1.classList.remove('selected');
+          cardBox.style.display = 'block';
+          pixBox.style.display = 'none';
+
+          const formatted = Number(currentSettings.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+          cardSecurityNote.innerText = `Pagamento único de ${formatted} no cartão de crédito. Sem mensalidades ou assinaturas.`;
+          btnIcon.innerText = '💳';
+          btnText.innerText = `Pagar ${formatted} e Liberar Acesso Vitalício`;
+        }
+      }
+    }
+
+    // Polling de Pagamento Real
+    let paymentPollTimer = null;
+
+    function startPaymentPolling(paymentId) {
+      stopPaymentPolling();
+      paymentPollTimer = setInterval(async () => {
+        await checkPaymentStatus(false);
+      }, 4000);
+    }
+
+    function stopPaymentPolling() {
+      if (paymentPollTimer) {
+        clearInterval(paymentPollTimer);
+        paymentPollTimer = null;
+      }
+    }
+
+    // Carrega configurações comerciais salvas no servidor
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        currentSettings = await res.json();
+        
+        const formatted = Number(currentSettings.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const tabPriceEl = document.getElementById('tabVitalicioPrice');
+        if (tabPriceEl) tabPriceEl.innerText = formatted;
+
+        // Preenche automaticamente o telefone ou email e plano se vierem da URL
+        const params = new URLSearchParams(window.location.search);
+        const incomingPhone = params.get('phone');
+        const incomingEmail = params.get('email');
+        const incomingPlan = params.get('plan');
+
+        if (incomingPhone) document.getElementById('phone').value = incomingPhone;
+        if (incomingEmail) document.getElementById('email').value = incomingEmail;
+
+        if (incomingPlan === 'mensal' || incomingPlan === 'pro') {
+          switchPlan('mensal');
+        } else {
+          switchPlan('vitalicio');
+        }
+      } catch (err) {
+        console.warn('Erro ao carregar configurações:', err);
+      }
+    }
+
+    // Formatação de cartão e data
+    function formatCardNumber(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 16);
+      let formatted = v.match(/.{1,4}/g);
+      input.value = formatted ? formatted.join(' ') : v;
+    }
+
+    function formatCardExpiry(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 4);
+      if (v.length >= 3) {
+        input.value = v.substring(0, 2) + '/' + v.substring(2);
+      } else {
+        input.value = v;
+      }
+    }
+
+    // Submissão do Formulário de Checkout
+    async function handleCheckoutSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const btn = document.getElementById('btnSubmit');
+
+      if (!name || !email || !phone) {
+        alert("Por favor, preencha todos os campos cadastrais.");
+        return;
+      }
+
+      const activeAmount = currentPlan === 'mensal' ? 29.00 : Number(currentSettings.price);
+
+      // Validação de Cartão se Cartão estiver selecionado
+      if (selectedMethod === 'card') {
+        const cardNumber = document.getElementById('cardNumber').value.replace(/\s+/g, '');
+        const cardName = document.getElementById('cardName').value.trim();
+        const cardExpiry = document.getElementById('cardExpiry').value.trim();
+        const cardCvv = document.getElementById('cardCvv').value.trim();
+
+        if (cardNumber.length < 13) {
+          alert("Por favor, insira um número de cartão de crédito válido.");
+          return;
+        }
+        if (!cardName) {
+          alert("Por favor, insira o nome impresso no cartão.");
+          return;
+        }
+        if (cardExpiry.length < 5) {
+          alert("Por favor, insira a validade no formato MM/AA.");
+          return;
+        }
+        if (cardCvv.length < 3) {
+          alert("Por favor, insira o código CVV (3 ou 4 dígitos).");
+          return;
+        }
+      }
+
+      const originalBtnHtml = btn.innerHTML;
+      btn.innerText = "Processando com segurança...";
+      btn.disabled = true;
+
+      try {
+        if (selectedMethod === 'pix') {
+          // Chamada oficial da API de criação de PIX
+          const res = await fetch('/api/pix/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: phone,
+              email: email,
+              name: name,
+              amount: activeAmount,
+              plan: currentPlan
+            })
+          });
+          const pixData = await res.json();
+          currentGeneratedPix = { ...pixData, email, phone, name, plan: currentPlan };
+
+          // Preenche os dados no modal do PIX
+          document.getElementById('pixModalAmount').innerText = Number(pixData.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+          document.getElementById('pixQrImage').src = pixData.qr_code_url;
+          document.getElementById('pixCopiaCola').value = pixData.pix_code;
+          document.getElementById('pixBeneficiary').innerText = pixData.merchant_name || 'FOCOGENTIL';
+          document.getElementById('pixKeyDisplay').innerText = pixData.pix_key;
+
+          if (currentPlan === 'mensal') {
+            document.getElementById('pixModalDesc').innerText = 'Escaneie o QR Code abaixo para pagar a 1ª mensalidade de R$ 29,00 e liberar seu WhatsApp e Web App na hora:';
+          } else {
+            document.getElementById('pixModalDesc').innerText = 'Escaneie o QR Code abaixo para pagar o acesso vitalício sem nenhuma mensalidade futura:';
+          }
+
+          document.getElementById('pixModal').style.display = 'flex';
+          btn.innerHTML = originalBtnHtml;
+          btn.disabled = false;
+
+          // Inicia verificação automática periódica
+          startPaymentPolling(pixData.payment_id);
+        } else {
+          // Pagamento com Cartão
+          if (currentPlan === 'mensal') {
+            // Assinatura Recorrente Mensal
+            const res = await fetch('/api/subscription/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name,
+                email,
+                phone,
+                plan: 'pro',
+                payment_method: 'card',
+                amount: 29.00
+              })
+            });
+            const data = await res.json();
+            if (data.success) {
+              showSuccess(phone, email, 'Plano Pro Mensal (R$ 29,00/mês)', 29.00);
+            } else {
+              alert(data.error || "Erro ao processar assinatura no cartão.");
+            }
+          } else {
+            // Pagamento Único Vitalício
+            const res = await fetch('/api/webhook/payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                phone_number: phone,
+                customer_name: name,
+                customer_email: email,
+                payment_id: "CARD_LIFETIME_" + Date.now(),
+                amount: activeAmount,
+                provider: "mercadopago",
+                is_recurring: false
+              })
+            });
+            const data = await res.json();
+            if (data.success) {
+              showSuccess(phone, email, 'Acesso Vitalício (Sem Mensalidade)', activeAmount);
+            } else {
+              alert(data.error || "Erro ao processar pagamento.");
+            }
+          }
+          btn.innerHTML = originalBtnHtml;
+          btn.disabled = false;
+        }
+      } catch (err) {
+        alert("Erro na comunicação com o servidor: " + err.message);
+        btn.innerHTML = originalBtnHtml;
+        btn.disabled = false;
+      }
+    }
+
+    function copyPixCode() {
+      const copyInput = document.getElementById('pixCopiaCola');
+      copyInput.select();
+      navigator.clipboard.writeText(copyInput.value);
+      const btnCopy = document.getElementById('btnCopyPix');
+      btnCopy.innerText = "Copiado! ✓";
+      btnCopy.style.background = "#25d366";
+      setTimeout(() => {
+        btnCopy.innerText = "Copiar Código";
+        btnCopy.style.background = "var(--pix-cyan)";
+      }, 3000);
+    }
+
+    // Consulta de status real do pagamento (sem autoaprovação desonesta)
+    async function checkPaymentStatus(userClicked = false) {
+      if (!currentGeneratedPix || !currentGeneratedPix.payment_id) return;
+      const btn = document.getElementById('btnCheckPix');
+      const badge = document.getElementById('pixStatusBadge');
+
+      if (userClicked && btn) {
+        btn.innerText = "Consultando instituição financeira...";
+        btn.disabled = true;
+      }
+
+      try {
+        const res = await fetch(`/api/payments/status?id=${encodeURIComponent(currentGeneratedPix.payment_id)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.status === 'approved' || data.approved) {
+            stopPaymentPolling();
+            closePixModal();
+            const planLabel = (currentGeneratedPix.plan === 'mensal') 
+              ? 'Plano Pro Mensal' 
+              : 'Acesso Vitalício (Sem Mensalidade)';
+            showSuccess(currentGeneratedPix.phone, currentGeneratedPix.email, planLabel, currentGeneratedPix.amount);
+            return;
+          } else {
+            if (badge) {
+              badge.innerHTML = `⏳ Status: Aguardando Pagamento (Pendente)`;
+            }
+            if (userClicked) {
+              alert("O pagamento ainda não foi compensado pela instituição financeira. Assim que for confirmado pelo banco, sua liberação acontecerá automaticamente nesta tela.");
+            }
+          }
+        }
+      } catch (err) {
+        if (userClicked) alert("Erro ao verificar status bancário. Tentaremos novamente em instantes.");
+      } finally {
+        if (userClicked && btn) {
+          btn.innerText = "🔄 Verificar Confirmação do Pagamento";
+          btn.disabled = false;
+        }
+      }
+    }
+
+    function showSuccess(phone, email, planLabel, amount) {
+      document.getElementById('activatedPhone').innerText = phone;
+      document.getElementById('activatedEmail').innerText = email || 'Registrado';
+      document.getElementById('activatedPlan').innerText = planLabel;
+      document.getElementById('activatedAmount').innerText = Number(amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('successModal').style.display = 'flex';
+    }
+
+    function closePixModal() {
+      stopPaymentPolling();
+      document.getElementById('pixModal').style.display = 'none';
+    }
+
+    // Inicialização
+    loadSettings();
+  </script>
+</body>
+</html>
