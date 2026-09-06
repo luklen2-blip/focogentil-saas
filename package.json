@@ -1,0 +1,22 @@
+{
+  "name": "focogentil-copilot",
+  "version": "2.0.0",
+  "description": "FocoGentil V2 - Seu copiloto para organizar a mente e o dia. Menos cobrança. Mais clareza. Um passo de cada vez.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/validate_system.js && node tests/test_e2e.js && node tests/test_v2_commercial.js",
+    "test:v2": "node tests/test_v2_commercial.js",
+    "test:legacy": "node tests/validate_system.js && node tests/test_e2e.js"
+  },
+  "keywords": [
+    "focogentil",
+    "funcao-executiva",
+    "produtividade-acolhedora",
+    "teoria-das-colheres",
+    "tdah",
+    "saas"
+  ],
+  "author": "FocoGentil Team",
+  "license": "ISC"
+}
