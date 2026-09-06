@@ -946,8 +946,16 @@ const server = http.createServer(async (req, res) => {
     targetFile = pathname.replace(/^\//, '');
   }
 
-  let filePath = path.join(__dirname, 'public', targetFile);
-  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+  // Busca arquivo tanto na pasta public/ quanto na pasta raiz do repositório
+  const candidatePaths = [
+    path.join(__dirname, 'public', targetFile),
+    path.join(__dirname, targetFile),
+    path.join(process.cwd(), 'public', targetFile),
+    path.join(process.cwd(), targetFile)
+  ];
+  const filePath = candidatePaths.find(p => fs.existsSync(p) && fs.statSync(p).isFile());
+
+  if (filePath) {
     const ext = path.extname(filePath).toLowerCase();
     const mimeTypes = {
       '.html': 'text/html; charset=utf-8',
@@ -967,8 +975,14 @@ const server = http.createServer(async (req, res) => {
 
   // Fallback para SPA: se não for rota de API e não encontrou arquivo, entrega index.html
   if (!pathname.startsWith('/api/')) {
-    const fallbackPath = path.join(__dirname, 'public', 'index.html');
-    if (fs.existsSync(fallbackPath)) {
+    const fallbackCandidates = [
+      path.join(__dirname, 'public', 'index.html'),
+      path.join(__dirname, 'index.html'),
+      path.join(process.cwd(), 'public', 'index.html'),
+      path.join(process.cwd(), 'index.html')
+    ];
+    const fallbackPath = fallbackCandidates.find(p => fs.existsSync(p) && fs.statSync(p).isFile());
+    if (fallbackPath) {
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
       fs.createReadStream(fallbackPath).pipe(res);
       return;
