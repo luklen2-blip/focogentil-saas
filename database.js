@@ -64,13 +64,13 @@ class LocalDatabase {
         if (!this.data.user_preferences) this.data.user_preferences = {};
         if (!this.data.worries) this.data.worries = [];
         if (!this.data.day_plans) this.data.day_plans = {};
-        if (!this.data.billing_settings) {
+        if (!this.data.billing_settings || this.data.billing_settings.pix_name !== 'Luciano Sant Anna' || this.data.billing_settings.pix_key !== 'luklen2@gmail.com') {
           this.data.billing_settings = {
-            price: 97.00,
-            pix_key: 'contato.focogentil@gmail.com',
-            pix_name: 'FOCOGENTIL',
-            pix_city: 'SAO PAULO',
-            mercadopago_token: ''
+            price: (this.data.billing_settings && this.data.billing_settings.price) || 97.00,
+            pix_key: 'luklen2@gmail.com',
+            pix_name: 'Luciano Sant Anna',
+            pix_city: 'Rio de Janeiro',
+            mercadopago_token: (this.data.billing_settings && this.data.billing_settings.mercadopago_token) || ''
           };
         }
       } else {
@@ -737,12 +737,13 @@ class LocalDatabase {
   }
 
   getBillingSettings() {
-    return this.data.billing_settings || {
-      price: 97.00,
-      pix_key: 'contato.focogentil@gmail.com',
-      pix_name: 'FOCOGENTIL',
-      pix_city: 'SAO PAULO',
-      mercadopago_token: ''
+    const s = this.data.billing_settings || {};
+    return {
+      price: s.price !== undefined ? s.price : 97.00,
+      pix_key: s.pix_key && s.pix_key !== 'contato.focogentil@gmail.com' ? s.pix_key : 'luklen2@gmail.com',
+      pix_name: s.pix_name && s.pix_name !== 'FOCOGENTIL' ? s.pix_name : 'Luciano Sant Anna',
+      pix_city: s.pix_city || 'Rio de Janeiro',
+      mercadopago_token: s.mercadopago_token || ''
     };
   }
 
