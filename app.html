@@ -2,71 +2,89 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>FocoGentil — Seu Copiloto de Função Executiva</title>
-  <meta name="description" content="Entenda seu momento. Reduza a sobrecarga. Descubra o próximo passo. Idade recomendada: 13+ anos.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#0b141a">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="FocoGentil — Seu Copiloto de Função Executiva. Entenda seu momento. Reduza a sobrecarga. Descubra o próximo passo.">
   <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  <link rel="icon" href="/icons/icon-192.png" type="image/png">
+  <title>FocoGentil — Seu Copiloto de Função Executiva</title>
+  
   <style>
     :root {
       --bg: #0b141a;
       --card-bg: #111b21;
-      --card-border: #222d34;
+      --card-border: #222e35;
       --primary: #00a884;
-      --primary-hover: #06cf9c;
+      --primary-hover: #02906f;
+      --gold: #ecc94b;
+      --red: #f56565;
+      --blue: #4299e1;
+      --purple: #9f7aea;
       --text: #e9edef;
       --text-muted: #8696a0;
-      --gold: #ecc94b;
-      --danger: #e53e3e;
-      --blue: #53bdeb;
-      --purple: #805ad5;
+      --font-size-base: 14px;
     }
 
-    /* Modo Baixo Estímulo (Item 7) */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-size: var(--font-size-base);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 74px; /* Espaço para a barra inferior fixa */
+    }
+
+    /* Acessibilidade: Modo Baixo Estímulo */
     body.low-stimulus {
-      --bg: #141414;
-      --card-bg: #1c1c1c;
-      --card-border: #2a2a2a;
-      --primary: #25d366;
-      --gold: #d4af37;
-      --blue: #70a0c0;
-      --text: #d8d8d8;
-      --text-muted: #888888;
+      background-color: #10171d !important;
+      color: #d1d7db !important;
     }
-
-    /* Reduzir Movimento (Acessibilidade Item 26) */
-    body.reduced-motion * {
+    body.low-stimulus * {
       animation: none !important;
       transition: none !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+    body.low-stimulus .brain-state-card,
+    body.low-stimulus .card-now,
+    body.low-stimulus .modal-content,
+    body.low-stimulus .special-banner {
+      border-color: #2a3942 !important;
+      background: #141e24 !important;
     }
 
-    /* Fontes Ajustáveis (Item 26) */
-    body.font-large { font-size: 17px; }
-    body.font-xlarge { font-size: 19px; }
+    /* Acessibilidade: Ajuste de Fonte */
+    body.font-small { font-size: 13px !important; }
+    body.font-large { font-size: 16px !important; }
+    body.font-xlarge { font-size: 18px !important; }
 
-    /* Modo Bateria / Baixa Energia (Item 5) */
-    body.battery-mode .hide-on-battery { display: none !important; }
-    body.battery-mode .battery-notice { display: block !important; }
+    /* Layout Responsivo Seguro */
+    .container {
+      width: 100%;
+      max-width: 680px; /* Limite de largura para evitar fadiga visual */
+      margin: 0 auto;
+      padding: 16px;
+      flex: 1;
+    }
 
-    /* Modo Sobrecarga / Reduzir Tudo (Item 6) */
-    body.overload-mode .hide-on-overload { display: none !important; }
-    body.overload-mode .overload-banner { display: block !important; }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 74px; }
+    @media (max-width: 600px) {
+      .container { padding: 12px; }
+      .header-title h1 { font-size: 18px; }
+      .nav-tab-label { font-size: 10.5px; }
+      .brain-state-grid { grid-template-columns: 1fr 1fr; }
+    }
 
     /* Topbar */
-    .topbar {
+    header {
       background: var(--card-bg);
       border-bottom: 1px solid var(--card-border);
-      padding: 12px 20px;
+      padding: 10px 16px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -74,17 +92,27 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 16px;
+      gap: 10px;
     }
-    .brand small {
-      display: block;
-      font-size: 10px;
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #fff;
+    }
+    .brand-tagline {
+      font-size: 11px;
       color: var(--text-muted);
-      font-weight: normal;
     }
     .topbar-right {
       display: flex;
@@ -92,143 +120,187 @@
       gap: 8px;
     }
 
-    /* Seletor Rápido de Energia */
+    /* Pílulas de Energia no Topo */
     .energy-bar {
       display: flex;
       background: #202c33;
-      border: 1px solid var(--card-border);
       border-radius: 20px;
       padding: 2px;
       gap: 2px;
     }
     .energy-pill {
-      border: none;
       background: transparent;
-      color: var(--text-muted);
-      font-size: 11.5px;
+      border: none;
+      font-size: 13px;
       padding: 4px 8px;
-      border-radius: 14px;
+      border-radius: 16px;
       cursor: pointer;
-      transition: 0.15s;
+      line-height: 1;
+      opacity: 0.55;
     }
     .energy-pill.active {
-      background: var(--primary);
-      color: #111b21;
-      font-weight: 700;
+      background: var(--card-bg);
+      opacity: 1;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
 
     .btn-top {
       background: #202c33;
       border: 1px solid var(--card-border);
       color: var(--text);
-      font-size: 12px;
       padding: 6px 10px;
       border-radius: 8px;
+      font-size: 11.5px;
       cursor: pointer;
-    }
-
-    /* Container */
-    .container {
-      max-width: 800px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 20px 16px;
-      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     /* Banners de Modos Especiais */
     .special-banner {
       display: none;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 20px;
-      font-size: 13.5px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      font-size: 13px;
       line-height: 1.4;
+      align-items: center;
+      justify-content: space-between;
     }
     .battery-banner {
-      background: rgba(236, 201, 75, 0.1);
+      background: rgba(236, 201, 75, 0.12);
       border: 1px solid var(--gold);
       color: #fff;
     }
     .overload-banner {
-      background: rgba(83, 189, 235, 0.1);
+      background: rgba(66, 153, 225, 0.12);
       border: 1px solid var(--blue);
       color: #fff;
     }
 
-    /* 1. HOME ADAPTATIVA (Item 1) */
-    .adaptive-home {
-      margin-bottom: 26px;
+    /* Botão Flutuante Permanente "Estou Travado" */
+    .btn-stuck-floating {
+      position: fixed;
+      bottom: 82px;
+      right: 16px;
+      background: var(--gold);
+      color: #0b141a;
+      font-weight: 800;
+      border: none;
+      border-radius: 28px;
+      padding: 10px 16px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(236, 201, 75, 0.35);
+      cursor: pointer;
+      z-index: 95;
     }
+
+    /* Botão Flutuante de Voz */
+    .btn-voice-floating {
+      position: fixed;
+      bottom: 82px;
+      left: 16px;
+      background: #202c33;
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      border-radius: 28px;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 95;
+    }
+
+    /* Seções e Abas */
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    /* Home Adaptativa */
     .adaptive-question {
-      font-size: 21px;
+      font-size: 19px;
       font-weight: 800;
       color: #fff;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       letter-spacing: -0.3px;
     }
     .adaptive-sub {
-      font-size: 13.5px;
+      font-size: 12.5px;
       color: var(--text-muted);
-      margin-bottom: 18px;
+      margin-bottom: 14px;
+      line-height: 1.4;
     }
+
+    /* Grid dos 6 Estados Mentais */
     .brain-state-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
     }
-    @media (min-width: 650px) {
-      .brain-state-grid { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 500px) {
+      .brain-state-grid { grid-template-columns: 1fr 1fr; }
     }
     .brain-state-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      padding: 15px 12px;
+      padding: 12px 10px;
+      text-align: center;
       cursor: pointer;
-      transition: 0.15s;
-      text-align: left;
+      transition: 0.15s ease;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 4px;
     }
-    .brain-state-card:hover, .brain-state-card.active {
+    .brain-state-card:hover, .brain-state-card.selected {
       border-color: var(--primary);
-      transform: translateY(-2px);
       background: #182229;
     }
     .brain-state-card.stuck {
-      border-color: var(--gold);
-      background: rgba(236, 201, 75, 0.06);
+      border-color: rgba(236, 201, 75, 0.4);
     }
-    .state-emoji { font-size: 22px; margin-bottom: 2px; }
-    .state-name { font-size: 13.5px; font-weight: 800; color: #fff; }
-    .state-quote { font-size: 11.5px; color: var(--text-muted); line-height: 1.3; }
+    .brain-state-card.stuck:hover {
+      border-color: var(--gold);
+    }
+    .state-emoji { font-size: 22px; line-height: 1; }
+    .state-name { font-size: 12.5px; font-weight: 700; color: #fff; }
+    .state-quote { font-size: 10px; color: var(--text-muted); line-height: 1.2; }
 
-    /* Foco Atômico (AGORA / PRÓXIMO) */
+    /* Card AGORA (Foco Atômico) */
     .card-now {
-      background: linear-gradient(145deg, #182229 0%, #111b21 100%);
+      background: #182229;
       border: 2px solid var(--primary);
       border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 18px rgba(0, 168, 132, 0.15);
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 16px rgba(0, 168, 132, 0.15);
       position: relative;
     }
     .badge-now {
-      background: var(--primary);
-      color: #111b21;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 4px;
       display: inline-block;
+      background: var(--primary);
+      color: #0b141a;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
       margin-bottom: 10px;
     }
     .now-title {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
       color: #fff;
+      line-height: 1.3;
       margin-bottom: 6px;
     }
     .now-meta {
@@ -236,105 +308,114 @@
       color: var(--text-muted);
       margin-bottom: 14px;
     }
+
+    /* Botões Padrão */
     .btn-main {
       background: var(--primary);
-      color: #111b21;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
+      color: #0b141a;
       font-weight: 700;
-      font-size: 13.5px;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: 0.15s;
     }
     .btn-main:hover { background: var(--primary-hover); }
     .btn-secondary {
       background: #202c33;
       border: 1px solid var(--card-border);
       color: var(--text);
-      padding: 9px 14px;
+      font-weight: 600;
       border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-secondary:hover { background: #2a3942; }
+    .btn-gold {
+      background: var(--gold);
+      color: #0b141a;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
       font-size: 13px;
       cursor: pointer;
-      transition: 0.15s;
     }
-    .btn-secondary:hover { border-color: var(--primary); }
 
-    /* Planejamento Meu Dia (Item 9: Essencial, Se Der, Pode Esperar) */
+    /* Meu Dia (3 Níveis) */
     .day-plan-box {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 24px;
+      padding: 16px;
+      margin-bottom: 20px;
     }
     .plan-group-title {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 10px;
+      margin: 14px 0 8px 0;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
     }
-    .plan-group-title.essential { color: var(--gold); }
-    .plan-group-title.if-possible { color: var(--blue); margin-top: 18px; }
-    .plan-group-title.can-wait { color: var(--text-muted); margin-top: 18px; }
+    .plan-group-title.essential { color: var(--gold); margin-top: 0; }
+    .plan-group-title.if-possible { color: var(--blue); }
+    .plan-group-title.can-wait { color: var(--text-muted); }
 
-    .plan-item {
+    .task-item {
       background: #182229;
       border: 1px solid var(--card-border);
       border-radius: 8px;
-      padding: 10px 14px;
-      margin-bottom: 8px;
-      font-size: 13.5px;
+      padding: 10px 12px;
+      margin-bottom: 6px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
+      gap: 10px;
     }
-
-    /* 3. BOTÃO FIXO "ESTOU TRAVADO" (Item 3) */
-    .btn-stuck-floating {
-      position: fixed;
-      bottom: 82px;
-      right: 18px;
-      background: linear-gradient(135deg, #d69e2e 0%, #ecc94b 100%);
-      color: #111b21;
-      border: none;
-      border-radius: 30px;
-      padding: 12px 18px;
-      font-weight: 800;
-      font-size: 13.5px;
-      box-shadow: 0 4px 16px rgba(236, 201, 75, 0.4);
+    .task-item.done { opacity: 0.5; text-decoration: line-through; }
+    .task-title-text { font-size: 13.5px; color: #fff; flex: 1; word-break: break-word; }
+    .task-actions { display: flex; gap: 4px; }
+    .task-btn-mini {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      border-radius: 4px;
+      padding: 4px 6px;
+      font-size: 11px;
       cursor: pointer;
-      z-index: 95;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: 0.2s;
     }
-    .btn-stuck-floating:hover {
-      transform: scale(1.04);
+    .task-btn-mini:hover { color: #fff; border-color: var(--primary); }
+
+    /* Quick Grid */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
     }
 
-    /* 32. NAVEGAÇÃO INFERIOR (Item 32) */
+    /* Barra de Navegação Inferior Fixa */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 64px;
-      background: #111b21;
+      background: var(--card-bg);
       border-top: 1px solid var(--card-border);
       display: flex;
       justify-content: space-around;
-      align-items: center;
+      padding: 6px 0;
       z-index: 100;
-      padding: 0 4px;
     }
     .nav-tab {
       background: transparent;
@@ -343,24 +424,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 10px;
       gap: 3px;
+      padding: 4px 8px;
       cursor: pointer;
+      font-size: 11px;
       flex: 1;
-      padding: 6px 0;
-      transition: 0.15s;
     }
-    .nav-tab.active {
-      color: var(--primary);
-      font-weight: 700;
-    }
-    .nav-tab-icon { font-size: 19px; line-height: 1; }
+    .nav-tab.active { color: var(--primary); font-weight: 700; }
+    .nav-tab-icon { font-size: 20px; line-height: 1; }
 
     /* Modais e Overlays */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0,0,0,0.8);
       backdrop-filter: blur(4px);
       display: none;
       align-items: center;
@@ -381,7 +458,7 @@
     }
     .modal-close {
       position: absolute;
-      top: 16px; right: 16px;
+      top: 14px; right: 14px;
       background: none; border: none;
       color: var(--text-muted); font-size: 20px;
       cursor: pointer;
@@ -403,12 +480,15 @@
     .input-box:focus { border-color: var(--primary); }
     textarea.input-box { min-height: 95px; resize: vertical; }
 
-    /* Opções do "Estou Travado" (12 Motivos) */
+    /* Opções do "Estou Travado" (8 Motivos) */
     .reasons-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
       margin-bottom: 14px;
+    }
+    @media (max-width: 480px) {
+      .reasons-grid { grid-template-columns: 1fr; }
     }
     .btn-reason {
       background: #202c33;
@@ -420,7 +500,6 @@
       cursor: pointer;
       text-align: left;
       line-height: 1.3;
-      transition: 0.15s;
     }
     .btn-reason:hover, .btn-reason.selected {
       border-color: var(--gold);
@@ -450,10 +529,67 @@
       line-height: 1.4;
     }
 
+    /* Categorias Despejar Tudo V3 */
+    .dump-category-card {
+      background: #182229;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .dump-category-header {
+      font-size: 12.5px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Sliders de 5 Dimensões */
+    .slider-row {
+      margin-bottom: 12px;
+    }
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .slider-range {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    /* Pausa Sem Culpa 7 Tipos */
+    .pause-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .pause-item-btn {
+      background: #202c33;
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 12px 10px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .pause-item-btn:hover {
+      border-color: var(--primary);
+      background: #182229;
+    }
+
     /* Toast */
-    .toast {
+    #toast {
       position: fixed;
-      bottom: 84px;
+      bottom: 80px;
       left: 50%;
       transform: translateX(-50%);
       background: #202c33;
@@ -461,42 +597,27 @@
       color: #fff;
       padding: 10px 18px;
       border-radius: 20px;
-      font-size: 12.5px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      display: none;
+      font-size: 13px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5);
       z-index: 300;
-    }
-
-    /* Abas do App */
-    .tab-section { display: none; }
-    .tab-section.active { display: block; }
-  
-    @media (max-width: 600px) {
-      .container { padding: 12px 10px 90px; }
-      .adaptive-question { font-size: 1.3rem; }
-    }
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
-    }
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 8px;
+      display: none;
+      text-align: center;
+      max-width: 90vw;
     }
   </style>
 </head>
 <body>
 
-  <!-- Topbar -->
-  <header class="topbar">
-    <a href="/app" class="brand">
-      <span>🧠</span>
+  <!-- Topbar Fixa -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🌱</div>
       <div>
-        FocoGentil
-        <small>Copiloto de Função Executiva</small>
+        <div class="brand-title">FocoGentil</div>
+        <div class="brand-tagline">Copiloto de Função Executiva</div>
       </div>
-    </a>
+    </div>
+
     <div class="topbar-right">
       <!-- Seletor Rápido de Energia -->
       <div class="energy-bar">
@@ -504,26 +625,36 @@
         <button class="energy-pill active" id="pillMed" onclick="setQuickEnergy('media')" title="Média energia">🟡</button>
         <button class="energy-pill" id="pillHigh" onclick="setQuickEnergy('boa')" title="Boa energia">🟢</button>
       </div>
+      <!-- Modo Baixo Estímulo -->
+      <button class="btn-top" onclick="toggleLowStimulus()" id="btnStimulusToggle" title="Alternar modo baixo estímulo">🕶️</button>
+      <!-- Ajuste de Fonte -->
+      <button class="btn-top" onclick="cycleFontSize()" title="Tamanho do texto">A±</button>
+      <!-- Usuário -->
       <button class="btn-top" onclick="openProfileModal()" id="btnUserTag">Entrar</button>
     </div>
   </header>
 
-  <!-- Botão Flutuante Permanente "Estou Travado" (Item 3) -->
+  <!-- Botão Flutuante Permanente "Estou Travado" -->
   <button class="btn-stuck-floating" onclick="openUnblockModal()" title="Estou travado agora">
     <span>🚧</span> Estou Travado
+  </button>
+
+  <!-- Botão Flutuante de Voz com Web Speech API -->
+  <button class="btn-voice-floating" id="btnVoiceFloat" onclick="toggleVoiceCapture()" title="Falar com o Copiloto (pt-BR)">
+    🎤
   </button>
 
   <main class="container">
 
     <!-- Banners de Modos Especiais -->
     <div class="special-banner battery-banner battery-notice" id="batteryBanner">
-      🔋 <strong>Modo Bateria Ativo:</strong> Reduzimos as exigências ao mínimo. Sem cobrança. Cada micro-passo já conta.
-      <button onclick="deactivateSpecialModes()" style="background:none; border:none; color:var(--gold); text-decoration:underline; cursor:pointer; margin-left:8px;">Voltar ao normal</button>
+      <span>🔋 <strong>Modo Bateria Ativo:</strong> Exigências reduzidas ao mínimo. Sem cobrança. Cada micro-passo já conta.</span>
+      <button onclick="deactivateSpecialModes()" class="task-btn-mini">Sair</button>
     </div>
 
     <div class="special-banner overload-banner" id="overloadBanner">
-      🔕 <strong>Modo Sobrecarga Ativo:</strong> Escondemos as tarefas secundárias. Vamos cuidar apenas do próximo minuto.
-      <button onclick="deactivateSpecialModes()" style="background:none; border:none; color:var(--blue); text-decoration:underline; cursor:pointer; margin-left:8px;">Sair da sobrecarga</button>
+      <span>🔕 <strong>Modo Sobrecarga Ativo:</strong> Foco exclusivo no próximo minuto. Tarefas secundárias recolhidas.</span>
+      <button onclick="deactivateSpecialModes()" class="task-btn-mini">Sair</button>
     </div>
 
     <!-- ============================================================= -->
@@ -531,11 +662,12 @@
     <!-- ============================================================= -->
     <div class="tab-section active" id="tab-hoje">
 
-      <!-- 1. Pergunta Central Home Adaptativa (Item 1) -->
+      <!-- Pergunta Central Home Adaptativa -->
       <section class="adaptive-home">
         <h1 class="adaptive-question">Como seu cérebro está funcionando agora?</h1>
         <p class="adaptive-sub">Como posso deixar seu dia mais leve? Entenda seu momento. Reduza a sobrecarga. Descubra o próximo passo.</p>
 
+        <!-- Grid de 6 Estados -->
         <div class="brain-state-grid">
           <div class="brain-state-card" onclick="selectBrainState('baixa')">
             <span class="state-emoji">🔴</span>
@@ -561,7 +693,7 @@
             <span class="state-quote">"Tem coisa demais acontecendo"</span>
           </div>
 
-          <div class="brain-state-card" onclick="selectBrainState('acelerada')">
+          <div class="brain-state-card" onclick="selectBrainState('mente_acelerada')">
             <span class="state-emoji">🧠</span>
             <span class="state-name">Mente Acelerada</span>
             <span class="state-quote">"Não consigo organizar os pensamentos"</span>
@@ -573,6 +705,11 @@
             <span class="state-quote">"Sei o que fazer, mas não consigo começar"</span>
           </div>
         </div>
+
+        <!-- Botão para Check-in 5 Dimensões -->
+        <div style="text-align:right; margin-bottom:14px;">
+          <button class="task-btn-mini" onclick="openModal('stateModal')" style="padding:5px 10px;">📊 Meu Estado Agora (5 Dimensões)</button>
+        </div>
       </section>
 
       <!-- Foco Atômico AGORA -->
@@ -581,23 +718,40 @@
           <div class="badge-now">🎯 AGORA — FOCO ATÔMICO</div>
           <div class="now-title" id="nowTitle">Carregando próxima ação...</div>
           <div class="now-meta" id="nowMeta">Tempo estimado: 5 minutos</div>
+          
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <button class="btn-main" onclick="completeCurrentNowTask()">✓ Concluir Ação</button>
+            <button class="btn-gold" onclick="start30SecondMicroAction()">⏱️ Começar por 30s</button>
+            <button class="btn-secondary" onclick="openAindaNaoConsigoModal()">🤏 Ainda Não Consigo</button>
             <button class="btn-secondary" onclick="openDecomposerFromNow()">↘ Dividir em Menor</button>
-            <button class="btn-secondary" onclick="openPauseModal()">⏸️ Pausa</button>
+            <button class="btn-secondary" onclick="openPauseModal()">⏸️ Pausa Sem Culpa</button>
           </div>
         </div>
       </div>
 
-      <!-- 9. Meu Dia (Item 9: Essencial máx 3, Se Der, Pode Esperar) -->
+      <!-- Transição Suave Entre Tarefas -->
+      <div id="transitionBox" style="display:none; background:#182229; border:1px solid var(--primary); border-radius:12px; padding:16px; margin-bottom:20px; text-align:center;">
+        <div style="font-size:20px; margin-bottom:4px;">🌿</div>
+        <div style="font-size:15px; font-weight:800; color:#fff;">Você terminou!</div>
+        <p style="font-size:13px; color:var(--text-muted); margin:6px 0 12px 0;">Quer fazer uma pequena transição antes da próxima?</p>
+        <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
+          <button class="btn-secondary" onclick="startTransition(30)">30 segundos</button>
+          <button class="btn-secondary" onclick="startTransition(60)">1 minuto</button>
+          <button class="btn-secondary" onclick="startTransition(180)">3 minutos</button>
+          <button class="btn-main" onclick="readyForNextTask()">Pronto para a próxima ✓</button>
+        </div>
+      </div>
+
+      <!-- Meu Dia (3 Níveis Hierárquicos) -->
       <section class="day-plan-box hide-on-overload">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <h2 style="font-size:16px; font-weight:800; color:#fff;">📅 Meu Dia</h2>
           <button class="btn-secondary" onclick="openNewTaskModal()" style="padding:6px 12px; font-size:12px;">+ Nova Ação</button>
         </div>
 
-        <div id="essentialWarning" style="display:none; background:rgba(236,201,75,0.12); border:1px solid var(--gold); border-radius:8px; padding:10px; font-size:12px; margin-bottom:12px; color:#fff;">
-          ⚠️ <em>Você tem mais de 3 itens essenciais. Que tal manter no máximo 1 a 3 para evitar paralisia por sobrecarga?</em>
+        <!-- Aviso Gentil de Sobrecarga (> 3 essenciais) -->
+        <div id="essentialWarning" style="display:none; background:rgba(236,201,75,0.12); border:1px solid var(--gold); border-radius:8px; padding:10px; font-size:12.5px; margin-bottom:12px; color:#fff; line-height:1.4;">
+          ⚠️ <em>Três tarefas essenciais já são suficientes para hoje. Quer mover alguma para "Se Der" para proteger sua energia?</em>
         </div>
 
         <div class="plan-group-title essential">
@@ -617,32 +771,19 @@
         <div id="canWaitList" class="hide-on-battery"></div>
       </section>
 
-      <!-- Transição entre tarefas (Item 11) -->
-      <div id="transitionBox" style="display:none; background:#182229; border:1px solid var(--primary); border-radius:12px; padding:16px; margin-bottom:20px; text-align:center;">
-        <div style="font-size:18px; margin-bottom:4px;">🌿</div>
-        <div style="font-size:15px; font-weight:800; color:#fff;">Você terminou!</div>
-        <p style="font-size:13px; color:var(--text-muted); margin:6px 0 12px 0;">Quer fazer uma pequena transição antes da próxima?</p>
-        <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
-          <button class="btn-secondary" onclick="startTransition(30)">30 segundos</button>
-          <button class="btn-secondary" onclick="startTransition(60)">1 minuto</button>
-          <button class="btn-secondary" onclick="startTransition(180)">3 minutos</button>
-          <button class="btn-main" onclick="readyForNextTask()">Pronto para a próxima ✓</button>
-        </div>
-      </div>
-
     </div>
 
     <!-- ============================================================= -->
-    <!-- ABA 2: FOCO ADAPTATIVO & PAUSAS (Item 10 & 12) -->
+    <!-- ABA 2: FOCO ADAPTATIVO & PAUSAS -->
     <!-- ============================================================= -->
     <div class="tab-section" id="tab-foco">
-      <div style="margin-bottom:20px;">
+      <div style="margin-bottom:18px;">
         <h1 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:4px;">🧠 Foco Adaptativo</h1>
-        <p style="font-size:13px; color:var(--text-muted);">Quanto você consegue fazer agora? Não usamos apenas blocos longos. O objetivo é facilitar o início.</p>
+        <p style="font-size:13px; color:var(--text-muted);">Quanto você consegue fazer agora? Sem pressão por blocos longos. O foco é apenas iniciar.</p>
       </div>
 
       <!-- Seletor de Tempo de Início -->
-      <div style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
+      <div class="quick-grid" style="margin-bottom:18px;">
         <button class="btn-secondary" onclick="setFocusTimer(2)">2 min (Fácil)</button>
         <button class="btn-secondary" onclick="setFocusTimer(5)">5 min</button>
         <button class="btn-secondary" onclick="setFocusTimer(10)">10 min</button>
@@ -651,13 +792,12 @@
       </div>
 
       <!-- Relógio de Foco -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:14px; padding:28px; text-align:center; margin-bottom:24px;">
-        <div style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:8px;">Foco Atual</div>
-        <div style="font-size:16px; font-weight:700; color:#fff; margin-bottom:14px;" id="focusTaskName">Selecione uma ação ou comece livre</div>
-        <div style="font-size:46px; font-weight:900; color:var(--primary); font-variant-numeric:tabular-nums;" id="timerDisplay">05:00</div>
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:14px; padding:26px; text-align:center; margin-bottom:24px;">
+        <div style="font-size:12px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; margin-bottom:6px;">Foco Atual</div>
+        <div style="font-size:16px; font-weight:700; color:#fff; margin-bottom:12px;" id="focusTaskName">Selecione uma ação ou comece livre</div>
+        <div style="font-size:48px; font-weight:900; color:var(--primary); font-variant-numeric:tabular-nums;" id="timerDisplay">05:00</div>
 
-        <!-- Controles (Item 10) -->
-        <div style="display:flex; gap:8px; justify-content:center; margin-top:20px; flex-wrap:wrap;">
+        <div style="display:flex; gap:8px; justify-content:center; margin-top:18px; flex-wrap:wrap;">
           <button class="btn-main" id="btnTimerStart" onclick="toggleTimer()">▶ Começar</button>
           <button class="btn-secondary" onclick="reduceFocusTime()">↘ Reduzir Tempo</button>
           <button class="btn-secondary" onclick="switchFocusStrategy()">🔄 Trocar Estratégia</button>
@@ -665,344 +805,315 @@
         </div>
       </div>
 
-      <!-- Pausas Sem Culpa (Item 12: 7 tipos) -->
+      <!-- Pausa Sem Culpa (7 Tipos Oficiais) -->
       <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:6px;">⏸️ Pausa Sem Culpa</h2>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px;">Descanso faz parte da produtividade. Escolha um tipo de pausa restaurativa:</p>
+        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">⏸️ Pausa Sem Culpa</h2>
+        <p style="font-size:13px; color:var(--gold); margin-bottom:14px;">"Seu cérebro também precisa de momentos de recuperação."</p>
 
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">
-          <button class="btn-secondary" onclick="triggerPauseType('respirar')" style="text-align:left;">🌬️ Respirar</button>
-          <button class="btn-secondary" onclick="triggerPauseType('movimento')" style="text-align:left;">🚶 Movimento</button>
-          <button class="btn-secondary" onclick="triggerPauseType('agua')" style="text-align:left;">💧 Água</button>
-          <button class="btn-secondary" onclick="triggerPauseType('visual')" style="text-align:left;">👀 Descanso Visual</button>
-          <button class="btn-secondary" onclick="triggerPauseType('estimulos')" style="text-align:left;">🎧 Reduzir Estímulos</button>
-          <button class="btn-secondary" onclick="triggerPauseType('descansar')" style="text-align:left;">🛋️ Descansar</button>
-          <button class="btn-secondary" onclick="triggerPauseType('sair')" style="text-align:left;">🌳 Sair do Ambiente</button>
+        <div class="pause-grid">
+          <button class="pause-item-btn" onclick="triggerPauseType('respirar')">
+            <span style="font-size:18px;">🌬️</span>
+            <strong>Respirar</strong>
+            <small style="color:var(--text-muted);">Ciclo 4-4-4</small>
+          </button>
+          <button class="pause-item-btn" onclick="triggerPauseType('agua')">
+            <span style="font-size:18px;">💧</span>
+            <strong>Beber água</strong>
+            <small style="color:var(--text-muted);">Hidratação calma</small>
+          </button>
+          <button class="pause-item-btn" onclick="triggerPauseType('movimento')">
+            <span style="font-size:18px;">🚶</span>
+            <strong>Movimento</strong>
+            <small style="color:var(--text-muted);">Alongar e soltar</small>
+          </button>
+          <button class="pause-item-btn" onclick="triggerPauseType('visual')">
+            <span style="font-size:18px;">👀</span>
+            <strong>Descanso visual</strong>
+            <small style="color:var(--text-muted);">Olhar para longe 20s</small>
+          </button>
+          <button class="pause-item-btn" onclick="triggerPauseType('estimulos')">
+            <span style="font-size:18px;">🎧</span>
+            <strong>Reduzir estímulos</strong>
+            <small style="color:var(--text-muted);">Fechar olhos e luz</small>
+          </button>
+          <button class="pause-item-btn" onclick="triggerPauseType('descansar')">
+            <span style="font-size:18px;">🛋️</span>
+            <strong>Descansar</strong>
+            <small style="color:var(--text-muted);">Sem cobrança</small>
+          </button>
+          <button class="pause-item-btn" onclick="triggerPauseType('silencio')">
+            <span style="font-size:18px;">🤫</span>
+            <strong>Silêncio</strong>
+            <small style="color:var(--text-muted);">Organização mental</small>
+          </button>
         </div>
       </div>
     </div>
 
     <!-- ============================================================= -->
-    <!-- ABA 3: TAREFAS & DECOMPOSITOR (Item 4) -->
+    <!-- ABA 3: TAREFAS & DECOMPOSITOR -->
     <!-- ============================================================= -->
     <div class="tab-section" id="tab-tarefas">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <div>
-          <h1 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:2px;">✓ Ações e Microtarefas</h1>
-          <p style="font-size:13px; color:var(--text-muted);">Quebre tarefas grandes até caberem no seu momento.</p>
-        </div>
-        <button class="btn-main" onclick="openNewTaskModal()">+ Nova Ação</button>
+      <div style="margin-bottom:18px;">
+        <h1 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:4px;">🎯 Tarefas & Decompositor</h1>
+        <p style="font-size:13px; color:var(--text-muted);">Divida qualquer tarefa grande até caber na sua energia atual.</p>
       </div>
 
-      <!-- Decompositor em 5 Níveis (Item 4) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:20px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">↘ Decompositor Progressivo</h2>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Cole ou digite qualquer tarefa grande para fatiar até o primeiro movimento físico.</p>
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; margin-bottom:20px;">
+        <label style="font-size:12.5px; font-weight:700; color:#fff; display:block; margin-bottom:6px;">Qual tarefa parece difícil de começar?</label>
         <div style="display:flex; gap:8px;">
-          <input type="text" id="decomposeInput" class="input-box" placeholder="Ex: Organizar vida financeira ou arrumar a cozinha" style="margin-bottom:0;">
-          <button class="btn-main" onclick="startDecomposition()">Fatiar</button>
+          <input type="text" id="decomposeInput" class="input-box" placeholder="Ex: Escrever relatório, limpar a sala..." style="margin-bottom:0;">
+          <button class="btn-main" onclick="startDecomposition()">Decompor</button>
         </div>
 
-        <div id="decomposeResult" style="display:none; margin-top:14px; background:#182229; border-radius:10px; padding:14px;">
-          <div style="font-size:11px; text-transform:uppercase; color:var(--gold); font-weight:800; margin-bottom:4px;" id="decomposeLevelName">Nível 1</div>
-          <div style="font-size:14px; font-weight:700; color:#fff; margin-bottom:10px;" id="decomposeActionStep">Ação</div>
+        <div id="decomposeResult" style="display:none; margin-top:14px; background:#182229; border:1px solid var(--primary); border-radius:10px; padding:14px;">
+          <div style="font-size:11px; text-transform:uppercase; color:var(--primary); font-weight:800;" id="decomposeLevelName">NÍVEL 1: META</div>
+          <div style="font-size:15px; font-weight:800; color:#fff; margin:6px 0 10px 0;" id="decomposeActionStep">Carregando...</div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button class="btn-main" onclick="acceptDecomposedStep()">Fazer Isso Agora</button>
+            <button class="btn-main" onclick="acceptDecomposedStep()">Fazer Agora</button>
             <button class="btn-secondary" id="btnStillBig" onclick="reduceDecompositionFurther()">Isso ainda está grande 🤏</button>
+            <button class="btn-secondary" onclick="openAindaNaoConsigoModal()">Ainda Não Consigo</button>
           </div>
         </div>
       </div>
 
-      <!-- Lista Completa de Tarefas -->
-      <div id="allTasksList"></div>
+      <div class="day-plan-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h3 style="font-size:14px; font-weight:800; color:#fff;">Todas as Tarefas</h3>
+          <button class="task-btn-mini" onclick="loadTasks()">Atualizar</button>
+        </div>
+        <div id="allTasksList"></div>
+      </div>
     </div>
 
     <!-- ============================================================= -->
-    <!-- ABA 4: DESPEJAR TUDO V2 (Item 8: Tarefas vs Preocupações) -->
+    <!-- ABA 4: DESPEJAR TUDO V3 (5 CATEGORIAS FORMAIS) -->
     <!-- ============================================================= -->
     <div class="tab-section" id="tab-despejar">
-      <div style="margin-bottom:18px;">
-        <h1 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:4px;">📝 Despejar Pensamentos</h1>
-        <p style="font-size:13px; color:var(--text-muted);">Escreva ou fale tudo o que está na cabeça. A IA separa o que é ação do que é apenas preocupação.</p>
+      <div style="margin-bottom:16px;">
+        <h1 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:4px;">📥 Despejar Tudo</h1>
+        <p style="font-size:13px; color:var(--text-muted);">Tire tudo da cabeça sem filtrar. O Copiloto separa automaticamente em 5 categorias formais.</p>
       </div>
 
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:20px;">
-        <textarea id="brainDumpTextInput" class="input-box" placeholder="Ex: Preciso pagar conta, estudar para prova, responder João e estou preocupado com a reunião..."></textarea>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <button class="btn-secondary" onclick="listenForDump()" id="btnVoiceDump2">🎙️ Falar por Voz</button>
-          <button class="btn-main" onclick="submitBrainDumpV2()">Organizar Fluxo</button>
-        </div>
-
-        <!-- Resultado categorizado -->
-        <div id="dumpV2Result" style="display:none; margin-top:16px; border-top:1px solid var(--card-border); padding-top:14px;">
-          <div style="font-size:13px; color:var(--primary); font-weight:700; margin-bottom:12px;" id="dumpV2Feedback"></div>
-
-          <!-- Tarefas Extraídas -->
-          <div style="margin-bottom:14px;">
-            <div style="font-size:12px; font-weight:800; color:#fff; text-transform:uppercase; margin-bottom:6px;">📌 Tarefas Identificadas</div>
-            <div id="dumpV2TasksList"></div>
-          </div>
-
-          <!-- Preocupações Identificadas -->
-          <div style="margin-bottom:14px;">
-            <div style="font-size:12px; font-weight:800; color:var(--gold); text-transform:uppercase; margin-bottom:6px;">💭 Preocupações (Sem ação necessária agora)</div>
-            <div id="dumpV2WorriesList"></div>
-          </div>
-
-          <!-- Ações sugeridas (Item 8) -->
-          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;">
-            <button class="btn-main" onclick="applyDumpTasks()">[ Transformar em tarefas ]</button>
-            <button class="btn-secondary" onclick="saveDumpWorries()">[ Guardar preocupação ]</button>
-            <button class="btn-secondary" onclick="planDayFromDump()">[ Planejar meu dia ]</button>
-          </div>
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; margin-bottom:18px;">
+        <textarea id="brainDumpTextInput" class="input-box" placeholder="Digite ou fale tudo o que está rondando seus pensamentos agora..."></textarea>
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <button class="btn-secondary" onclick="toggleVoiceCapture()" id="btnVoiceDump2">🎤 Falar por Voz</button>
+          <button class="btn-main" onclick="submitBrainDumpV3()">Organizar em 5 Categorias</button>
         </div>
       </div>
 
-      <!-- Preocupações Guardadas -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">📦 Preocupações Guardadas</h2>
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Pensamentos que você tirou da cabeça para não gastar energia hoje.</p>
-        <div id="savedWorriesList"></div>
+      <!-- Resultado Despejar Tudo V3 -->
+      <div id="dumpV3Result" style="display:none;">
+        <div style="background:rgba(0,168,132,0.12); border:1px solid var(--primary); border-radius:10px; padding:14px; margin-bottom:16px;">
+          <div style="font-size:11px; text-transform:uppercase; color:var(--primary); font-weight:800;">👉 COMECE POR AQUI</div>
+          <div style="font-size:15px; font-weight:800; color:#fff; margin-top:4px;" id="dumpV3NextAction"></div>
+        </div>
+
+        <!-- 5 Categorias Formais -->
+        <div class="dump-category-card" id="dumpCatTasks">
+          <div class="dump-category-header" style="color:var(--primary);">📋 TAREFAS CONCRETAS</div>
+          <div id="dumpListTasks"></div>
+        </div>
+
+        <div class="dump-category-card" id="dumpCatEvents">
+          <div class="dump-category-header" style="color:var(--blue);">📅 COMPROMISSOS & HORÁRIOS</div>
+          <div id="dumpListEvents"></div>
+        </div>
+
+        <div class="dump-category-card" id="dumpCatWorries">
+          <div class="dump-category-header" style="color:var(--gold);">💭 PREOCUPAÇÕES & RUMINAÇÕES</div>
+          <div id="dumpListWorries"></div>
+        </div>
+
+        <div class="dump-category-card" id="dumpCatIdeas">
+          <div class="dump-category-header" style="color:var(--purple);">💡 IDEIAS & INSIGHTS</div>
+          <div id="dumpListIdeas"></div>
+        </div>
+
+        <div class="dump-category-card" id="dumpCatDecisions">
+          <div class="dump-category-header" style="color:#fc8181;">⚖️ DECISÕES PENDENTES</div>
+          <div id="dumpListDecisions"></div>
+        </div>
       </div>
     </div>
 
     <!-- ============================================================= -->
-    <!-- ABA 5: MEU FUNCIONAMENTO & PADRÕES (Item 2, 13, 15, 23) -->
+    <!-- ABA 5: FUNCIONAMENTO & RECURSOS -->
     <!-- ============================================================= -->
     <div class="tab-section" id="tab-funcionamento">
       <div style="margin-bottom:18px;">
-        <h1 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:4px;">📊 Como Tenho Funcionado</h1>
-        <p style="font-size:13px; color:var(--text-muted);">Padrões e tendências gentis. Sem pontuação, ranking ou notas de produtividade.</p>
+        <h1 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:4px;">🌱 Padrões de Funcionamento</h1>
+        <p style="font-size:13px; color:var(--text-muted);">Aprenda sobre seus ritmos e estratégias sem métricas tóxicas, scores ou comparações.</p>
       </div>
 
-      <!-- Cartões de Tendência -->
-      <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin-bottom:20px;">
-        <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-          <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase;">Microações Feitas</div>
-          <div style="font-size:22px; font-weight:800; color:var(--primary); margin-top:2px;" id="statMicroactions">0</div>
+      <div class="quick-grid">
+        <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; text-align:center;">
+          <div style="font-size:22px; font-weight:900; color:var(--primary);" id="statMicroactions">0</div>
+          <div style="font-size:11px; color:var(--text-muted);">Microações Concluídas</div>
         </div>
-        <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-          <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase;">Sessões de Foco</div>
-          <div style="font-size:22px; font-weight:800; color:var(--blue); margin-top:2px;" id="statFocus">0</div>
+        <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; text-align:center;">
+          <div style="font-size:22px; font-weight:900; color:var(--gold);" id="statFocus">0 min</div>
+          <div style="font-size:11px; color:var(--text-muted);">Tempo Focado Gentil</div>
         </div>
       </div>
 
-      <!-- Observações Funcionais (Item 23) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:20px;">
-        <h2 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:8px;">💡 Observações da IA</h2>
-        <div id="patternsObservations" style="font-size:13px; color:var(--text); line-height:1.5;"></div>
-      </div>
-
-      <!-- 2. Meu Estado Agora (Item 2) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:20px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">🧘 Meu Estado Agora</h2>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Registre rapidamente seu nível de sobrecarga e clareza para calibrar o dia.</p>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
-          <div>
-            <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Foco</label>
-            <select id="stateFocusInput" class="input-box">
-              <option value="disperso">Disperso</option>
-              <option value="medio" selected>Médio</option>
-              <option value="focado">Focado</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Sobrecarga</label>
-            <select id="stateOverloadInput" class="input-box">
-              <option value="baixa">Baixa</option>
-              <option value="moderada" selected>Moderada</option>
-              <option value="alta">Alta</option>
-              <option value="extrema">Extrema</option>
-            </select>
-          </div>
+      <!-- Modos de Vida -->
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; margin-top:16px;">
+        <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:10px;">🏠 Modos de Vida</h3>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-secondary" onclick="activateLifeMode('study')">📚 Modo Estudos</button>
+          <button class="btn-secondary" onclick="activateLifeMode('work')">💼 Modo Trabalho</button>
+          <button class="btn-secondary" onclick="activateLifeMode('home')">🧹 Casa: Modo Mínimo</button>
         </div>
-        <button class="btn-secondary" onclick="saveQuickStateLog()">Salvar Registro</button>
+        <div id="lifeModeResult" style="display:none; margin-top:12px; font-size:13px; color:var(--text); line-height:1.4;"></div>
       </div>
 
-      <!-- 13. Meu Ambiente & Sensorial (Item 13) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:20px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">🔊 Meu Ambiente (Sensorial)</h2>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Algo no ambiente físico está dificultando seu funcionamento?</p>
-        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-bottom:12px;">
-          <button class="btn-reason" onclick="logSensoryTrigger('som')">🔊 Som / Barulho</button>
-          <button class="btn-reason" onclick="logSensoryTrigger('luz')">💡 Luz Forte</button>
-          <button class="btn-reason" onclick="logSensoryTrigger('pessoas')">👥 Interrupções</button>
-          <button class="btn-reason" onclick="logSensoryTrigger('visual')">🖥️ Excesso Visual</button>
+      <!-- Me Ajude a Explicar -->
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; margin-top:16px;">
+        <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:6px;">✉️ Me Ajude a Explicar</h3>
+        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Comunique atrasos ou necessidades com clareza e respeito mútuo.</p>
+        <textarea id="explainInput" class="input-box" placeholder="O que você precisa explicar? Ex: Preciso de mais um dia no trabalho..."></textarea>
+        <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+          <select id="explainContext" class="input-box" style="width:auto; margin-bottom:0;">
+            <option value="prazo">Atraso / Prazo</option>
+            <option value="sobrecarga">Sobrecarga atual</option>
+            <option value="limite">Impor limite saudável</option>
+          </select>
+          <select id="explainTone" class="input-box" style="width:auto; margin-bottom:0;">
+            <option value="gentil">Tom Gentil</option>
+            <option value="profissional">Profissional Direto</option>
+            <option value="amigavel">Amigável / Pessoal</option>
+          </select>
+          <button class="btn-main" onclick="generateExplanation()">Gerar Mensagem</button>
         </div>
-        <div id="sensoryActionBox" style="display:none; background:#182229; padding:12px; border-radius:8px; font-size:13px; color:#fff;"></div>
-      </div>
-
-      <!-- 15. Reflexão: "Entender o que aconteceu" (Item 15) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">🌱 Entender o que aconteceu</h2>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Ferramenta de reflexão e autoconhecimento (sem caráter terapêutico).</p>
-        <textarea id="reflectionInput" class="input-box" placeholder="O que aconteceu? O que você precisava e o que poderia facilitar da próxima vez?"></textarea>
-        <button class="btn-secondary" onclick="saveReflection()">Guardar Reflexão</button>
+        <div id="explainOutput" style="display:none; background:#182229; border:1px solid var(--primary); border-radius:8px; padding:12px; font-size:13px; color:#fff; white-space:pre-wrap;"></div>
       </div>
     </div>
 
     <!-- ============================================================= -->
-    <!-- ABA 6: AJUSTES, MODOS & PREFERÊNCIAS (Item 16, 17, 18, 19, 20, 21, 26) -->
+    <!-- ABA 6: AJUSTES & CONFORMIDADE -->
     <!-- ============================================================= -->
     <div class="tab-section" id="tab-ajustes">
-
-      <div style="background:rgba(0,168,132,0.08); border:1px solid var(--primary); border-radius:12px; padding:14px; margin-bottom:16px;">
-        <h4 style="margin-top:0; color:var(--primary);">✨ Planos e Acesso FocoGentil</h4>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">Apoie o desenvolvimento contínuo e garanta seu acesso ininterrupto.</p>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <a href="/checkout.html?plan=mensal" class="btn-main" style="text-decoration:none; display:inline-block; font-size:0.85rem; padding:8px 14px;">Plano Pro Mensal</a>
-          <a href="/checkout.html?plan=vitalicio" class="btn-secondary" style="text-decoration:none; display:inline-block; font-size:0.85rem; padding:8px 14px;">Plano Vitalício</a>
-        </div>
-      </div>
-      <button class="btn-secondary" onclick="shareAppOnWhatsApp()" style="margin-bottom:14px; font-size:0.85rem;">📲 Compartilhar no WhatsApp</button>
-
       <div style="margin-bottom:18px;">
-        <h1 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:4px;">⚙️ Ajustes & Modos de Vida</h1>
-        <p style="font-size:13px; color:var(--text-muted);">Personalize sua experiência para respeitar seu funcionamento.</p>
+        <h1 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:4px;">⚙️ Ajustes & Privacidade</h1>
+        <p style="font-size:13px; color:var(--text-muted);">Controle total sobre seus dados e experiência.</p>
       </div>
 
-      <!-- 16. Me Ajude a Explicar (Item 16) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:18px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">💬 Me Ajude a Explicar</h2>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Escreva o que está pensando e a IA transforma em uma mensagem clara e sem estresse.</p>
-        <textarea id="explainInput" class="input-box" placeholder="Ex: Não vou conseguir entregar hoje porque travei, mas amanhã cedo envio..."></textarea>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
-          <select id="explainContext" class="input-box" style="margin-bottom:0;">
-            <option value="trabalho">Trabalho / Gestor</option>
-            <option value="faculdade">Faculdade / Escola</option>
-            <option value="familia">Família / Parceiro(a)</option>
-            <option value="saude">Profissional de Saúde</option>
-          </select>
-          <select id="explainTone" class="input-box" style="margin-bottom:0;">
-            <option value="gentil">Gentil</option>
-            <option value="direto">Direto ao ponto</option>
-            <option value="formal">Formal</option>
-            <option value="muito_curto">Muito Curto</option>
-          </select>
-        </div>
-        <button class="btn-main" onclick="generateExplanation()">Gerar Comunicação Clara</button>
-        <div id="explainOutput" style="display:none; background:#182229; padding:14px; border-radius:8px; margin-top:12px; font-size:13.5px; line-height:1.4;"></div>
-      </div>
-
-      <!-- 17, 18, 19. Modos de Vida (Estudos, Trabalho, Casa) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:18px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:8px;">🏛️ Modos de Contexto</h2>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
-          <button class="btn-secondary" onclick="openContextAssistant('estudos')">📚 Modo Estudos</button>
-          <button class="btn-secondary" onclick="openContextAssistant('trabalho')">💼 Modo Trabalho</button>
-          <button class="btn-secondary" onclick="openContextAssistant('casa')">🧹 Modo Casa</button>
-        </div>
-        <div id="contextAssistantArea" style="display:none; background:#182229; padding:14px; border-radius:8px;"></div>
-      </div>
-
-      <!-- 14 & 25. Regulação Emocional com Guardrail CVV 188 (Item 14 e 25) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:18px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">🧘 Como estou me sentindo?</h2>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Diminuímos a carga emocional antes de olhar para a tarefa.</p>
-        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:6px; margin-bottom:10px;">
-          <button class="btn-reason" onclick="regulateEmotion('ansioso')">😰 Ansioso(a)</button>
-          <button class="btn-reason" onclick="regulateEmotion('sobrecarregado')">😵 Sobrecarregado(a)</button>
-          <button class="btn-reason" onclick="regulateEmotion('desanimado')">😔 Desanimado(a)</button>
-          <button class="btn-reason" onclick="regulateEmotion('acelerado')">🧠 Pensamentos a mil</button>
-        </div>
-        <div id="emotionGuidanceBox" style="display:none; background:#182229; padding:14px; border-radius:8px; font-size:13px; line-height:1.4;"></div>
-      </div>
-
-      <!-- 7 & 26. Acessibilidade & Baixo Estímulo (Item 7 e 26) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:18px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:8px;">🌿 Acessibilidade Sensorial</h2>
-        <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
-          <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-            <input type="checkbox" id="chkLowStimulus" onchange="toggleLowStimulus(this.checked)">
-            Modo Baixo Estímulo (Reduz cores decorativas e ruído visual)
-          </label>
-          <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-            <input type="checkbox" id="chkReducedMotion" onchange="toggleReducedMotion(this.checked)">
-            Reduzir Movimento (Desativa transições e animações)
-          </label>
-          <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
-            <span>Tamanho da fonte:</span>
-            <button class="btn-secondary" onclick="setFontSize('normal')" style="padding:4px 8px;">Padrão</button>
-            <button class="btn-secondary" onclick="setFontSize('large')" style="padding:4px 8px;">Grande</button>
-            <button class="btn-secondary" onclick="setFontSize('xlarge')" style="padding:4px 8px;">Muito Grande</button>
+      <!-- Acessibilidade e Estímulos -->
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; margin-bottom:16px;">
+        <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">Acessibilidade Cognitiva</h3>
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <div style="font-size:13.5px; font-weight:700; color:#fff;">Modo Baixo Estímulo</div>
+            <div style="font-size:12px; color:var(--text-muted);">Sem animações, sem cores fortes, máximo contraste limpo</div>
           </div>
+          <button class="btn-secondary" onclick="toggleLowStimulus()" id="btnLowStimulusSetting">Ativar</button>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:13.5px; font-weight:700; color:#fff;">Tamanho da Fonte</div>
+            <div style="font-size:12px; color:var(--text-muted);">Aumente o texto para conforto visual</div>
+          </div>
+          <button class="btn-secondary" onclick="cycleFontSize()">Alternar Tamanho</button>
         </div>
       </div>
 
-      <!-- 21. Memória da IA (Item 21: Controle e Exclusão) -->
-      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:18px;">
-        <h2 style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">🧠 Gerenciar Memória da IA</h2>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Você tem controle total sobre os dados funcionais que a IA aprendeu.</p>
-        <div id="aiMemoryList" style="font-size:12.5px;"></div>
+      <!-- Memória Funcional da IA -->
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; margin-bottom:16px;">
+        <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:6px;">🧠 Memória Funcional da IA</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Transparência total. Você pode ver ou apagar tudo o que o Copiloto aprendeu sobre seus ritmos.</p>
+        
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <button class="task-btn-mini" onclick="loadAiMemories()">Ver Memórias</button>
+          <button class="task-btn-mini" style="color:var(--red); border-color:var(--red);" onclick="clearAllAiMemories()">🗑️ Limpar Todas as Memórias</button>
+        </div>
+        <div id="aiMemoryList"></div>
       </div>
 
-      <!-- Rodapé Legal (Item 29) -->
-      <div style="text-align:center; font-size:12px; color:var(--text-muted); padding:10px 0;">
-        <a href="/termos.html" style="color:var(--text-muted); margin-right:8px;">Termos de Uso</a>
-        <a href="/privacidade.html" style="color:var(--text-muted); margin-right:8px;">Privacidade (LGPD)</a>
-        <a href="/admin" style="color:var(--text-muted);">Painel Admin</a>
-        <div style="margin-top:8px; font-size:11px; color:#54656f;">
-          FocoGentil não substitui atendimento médico ou psicológico. Em crises, ligue 188 (CVV).
+      <!-- Planos e Pagamentos -->
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; margin-bottom:16px;">
+        <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:6px;">⭐ Planos FocoGentil Pro</h3>
+        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Sem pegadinhas ou renovações automáticas abusivas. PIX instantâneo oficial Banco Central.</p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <a href="/checkout.html?plan=mensal" class="btn-secondary" style="text-decoration:none;">Plano Mensal (R$ 29,90)</a>
+          <a href="/checkout.html?plan=vitalicio" class="btn-main" style="text-decoration:none;">Plano Vitalício (R$ 49,90)</a>
         </div>
       </div>
 
+      <!-- Compartilhar e Conformidade -->
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; margin-bottom:16px;">
+        <button class="btn-secondary" onclick="shareAppOnWhatsApp()" style="width:100%; justify-content:center; margin-bottom:12px;">
+          📲 Compartilhar no WhatsApp
+        </button>
+        
+        <div style="font-size:11.5px; color:var(--text-muted); line-height:1.5; border-top:1px solid var(--card-border); padding-top:12px;">
+          <p><strong>Aviso Ético e Legal:</strong> O FocoGentil é uma ferramenta digital de suporte à organização e função executiva. <em>Não é dispositivo médico e não substitui consultas, diagnósticos ou tratamentos com médicos, psicólogos ou psiquiatras.</em></p>
+          <p style="margin-top:6px;">Recomendado para maiores de <strong>13+ anos</strong>. Contratação e pagamentos restritos a maiores de 18 anos ou assistidos por responsáveis.</p>
+          <p style="margin-top:6px;">Em momentos de crise emocional severa, procure ajuda imediata: ligue <strong>188 (CVV)</strong> — atendimento gratuito 24h.</p>
+          <p style="margin-top:10px;">
+            <a href="/termos" style="color:var(--primary); text-decoration:none; margin-right:12px;">Termos de Uso</a>
+            <a href="/privacidade" style="color:var(--primary); text-decoration:none;">Política de Privacidade (LGPD)</a>
+          </p>
+        </div>
+      </div>
     </div>
 
   </main>
 
-  <!-- ============================================================= -->
-  <!-- 32. NAVEGAÇÃO INFERIOR FIXA (Item 32) -->
-  <!-- ============================================================= -->
+  <!-- Barra de Navegação Inferior Fixa -->
   <nav class="bottom-nav">
     <button class="nav-tab active" onclick="switchNavTab('tab-hoje')">
-      <span class="nav-tab-icon">🏠</span>
-      <span>Hoje</span>
+      <span class="nav-tab-icon">🌱</span>
+      <span class="nav-tab-label">Hoje</span>
     </button>
     <button class="nav-tab" onclick="switchNavTab('tab-foco')">
       <span class="nav-tab-icon">🧠</span>
-      <span>Foco</span>
+      <span class="nav-tab-label">Foco</span>
     </button>
     <button class="nav-tab" onclick="switchNavTab('tab-tarefas')">
-      <span class="nav-tab-icon">✓</span>
-      <span>Tarefas</span>
+      <span class="nav-tab-icon">🎯</span>
+      <span class="nav-tab-label">Tarefas</span>
     </button>
     <button class="nav-tab" onclick="switchNavTab('tab-despejar')">
-      <span class="nav-tab-icon">📝</span>
-      <span>Despejar</span>
+      <span class="nav-tab-icon">📥</span>
+      <span class="nav-tab-label">Despejar</span>
     </button>
     <button class="nav-tab" onclick="switchNavTab('tab-funcionamento')">
       <span class="nav-tab-icon">📊</span>
-      <span>Padrões</span>
+      <span class="nav-tab-label">Padrões</span>
     </button>
     <button class="nav-tab" onclick="switchNavTab('tab-ajustes')">
       <span class="nav-tab-icon">⚙️</span>
-      <span>Ajustes</span>
+      <span class="nav-tab-label">Ajustes</span>
     </button>
   </nav>
 
   <!-- ============================================================= -->
-  <!-- MODAL: ESTOU TRAVADO (12 MOTIVOS ESPECÍFICOS - Item 3) -->
+  <!-- MODAL: ESTOU TRAVADO (8 RAZÕES ESPECÍFICAS COM FLUXOS REAIS) -->
   <!-- ============================================================= -->
   <div class="modal-overlay" id="stuckModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('stuckModal')">✕</button>
       <div class="modal-title">🚧 O que está dificultando começar?</div>
-      <div class="modal-desc">Escolha o motivo real. Cada resposta gera uma intervenção acolhedora diferente.</div>
+      <div class="modal-desc">Escolha o motivo real. Cada opção ativa uma intervenção sob medida sem cobrança.</div>
 
       <div class="reasons-grid">
-        <button class="btn-reason" onclick="chooseStuckReason('nao_sei_comecar')">Não sei por onde começar</button>
-        <button class="btn-reason" onclick="chooseStuckReason('tarefa_grande')">A tarefa está grande demais</button>
-        <button class="btn-reason" onclick="chooseStuckReason('cansado')">Estou cansado</button>
-        <button class="btn-reason" onclick="chooseStuckReason('ansioso')">Estou ansioso</button>
-        <button class="btn-reason" onclick="chooseStuckReason('entediado')">Estou entediado</button>
-        <button class="btn-reason" onclick="chooseStuckReason('medo_errar')">Tenho medo de errar</button>
-        <button class="btn-reason" onclick="chooseStuckReason('nao_entendi')">Não entendi a tarefa</button>
-        <button class="btn-reason" onclick="chooseStuckReason('coisas_demais')">Coisas demais na cabeça</button>
-        <button class="btn-reason" onclick="chooseStuckReason('distraido')">Estou distraído</button>
-        <button class="btn-reason" onclick="chooseStuckReason('nao_consigo_decidir')">Não consigo decidir</button>
-        <button class="btn-reason" onclick="chooseStuckReason('ambiente_incomodando')">Ambiente incomodando</button>
-        <button class="btn-reason" onclick="chooseStuckReason('nao_sei_explicar')">Não sei explicar</button>
+        <button class="btn-reason" onclick="chooseStuckReason('nao_sei_comecar')">1. Não sei por onde começar</button>
+        <button class="btn-reason" onclick="chooseStuckReason('coisas_demais')">2. Coisa demais na cabeça</button>
+        <button class="btn-reason" onclick="chooseStuckReason('sem_energia')">3. Estou sem energia</button>
+        <button class="btn-reason" onclick="chooseStuckReason('sem_tempo')">4. Não tenho tempo agora</button>
+        <button class="btn-reason" onclick="chooseStuckReason('procrastinando')">5. Acho que estou procrastinando</button>
+        <button class="btn-reason" onclick="chooseStuckReason('nao_entendi')">6. Não entendi a tarefa</button>
+        <button class="btn-reason" onclick="chooseStuckReason('ansioso')">7. Estou ansioso</button>
+        <button class="btn-reason" onclick="chooseStuckReason('outra_coisa')">8. Outra coisa...</button>
       </div>
+
+      <!-- Entradas Especiais de Acordo com a Razão -->
+      <div id="stuckSpecialInputs" style="display:none; margin-bottom:12px;"></div>
 
       <input type="text" id="stuckTaskInput" class="input-box" placeholder="Qual é a tarefa? (Opcional)">
 
@@ -1011,87 +1122,238 @@
         <div class="intervention-action" id="stuckActionText"></div>
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
           <button class="btn-main" id="btnAcceptStuck" onclick="acceptStuckAction()">Fazer Este Passo (2 min)</button>
-          <button class="btn-secondary" id="btnStuckStage2" onclick="requestStuckStage2()">Isso ainda está difícil 🤏</button>
+          <button class="btn-secondary" id="btnStuckStage2" onclick="requestStuckStage2()">Isso ainda está grande 🤏</button>
+          <button class="btn-secondary" onclick="openAindaNaoConsigoModal()">Ainda Não Consigo</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ============================================================= -->
+  <!-- MODAL: AINDA NÃO CONSIGO (6 CAMINHOS INTELIGENTES) -->
+  <!-- ============================================================= -->
+  <div class="modal-overlay" id="cantDoModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('cantDoModal')">✕</button>
+      <div class="modal-title">🤏 Ainda Não Consigo</div>
+      <div class="modal-desc">Tudo bem! Seu cérebro está pedindo um ajuste de rota. Escolha o que fica mais leve:</div>
+
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button class="btn-secondary" onclick="handleCantDoAction('menos_passos')" style="text-align:left; padding:12px;">
+          <strong>🤏 Menos passos</strong> — Reduzir o passo atual pela metade
+        </button>
+        <button class="btn-secondary" onclick="handleCantDoAction('menos_tempo')" style="text-align:left; padding:12px;">
+          <strong>⏱️ Menos tempo (30s)</strong> — Apenas 30 segundos, sem obrigação de terminar
+        </button>
+        <button class="btn-secondary" onclick="handleCantDoAction('explicar_melhor')" style="text-align:left; padding:12px;">
+          <strong>💡 Explicar melhor</strong> — Decompor em linguagem simples e sequencial
+        </button>
+        <button class="btn-secondary" onclick="handleCantDoAction('fazer_junto')" style="text-align:left; padding:12px;">
+          <strong>🤝 Fazer junto</strong> — Copiloto guia a primeira ação física imediata
+        </button>
+        <button class="btn-secondary" onclick="handleCantDoAction('deixar_depois')" style="text-align:left; padding:12px;">
+          <strong>📦 Deixar para depois</strong> — Guardar em "Pode Esperar" sem peso na consciência
+        </button>
+        <button class="btn-secondary" onclick="handleCantDoAction('preciso_pausa')" style="text-align:left; padding:12px;">
+          <strong>⏸️ Preciso de uma pausa</strong> — Recuperar o cérebro com pausa restaurativa
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL: MICROAÇÃO DE 30 SEGUNDOS -->
+  <!-- ============================================================= -->
+  <div class="modal-overlay" id="micro30sModal">
+    <div class="modal-content" style="text-align:center;">
+      <button class="modal-close" onclick="closeModal('micro30sModal')">✕</button>
+      <div class="modal-title">⏱️ Começar por 30 Segundos</div>
+      <div class="modal-desc" id="micro30sDesc">Não precisa terminar. O único objetivo é quebrar a inércia.</div>
+
+      <div style="font-size:56px; font-weight:900; color:var(--primary); margin:20px 0;" id="micro30sCountdown">30</div>
+
+      <div id="micro30sDoneBlock" style="display:none;">
+        <div style="font-size:16px; font-weight:800; color:var(--gold); margin-bottom:8px;">Pronto? Você quebrou a inércia! 🎉</div>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Começar é a parte mais pesada da função executiva. O primeiro passo já foi dado.</p>
+        <div style="display:flex; justify-content:center; gap:8px;">
+          <button class="btn-main" onclick="continueMicroAction()">Continuar mais um pouco</button>
+          <button class="btn-secondary" onclick="stopMicroActionGentle()">Parar por enquanto (sem culpa)</button>
+        </div>
+      </div>
+
+      <div id="micro30sActiveControls">
+        <button class="btn-secondary" onclick="cancelMicro30s()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL: PAUSA SEM CULPA (RESTAURO & CONTAGEM REGRESSIVA) -->
+  <!-- ============================================================= -->
+  <div class="modal-overlay" id="pauseModal">
+    <div class="modal-content" style="text-align:center;">
+      <button class="modal-close" onclick="closeModal('pauseModal')">✕</button>
+      <div class="modal-title">⏸️ Pausa Sem Culpa</div>
+      <div class="modal-desc" style="color:var(--gold);">"Seu cérebro também precisa de momentos de recuperação."</div>
+
+      <div id="pauseGuidanceBox" style="background:#182229; border:1px solid var(--card-border); border-radius:10px; padding:14px; margin-bottom:16px; font-size:13.5px; line-height:1.4;">
+        Escolha uma pausa restaurativa de 5 minutos.
+      </div>
+
+      <!-- Display de Contagem Regressiva -->
+      <div id="pauseCountdown" style="display:none; font-size:46px; font-weight:900; color:var(--primary); margin:14px 0;">05:00</div>
+
+      <div style="display:flex; justify-content:center; gap:8px; margin-bottom:14px;" id="pauseDurationBtns">
+        <button class="btn-secondary" onclick="startPause(1)">1 min</button>
+        <button class="btn-secondary" onclick="startPause(3)">3 min</button>
+        <button class="btn-secondary" onclick="startPause(5)">5 min</button>
+      </div>
+
+      <!-- Ações Pós-Pausa -->
+      <div id="postPauseActions" style="display:none; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:10px;">
+        <button class="btn-main" onclick="resumeFromPause(true)">Voltar com Calma ✓</button>
+        <button class="btn-secondary" onclick="resumeFromPause(false)">Mais 5 Minutos</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL: MEU ESTADO AGORA (5 DIMENSÕES) -->
+  <!-- ============================================================= -->
+  <div class="modal-overlay" id="stateModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('stateModal')">✕</button>
+      <div class="modal-title">📊 Meu Estado Agora</div>
+      <div class="modal-desc">Avalie seu momento em 5 dimensões simples (1 a 5). Sem julgamento.</div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span>⚡ Energia física e mental:</span> <strong id="valEnergia">3</strong>/5</div>
+        <input type="range" min="1" max="5" value="3" class="slider-range" id="rngEnergia" oninput="document.getElementById('valEnergia').innerText=this.value">
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span>🎯 Foco e atenção:</span> <strong id="valFoco">3</strong>/5</div>
+        <input type="range" min="1" max="5" value="3" class="slider-range" id="rngFoco" oninput="document.getElementById('valFoco').innerText=this.value">
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span>🌊 Nível de sobrecarga:</span> <strong id="valSobrecarga">2</strong>/5</div>
+        <input type="range" min="1" max="5" value="2" class="slider-range" id="rngSobrecarga" oninput="document.getElementById('valSobrecarga').innerText=this.value">
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span>💡 Clareza mental:</span> <strong id="valClareza">3</strong>/5</div>
+        <input type="range" min="1" max="5" value="3" class="slider-range" id="rngClareza" oninput="document.getElementById('valClareza').innerText=this.value">
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span>🌱 Disposição para agir:</span> <strong id="valDisposicao">3</strong>/5</div>
+        <input type="range" min="1" max="5" value="3" class="slider-range" id="rngDisposicao" oninput="document.getElementById('valDisposicao').innerText=this.value">
+      </div>
+
+      <button class="btn-main" onclick="save5DimensionsState()" style="width:100%; justify-content:center; margin-top:8px;">Salvar Meu Estado</button>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
   <!-- MODAL: NOVA TAREFA -->
+  <!-- ============================================================= -->
   <div class="modal-overlay" id="newTaskModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('newTaskModal')">✕</button>
       <div class="modal-title">🎯 Nova Ação</div>
       <div class="modal-desc">Cadastre um micro-passo confortável para hoje.</div>
-      <input type="text" id="newTaskTitle" class="input-box" placeholder="Título da ação (Ex: Enviar e-mail para Lucas)">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
-        <select id="newTaskDuration" class="input-box" style="margin-bottom:0;">
-          <option value="2">2 minutos (Micropasso)</option>
-          <option value="5" selected>5 minutos</option>
-          <option value="10">10 minutos</option>
-          <option value="15">15 minutos</option>
-        </select>
-        <select id="newTaskGroup" class="input-box" style="margin-bottom:0;">
-          <option value="essential">⭐ Essencial</option>
-          <option value="if_possible" selected>➕ Se Der</option>
-          <option value="can_wait">🗂️ Pode Esperar</option>
-        </select>
-      </div>
-      <button class="btn-main" style="width:100%;" onclick="submitNewTask()">Salvar Ação</button>
+
+      <input type="text" id="newTaskTitle" class="input-box" placeholder="Ex: Abrir o documento do trabalho">
+      <select id="newTaskPriority" class="input-box">
+        <option value="AGORA">⭐ Essencial (Fazer Agora)</option>
+        <option value="PROXIMO" selected>➕ Se Der (Secundária)</option>
+        <option value="DEPOIS">🗂️ Pode Esperar</option>
+      </select>
+      <select id="newTaskDuration" class="input-box">
+        <option value="2">2 minutos (Micro-ignição)</option>
+        <option value="5" selected>5 minutos</option>
+        <option value="15">15 minutos</option>
+      </select>
+      <button class="btn-main" onclick="createNewTask()" style="width:100%; justify-content:center;">Adicionar</button>
     </div>
   </div>
 
-  <!-- MODAL: FEEDBACK DE ESTRATÉGIA (Item 22) -->
+  <!-- ============================================================= -->
+  <!-- MODAL: FEEDBACK DE INTERVENÇÃO -->
+  <!-- ============================================================= -->
   <div class="modal-overlay" id="feedbackModal">
     <div class="modal-content" style="text-align:center;">
       <div class="modal-title">Essa intervenção ajudou?</div>
-      <div class="modal-desc">Seu feedback ajuda a IA a aprender quais estratégias funcionam melhor para o seu cérebro.</div>
-      <div style="display:flex; justify-content:center; gap:10px; margin-bottom:14px;">
-        <button class="btn-secondary" onclick="sendFeedback('sim')">👍 Sim</button>
-        <button class="btn-secondary" onclick="sendFeedback('mais_ou_menos')">😐 Mais ou menos</button>
-        <button class="btn-secondary" onclick="sendFeedback('nao')">👎 Não</button>
+      <div class="modal-desc">Seu feedback treina o Copiloto a se adaptar melhor ao seu perfil.</div>
+      <div style="display:flex; justify-content:center; gap:10px; margin-top:14px;">
+        <button class="btn-main" onclick="sendStrategyFeedback(true)">👍 Sim, ajudou</button>
+        <button class="btn-secondary" onclick="sendStrategyFeedback('mais_ou_menos')">😐 Mais ou menos</button>
+        <button class="btn-secondary" onclick="sendStrategyFeedback(false)">👎 Não ajudou</button>
       </div>
-      <input type="text" id="feedbackSuggestion" class="input-box" placeholder="O que teria facilitado mais? (Opcional)">
-      <button class="btn-main" onclick="closeModal('feedbackModal')">Concluir</button>
     </div>
   </div>
 
-  <!-- Toast -->
-  <div class="toast" id="toastMsg">Feito. ✅ Um passo de cada vez.</div>
+  <!-- ============================================================= -->
+  <!-- MODAL: LOGIN / CADASTRO -->
+  <!-- ============================================================= -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+      <div class="modal-title" id="authModalTitle">Acessar FocoGentil</div>
+      <div class="modal-desc">Entre com sua conta ou crie um acesso gratuito seguro.</div>
+      <input type="email" id="authEmail" class="input-box" placeholder="Seu e-mail">
+      <input type="password" id="authPassword" class="input-box" placeholder="Sua senha">
+      <div style="display:flex; gap:8px;">
+        <button class="btn-main" onclick="doAuthLogin()" style="flex:1; justify-content:center;">Entrar</button>
+        <button class="btn-secondary" onclick="doAuthRegister()" style="flex:1; justify-content:center;">Cadastrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
 
   <!-- ============================================================= -->
-  <!-- JAVASCRIPT DO COPILOTO (PRESERVAÇÃO INTEGRAL DE AUTENTICAÇÃO E APIS) -->
+  <!-- SCRIPTS DA APLICAÇÃO -->
   <!-- ============================================================= -->
   <script>
-    let authToken = localStorage.getItem('focogentil_token') || null;
+    let authToken = localStorage.getItem('fg_token') || '';
     let currentUser = null;
-    let currentTasks = [];
     let currentNowTask = null;
+    let currentEnergy = 'media';
+    let isLowStimulus = localStorage.getItem('fg_low_stimulus') === 'true';
+    let fontSizeIdx = parseInt(localStorage.getItem('fg_font_size') || '0', 10);
+    const fontSizes = ['', 'font-small', 'font-large', 'font-xlarge'];
+
     let timerInterval = null;
-    let timerSecondsLeft = 300;
-    let isTimerRunning = false;
-    let currentStuckStage = 1;
+    let timerRemainingSeconds = 300;
+    let timerRunning = false;
+    let currentFocusDurationMinutes = 5;
+
+    let micro30sInterval = null;
+    let micro30sRemaining = 30;
+
+    let pauseInterval = null;
     let lastSelectedReason = 'nao_sei_comecar';
-    let currentDecomposeLevel = 1;
+    let currentStuckStage = 1;
     let currentDecomposeTitle = '';
+    let currentDecomposeLevel = 1;
 
     // Inicialização
     window.addEventListener('DOMContentLoaded', async () => {
-      initPreferences();
-      await checkAuth();
+      applyLowStimulusUI();
+      applyFontSizeUI();
+      registerServiceWorker();
+      await checkAuthUser();
       await loadDayPlan();
       await loadTasks();
-      await loadDashboardStats();
-      await loadAiMemories();
-      registerServiceWorker();
+      await loadExecutiveStats();
     });
 
-    // PWA Service Worker (Item 28)
+    // PWA Service Worker
     function registerServiceWorker() {
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(err => {
-          console.log('[PWA] Service Worker não registrado (normal em modo estrito):', err);
-        });
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
       }
     }
 
@@ -1099,53 +1361,189 @@
     function switchNavTab(tabId) {
       document.querySelectorAll('.tab-section').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
-      const target = document.getElementById(tabId);
-      if (target) target.classList.add('active');
-      const idx = ['tab-hoje', 'tab-foco', 'tab-tarefas', 'tab-despejar', 'tab-funcionamento', 'tab-ajustes'].indexOf(tabId);
-      if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const sec = document.getElementById(tabId);
+      if (sec) sec.classList.add('active');
+      const navBtn = Array.from(document.querySelectorAll('.nav-tab')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId));
+      if (navBtn) navBtn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: isLowStimulus ? 'auto' : 'smooth' });
     }
 
-    // 1. Home Adaptativa (Item 1)
+    // Modo Baixo Estímulo
+    function toggleLowStimulus() {
+      isLowStimulus = !isLowStimulus;
+      localStorage.setItem('fg_low_stimulus', isLowStimulus);
+      applyLowStimulusUI();
+      showToast(isLowStimulus ? 'Modo Baixo Estímulo ativado 🕶️' : 'Modo visual padrão ativado 👁️');
+    }
+    function applyLowStimulusUI() {
+      if (isLowStimulus) {
+        document.body.classList.add('low-stimulus');
+        const btn = document.getElementById('btnStimulusToggle');
+        if (btn) btn.innerText = '👁️';
+        const settingBtn = document.getElementById('btnLowStimulusSetting');
+        if (settingBtn) settingBtn.innerText = 'Desativar';
+      } else {
+        document.body.classList.remove('low-stimulus');
+        const btn = document.getElementById('btnStimulusToggle');
+        if (btn) btn.innerText = '🕶️';
+        const settingBtn = document.getElementById('btnLowStimulusSetting');
+        if (settingBtn) settingBtn.innerText = 'Ativar';
+      }
+    }
+
+    // Ajuste de Tamanho da Fonte
+    function cycleFontSize() {
+      fontSizeIdx = (fontSizeIdx + 1) % fontSizes.length;
+      localStorage.setItem('fg_font_size', fontSizeIdx);
+      applyFontSizeUI();
+    }
+    function applyFontSizeUI() {
+      fontSizes.forEach(cls => { if (cls) document.body.classList.remove(cls); });
+      if (fontSizes[fontSizeIdx]) {
+        document.body.classList.add(fontSizes[fontSizeIdx]);
+      }
+    }
+
+    // Toast
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3400);
+    }
+
+    // Gerenciador de Modais
+    function openModal(id) {
+      const m = document.getElementById(id);
+      if (m) m.style.display = 'flex';
+    }
+    function closeModal(id) {
+      const m = document.getElementById(id);
+      if (m) m.style.display = 'none';
+    }
+
+    // Comunicação com a API
+    async function api(endpoint, method = 'GET', data = null) {
+      const headers = { 'Content-Type': 'application/json' };
+      if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+      const opts = { method, headers };
+      if (data && method !== 'GET') opts.body = JSON.stringify(data);
+      try {
+        const res = await fetch(endpoint, opts);
+        return await res.json();
+      } catch (err) {
+        console.error('API Error:', err);
+        return { error: 'Sem conexão no momento.' };
+      }
+    }
+
+    // Autenticação
+    async function checkAuthUser() {
+      if (!authToken) return;
+      const res = await api('/api/auth/me');
+      if (res && res.id) {
+        currentUser = res;
+        const btn = document.getElementById('btnUserTag');
+        if (btn) btn.innerText = res.name ? res.name.split(' ')[0] : 'Logado';
+      }
+    }
+    function openProfileModal() {
+      if (currentUser) {
+        if (confirm('Deseja sair da sua conta?')) {
+          localStorage.removeItem('fg_token');
+          location.reload();
+        }
+      } else {
+        openModal('authModal');
+      }
+    }
+    async function doAuthLogin() {
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      const res = await api('/api/auth/login', 'POST', { email, password });
+      if (res.token) {
+        localStorage.setItem('fg_token', res.token);
+        location.reload();
+      } else {
+        showToast(res.error || 'Credenciais inválidas.');
+      }
+    }
+    async function doAuthRegister() {
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      const res = await api('/api/auth/register', 'POST', { email, password });
+      if (res.token) {
+        localStorage.setItem('fg_token', res.token);
+        location.reload();
+      } else {
+        showToast(res.error || 'Erro no cadastro.');
+      }
+    }
+
+    // 1. Estados Mentais Adaptativos
     async function selectBrainState(state) {
+      document.querySelectorAll('.brain-state-card').forEach(c => c.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+
+      const res = await api('/api/state', 'POST', { state });
+      if (res && res.guidance) {
+        showToast(res.guidance.greeting + ' — ' + res.guidance.subtext);
+      }
+
       if (state === 'baixa') {
-        document.body.classList.add('battery-mode');
-        document.body.classList.remove('overload-mode');
-        showToast("🔋 Modo Bateria ativado: apenas o mínimo necessário.");
-        await api('/api/state', 'POST', { energy: 'baixa', willingness: 'sem_forcas' });
+        document.getElementById('batteryBanner').style.display = 'flex';
+        document.querySelectorAll('.hide-on-battery').forEach(e => e.style.display = 'none');
+        setQuickEnergy('baixa');
       } else if (state === 'sobrecarregado') {
-        document.body.classList.add('overload-mode');
-        document.body.classList.remove('battery-mode');
-        showToast("🔕 Modo Sobrecarga ativado: cuidando apenas do próximo minuto.");
-        await api('/api/state', 'POST', { overload: 'extrema', need_break: true });
-      } else if (state === 'acelerada') {
+        document.getElementById('overloadBanner').style.display = 'flex';
+        document.querySelectorAll('.hide-on-overload').forEach(e => e.style.display = 'none');
+      } else if (state === 'mente_acelerada') {
         switchNavTab('tab-despejar');
-        showToast("🧠 Vamos descarregar a mente no Despejar Tudo.");
+        showToast('Vamos organizar seus pensamentos sem filtrar.');
       } else if (state === 'travado') {
         openUnblockModal();
       } else {
         deactivateSpecialModes();
-        showToast("Estado registrado! Foco atualizado.");
-        await api('/api/state', 'POST', { energy: state });
       }
-      setQuickEnergy(state === 'baixa' ? 'baixa' : (state === 'boa' ? 'boa' : 'media'));
     }
 
     function deactivateSpecialModes() {
-      document.body.classList.remove('battery-mode', 'overload-mode');
+      document.getElementById('batteryBanner').style.display = 'none';
+      document.getElementById('overloadBanner').style.display = 'none';
+      document.querySelectorAll('.hide-on-battery').forEach(e => e.style.display = '');
+      document.querySelectorAll('.hide-on-overload').forEach(e => e.style.display = '');
     }
 
     function setQuickEnergy(lvl) {
+      currentEnergy = lvl;
       document.querySelectorAll('.energy-pill').forEach(p => p.classList.remove('active'));
       if (lvl === 'baixa') document.getElementById('pillLow').classList.add('active');
       else if (lvl === 'boa') document.getElementById('pillHigh').classList.add('active');
       else document.getElementById('pillMed').classList.add('active');
+      api('/api/user/energy', 'POST', { energy_level: lvl });
     }
 
-    // 3. Estou Travado (Item 3 - 12 Motivos)
+    async function save5DimensionsState() {
+      const energia = parseInt(document.getElementById('rngEnergia').value, 10);
+      const foco = parseInt(document.getElementById('rngFoco').value, 10);
+      const sobrecarga = parseInt(document.getElementById('rngSobrecarga').value, 10);
+      const clareza = parseInt(document.getElementById('rngClareza').value, 10);
+      const disposicao = parseInt(document.getElementById('rngDisposicao').value, 10);
+
+      await api('/api/state', 'POST', {
+        state: currentEnergy,
+        dimensions: { energia, foco, sobrecarga, clareza, disposicao }
+      });
+      closeModal('stateModal');
+      showToast('Seu estado foi registrado com carinho. Ajustando o ritmo!');
+    }
+
+    // 2. Estou Travado (8 Opções com Fluxos Reais)
     function openUnblockModal() {
       currentStuckStage = 1;
       document.getElementById('stuckInterventionResult').style.display = 'none';
+      document.getElementById('stuckSpecialInputs').style.display = 'none';
       document.querySelectorAll('.btn-reason').forEach(b => b.classList.remove('selected'));
       openModal('stuckModal');
     }
@@ -1156,11 +1554,72 @@
       event.target.classList.add('selected');
 
       const task = document.getElementById('stuckTaskInput').value || (currentNowTask ? currentNowTask.title : 'sua tarefa');
-      const res = await api('/api/unblock/intervene', 'POST', { reason, task, stage: currentStuckStage });
+      const specialDiv = document.getElementById('stuckSpecialInputs');
 
-      document.getElementById('stuckEmpathy').innerText = res.empathy || '';
-      document.getElementById('stuckActionText').innerText = res.action_step || '';
-      document.getElementById('btnAcceptStuck').innerText = res.action_button || 'FAZER ESTE PASSO';
+      // Fluxos Dedicados
+      if (reason === 'coisas_demais') {
+        closeModal('stuckModal');
+        switchNavTab('tab-despejar');
+        showToast('Despeje tudo o que está na sua cabeça. O Copiloto organiza.');
+        return;
+      }
+
+      if (reason === 'sem_energia') {
+        selectBrainState('baixa');
+      }
+
+      if (reason === 'sem_tempo') {
+        specialDiv.innerHTML = '<div style="font-size:12.5px; margin-bottom:6px; color:#fff;">Quanto tempo você tem disponível agora?</div>' +
+          '<div style="display:flex; gap:6px;">' +
+          '<button class="task-btn-mini" onclick="requestUnblockWithTime(2)">2 minutos</button>' +
+          '<button class="task-btn-mini" onclick="requestUnblockWithTime(5)">5 minutos</button>' +
+          '<button class="task-btn-mini" onclick="requestUnblockWithTime(10)">10 minutos</button>' +
+          '<button class="task-btn-mini" onclick="requestUnblockWithTime(20)">20 minutos</button>' +
+          '</div>';
+        specialDiv.style.display = 'block';
+      } else if (reason === 'nao_entendi') {
+        specialDiv.innerHTML = '<div style="font-size:12.5px; margin-bottom:6px; color:#fff;">Cole ou resuma a instrução confusa:</div>' +
+          '<textarea id="confusingInstruction" class="input-box" style="min-height:60px;" placeholder="Instrução original..."></textarea>' +
+          '<button class="btn-secondary" onclick="simplifyConfusingInstruction()">Simplificar em Passos Diretos</button>';
+        specialDiv.style.display = 'block';
+      } else if (reason === 'procrastinando') {
+        specialDiv.innerHTML = '<div style="font-size:12.5px; margin-bottom:6px; color:var(--gold);">Procrastinação é atrito, não preguiça. Qual é a barreira?</div>' +
+          '<div style="display:flex; gap:6px; flex-wrap:wrap;">' +
+          '<button class="task-btn-mini" onclick="requestUnblockWithTime(2, \'falta_clareza\')">Falta clareza</button>' +
+          '<button class="task-btn-mini" onclick="requestUnblockWithTime(2, \'medo_errar\')">Medo de errar</button>' +
+          '<button class="task-btn-mini" onclick="requestUnblockWithTime(2, \'tedio\')">Tédio / Desinteresse</button>' +
+          '</div>';
+        specialDiv.style.display = 'block';
+      } else {
+        specialDiv.style.display = 'none';
+      }
+
+      const res = await api('/api/unblock/detailed', 'POST', { reason, task, extra_input: '' });
+      renderStuckResult(res);
+    }
+
+    async function requestUnblockWithTime(minutes, friction) {
+      const task = document.getElementById('stuckTaskInput').value || (currentNowTask ? currentNowTask.title : 'sua tarefa');
+      const extra = friction ? ('atrito:' + friction) : ('tempo:' + minutes + 'm');
+      const res = await api('/api/unblock/detailed', 'POST', { reason: lastSelectedReason, task, extra_input: extra });
+      renderStuckResult(res);
+    }
+
+    async function simplifyConfusingInstruction() {
+      const txt = document.getElementById('confusingInstruction').value.trim();
+      if (!txt) return showToast('Por favor insira a instrução.');
+      const res = await api('/api/tasks/simplify-instruction', 'POST', { instruction: txt });
+      renderStuckResult({
+        empathy: 'Traduzindo para linguagem simples e direta:',
+        action_step: 'Passo 1: ' + (res.first_ignition_step || res.sequential_steps[0] || 'Iniciar'),
+        action_button: 'Fazer o Passo 1 Agora'
+      });
+    }
+
+    function renderStuckResult(res) {
+      document.getElementById('stuckEmpathy').innerText = res.empathy || 'Estamos juntos nessa.';
+      document.getElementById('stuckActionText').innerText = res.action_step || 'Apenas dê o play.';
+      document.getElementById('btnAcceptStuck').innerText = res.action_button || 'Fazer Este Passo (2 min)';
       document.getElementById('stuckInterventionResult').style.display = 'block';
     }
 
@@ -1168,8 +1627,8 @@
       currentStuckStage = 2;
       const task = document.getElementById('stuckTaskInput').value || (currentNowTask ? currentNowTask.title : 'sua tarefa');
       const res = await api('/api/unblock/intervene', 'POST', { reason: lastSelectedReason, task, stage: 2 });
-      document.getElementById('stuckEmpathy').innerText = res.empathy || '';
-      document.getElementById('stuckActionText').innerText = res.action_step || '';
+      document.getElementById('stuckEmpathy').innerText = res.empathy || 'Reduzindo ao menor passo possível:';
+      document.getElementById('stuckActionText').innerText = res.action_step || 'Ação imediata de 30 segundos';
       document.getElementById('btnStuckStage2').style.display = 'none';
     }
 
@@ -1177,17 +1636,92 @@
       closeModal('stuckModal');
       const action = document.getElementById('stuckActionText').innerText;
       document.getElementById('nowTitle').innerText = action;
-      document.getElementById('nowMeta').innerText = "Micropasso de destravamento (2 min)";
+      document.getElementById('nowMeta').innerText = 'Micropasso de destravamento (2 min)';
       switchNavTab('tab-foco');
       setFocusTimer(2);
       toggleTimer();
       openModal('feedbackModal');
     }
 
-    // 4. Decompositor Progressivo (Item 4)
+    // 3. Botão Inteligente "Ainda Não Consigo" (6 Opções)
+    function openAindaNaoConsigoModal() {
+      openModal('cantDoModal');
+    }
+
+    async function handleCantDoAction(option) {
+      closeModal('cantDoModal');
+      const task = currentNowTask ? currentNowTask.title : 'sua tarefa';
+
+      if (option === 'menos_tempo') {
+        start30SecondMicroAction();
+        return;
+      }
+      if (option === 'preciso_pausa') {
+        openPauseModal();
+        return;
+      }
+      if (option === 'deixar_depois') {
+        if (currentNowTask && currentNowTask.id) {
+          await api('/api/tasks/' + currentNowTask.id, 'PUT', { priority: 'DEPOIS' });
+          await loadDayPlan();
+          showToast('Tarefa movida para "Pode Esperar" sem nenhuma culpa.');
+        }
+        return;
+      }
+
+      const res = await api('/api/unblock/cant-do', 'POST', { task, option });
+      if (res && res.action_step) {
+        document.getElementById('nowTitle').innerText = res.action_step;
+        document.getElementById('nowMeta').innerText = res.strategy || 'Ajuste adaptativo gentil';
+        showToast(res.empathy || 'Ajuste realizado!');
+        openModal('feedbackModal');
+      }
+    }
+
+    // 4. Microação de 30 Segundos
+    function start30SecondMicroAction() {
+      openModal('micro30sModal');
+      micro30sRemaining = 30;
+      document.getElementById('micro30sCountdown').innerText = '30';
+      document.getElementById('micro30sDoneBlock').style.display = 'none';
+      document.getElementById('micro30sActiveControls').style.display = 'block';
+
+      if (micro30sInterval) clearInterval(micro30sInterval);
+      micro30sInterval = setInterval(() => {
+        micro30sRemaining--;
+        document.getElementById('micro30sCountdown').innerText = String(micro30sRemaining);
+        if (micro30sRemaining <= 0) {
+          clearInterval(micro30sInterval);
+          document.getElementById('micro30sCountdown').innerText = '0';
+          document.getElementById('micro30sActiveControls').style.display = 'none';
+          document.getElementById('micro30sDoneBlock').style.display = 'block';
+        }
+      }, 1000);
+    }
+
+    function cancelMicro30s() {
+      if (micro30sInterval) clearInterval(micro30sInterval);
+      closeModal('micro30sModal');
+    }
+
+    function continueMicroAction() {
+      closeModal('micro30sModal');
+      switchNavTab('tab-foco');
+      setFocusTimer(5);
+      toggleTimer();
+      showToast('Embalando o ritmo com gentileza!');
+    }
+
+    function stopMicroActionGentle() {
+      closeModal('micro30sModal');
+      showToast('Parabéns! Começar é a parte mais pesada e você já quebrou a inércia.');
+      openModal('feedbackModal');
+    }
+
+    // 5. Decompositor Progressivo
     async function startDecomposition() {
       const task = document.getElementById('decomposeInput').value.trim();
-      if (!task) return showToast("Por favor digite uma tarefa.");
+      if (!task) return showToast('Por favor digite uma tarefa.');
       currentDecomposeTitle = task;
       currentDecomposeLevel = 1;
       await fetchDecomposeStep(task, 1);
@@ -1204,7 +1738,7 @@
 
     async function fetchDecomposeStep(task, level) {
       const res = await api('/api/tasks/decompose', 'POST', { task, level });
-      document.getElementById('decomposeLevelName').innerText = "Nível " + res.current_level + ": " + res.level_name;
+      document.getElementById('decomposeLevelName').innerText = 'Nível ' + res.current_level + ': ' + res.level_name;
       document.getElementById('decomposeActionStep').innerText = res.action_step;
       document.getElementById('btnStillBig').style.display = res.can_reduce ? 'inline-block' : 'none';
       document.getElementById('decomposeResult').style.display = 'block';
@@ -1218,174 +1752,319 @@
     function acceptDecomposedStep() {
       const step = document.getElementById('decomposeActionStep').innerText;
       document.getElementById('nowTitle').innerText = step;
-      document.getElementById('nowMeta').innerText = "Ação atômica recomendada";
+      document.getElementById('nowMeta').innerText = 'Ação atômica recomendada';
       switchNavTab('tab-hoje');
-      showToast("Próximo passo atualizado! Um passo de cada vez.");
+      showToast('Próximo passo atualizado! Um passo de cada vez.');
     }
 
-    // 8. Despejar Tudo V2 (Item 8)
-    async function submitBrainDumpV2() {
+    // 6. Despejar Tudo V3 (5 Categorias Formais)
+    async function submitBrainDumpV3() {
       const text = document.getElementById('brainDumpTextInput').value.trim();
-      if (!text) return showToast("Digite algo para organizar.");
-      const res = await api('/api/brain-dump-v2', 'POST', { text });
+      if (!text) return showToast('Digite ou fale o que está pensando.');
 
-      document.getElementById('dumpV2Feedback').innerText = res.message;
-      
-      const tList = document.getElementById('dumpV2TasksList');
-      tList.innerHTML = (res.tasks && res.tasks.length) 
-        ? res.tasks.map(t => '<div class="plan-item"><span>📌 ' + t.title + '</span><small>' + t.duration_minutes + 'm</small></div>').join('') 
-        : '<em>Nenhuma tarefa detectada</em>';
+      showToast('Organizando em 5 categorias...');
+      const res = await api('/api/brain-dump-v3', 'POST', { text, energy: currentEnergy });
 
-      const wList = document.getElementById('dumpV2WorriesList');
-      wList.innerHTML = (res.worries && res.worries.length) 
-        ? res.worries.map(w => '<div class="plan-item" style="border-color:var(--gold);"><span>💭 ' + w.text + '</span><small>Guardada</small></div>').join('') 
-        : '<em>Nenhuma preocupação específica</em>';
+      if (res && res.categories) {
+        document.getElementById('dumpV3NextAction').innerText = res.recommended_next_action || 'Dar o primeiro passo.';
+        renderDumpCategory('dumpListTasks', res.categories.tasks, 'tarefa');
+        renderDumpCategory('dumpListEvents', res.categories.events, 'compromisso');
+        renderDumpCategory('dumpListWorries', res.categories.worries, 'preocupacao');
+        renderDumpCategory('dumpListIdeas', res.categories.ideas, 'ideia');
+        renderDumpCategory('dumpListDecisions', res.categories.decisions, 'decisao');
 
-      document.getElementById('dumpV2Result').style.display = 'block';
-      window.lastDumpResult = res;
-    }
-
-    async function applyDumpTasks() {
-      if (!window.lastDumpResult || !window.lastDumpResult.tasks) return;
-      for (const t of window.lastDumpResult.tasks) {
-        await api('/api/tasks', 'POST', { title: t.title, duration_minutes: t.duration_minutes, priority: t.priority });
+        document.getElementById('dumpV3Result').style.display = 'block';
+        showToast('Pensamentos organizados com sucesso!');
       }
-      showToast("Tarefas adicionadas com sucesso!");
-      await loadTasks();
-      switchNavTab('tab-hoje');
     }
 
-    async function saveDumpWorries() {
-      if (!window.lastDumpResult || !window.lastDumpResult.worries) return;
-      for (const w of window.lastDumpResult.worries) {
-        await api('/api/worries', 'POST', { text: w.text, category: 'emocional' });
+    function renderDumpCategory(containerId, items, type) {
+      const c = document.getElementById(containerId);
+      if (!c) return;
+      if (!items || items.length === 0) {
+        c.innerHTML = '<div style="font-size:12px; color:var(--text-muted); font-style:italic;">Nenhum item nesta categoria.</div>';
+        return;
       }
-      showToast("Preocupações guardadas com segurança.");
-      await loadWorries();
+      c.innerHTML = items.map(item => {
+        const title = item.title || item.thought || item.action || item;
+        return '<div class="task-item">' +
+          '<span class="task-title-text">' + title + '</span>' +
+          '<button class="task-btn-mini" onclick="addDumpItemToDay(\'' + encodeURIComponent(title) + '\')">+ Meu Dia</button>' +
+          '</div>';
+      }).join('');
     }
 
-    async function loadWorries() {
-      const list = await api('/api/worries');
-      const box = document.getElementById('savedWorriesList');
-      if (!box) return;
-      box.innerHTML = (list && list.length) 
-        ? list.map(w => '<div class="plan-item"><span>' + w.text + '</span><button class="btn-secondary" onclick="resolveWorry(\'' + w.id + '\')" style="padding:4px 8px; font-size:11px;">Acolhida ✓</button></div>').join('') 
-        : '<em>Nenhuma preocupação guardada no momento.</em>';
+    async function addDumpItemToDay(encodedTitle) {
+      const title = decodeURIComponent(encodedTitle);
+      await api('/api/tasks', 'POST', { title, duration: 5, priority: 'PROXIMO' });
+      await loadDayPlan();
+      showToast('Adicionado ao Meu Dia!');
     }
 
-    async function resolveWorry(id) {
-      await api('/api/worries/' + id + '/resolve', 'POST');
-      showToast("Preocupação acolhida e arquivada.");
-      await loadWorries();
-    }
+    // 7. Meu Dia & Tarefas
+    async function loadDayPlan() {
+      const plan = await api('/api/day-plan');
+      const essentials = plan.essential || [];
+      const ifPossible = plan.if_possible || [];
+      const canWait = plan.can_wait || [];
 
-    // 10. Foco Adaptativo & Temporizador (Item 10)
-    function setFocusTimer(mins) {
-      clearInterval(timerInterval);
-      isTimerRunning = false;
-      timerSecondsLeft = mins * 60;
-      updateTimerDisplay();
-      document.getElementById('btnTimerStart').innerText = "▶ Começar";
-    }
-
-    function toggleTimer() {
-      if (isTimerRunning) {
-        clearInterval(timerInterval);
-        isTimerRunning = false;
-        document.getElementById('btnTimerStart').innerText = "▶ Retomar";
+      // Card AGORA
+      if (essentials.length > 0) {
+        currentNowTask = essentials[0];
+        document.getElementById('nowTitle').innerText = currentNowTask.title;
+        document.getElementById('nowMeta').innerText = 'Tempo estimado: ' + (currentNowTask.duration || 5) + ' minutos';
+      } else if (ifPossible.length > 0) {
+        currentNowTask = ifPossible[0];
+        document.getElementById('nowTitle').innerText = currentNowTask.title;
+        document.getElementById('nowMeta').innerText = 'Tempo estimado: ' + (currentNowTask.duration || 5) + ' minutos';
       } else {
-        isTimerRunning = true;
-        document.getElementById('btnTimerStart').innerText = "⏸ Pausar";
+        document.getElementById('nowTitle').innerText = 'Tudo calmo por aqui. Cadastre uma nova ação!';
+        document.getElementById('nowMeta').innerText = 'Sem pendências ativas';
+      }
+
+      // Proteção de Sobrecarga (> 3 essenciais)
+      const warning = document.getElementById('essentialWarning');
+      const countEl = document.getElementById('essentialCount');
+      if (countEl) countEl.innerText = essentials.length + '/3';
+      if (warning) warning.style.display = essentials.length > 3 ? 'block' : 'none';
+
+      renderTaskList('essentialList', essentials, 'ESSENCIAL');
+      renderTaskList('ifPossibleList', ifPossible, 'SE_DER');
+      renderTaskList('canWaitList', canWait, 'PODE_ESPERAR');
+    }
+
+    function renderTaskList(containerId, list, type) {
+      const c = document.getElementById(containerId);
+      if (!c) return;
+      if (!list || list.length === 0) {
+        c.innerHTML = '<div style="font-size:12px; color:var(--text-muted); font-style:italic; padding:6px 0;">Vazio</div>';
+        return;
+      }
+      c.innerHTML = list.map(t => {
+        return '<div class="task-item' + (t.status === 'CONCLUIDO' ? ' done' : '') + '">' +
+          '<span class="task-title-text">' + t.title + '</span>' +
+          '<div class="task-actions">' +
+          '<button class="task-btn-mini" onclick="completeTask(\'' + t.id + '\')">✓</button>' +
+          (type !== 'ESSENCIAL' ? '<button class="task-btn-mini" onclick="changeTaskPriority(\'' + t.id + '\', \'AGORA\')" title="Mover para Essencial">⭐</button>' : '') +
+          (type !== 'SE_DER' ? '<button class="task-btn-mini" onclick="changeTaskPriority(\'' + t.id + '\', \'PROXIMO\')" title="Mover para Se Der">➕</button>' : '') +
+          (type !== 'PODE_ESPERAR' ? '<button class="task-btn-mini" onclick="changeTaskPriority(\'' + t.id + '\', \'DEPOIS\')" title="Mover para Pode Esperar">🗂️</button>' : '') +
+          '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    async function changeTaskPriority(taskId, newPriority) {
+      await api('/api/tasks/' + taskId, 'PUT', { priority: newPriority });
+      await loadDayPlan();
+      await loadTasks();
+    }
+
+    async function completeCurrentNowTask() {
+      if (!currentNowTask) return;
+      await api('/api/tasks/' + currentNowTask.id + '/complete', 'POST');
+      document.getElementById('transitionBox').style.display = 'block';
+      await loadDayPlan();
+      await loadTasks();
+      await loadExecutiveStats();
+    }
+
+    async function completeTask(taskId) {
+      await api('/api/tasks/' + taskId + '/complete', 'POST');
+      document.getElementById('transitionBox').style.display = 'block';
+      await loadDayPlan();
+      await loadTasks();
+      await loadExecutiveStats();
+    }
+
+    function openNewTaskModal() {
+      openModal('newTaskModal');
+    }
+
+    async function createNewTask() {
+      const title = document.getElementById('newTaskTitle').value.trim();
+      const priority = document.getElementById('newTaskPriority').value;
+      const duration = parseInt(document.getElementById('newTaskDuration').value, 10);
+      if (!title) return showToast('Digite um título para a tarefa.');
+      await api('/api/tasks', 'POST', { title, priority, duration });
+      closeModal('newTaskModal');
+      document.getElementById('newTaskTitle').value = '';
+      await loadDayPlan();
+      await loadTasks();
+      showToast('Ação cadastrada!');
+    }
+
+    async function loadTasks() {
+      const tasks = await api('/api/tasks');
+      const list = document.getElementById('allTasksList');
+      if (!list) return;
+      if (!tasks || tasks.length === 0) {
+        list.innerHTML = '<div style="font-size:12px; color:var(--text-muted); font-style:italic;">Nenhuma tarefa cadastrada.</div>';
+        return;
+      }
+      list.innerHTML = tasks.map(t => {
+        return '<div class="task-item' + (t.status === 'CONCLUIDO' ? ' done' : '') + '">' +
+          '<span class="task-title-text">' + t.title + ' <small style="color:var(--text-muted);">(' + (t.priority || 'NORMAL') + ')</small></span>' +
+          '<div class="task-actions">' +
+          '<button class="task-btn-mini" onclick="completeTask(\'' + t.id + '\')">✓</button>' +
+          '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    // 8. Transição Entre Tarefas
+    function startTransition(seconds) {
+      showToast('Transição de ' + seconds + 's iniciada. Respire e solte o corpo.');
+      document.getElementById('transitionBox').style.display = 'none';
+      setTimeout(() => {
+        showToast('Transição concluída. Quando quiser, dê o próximo passo.');
+      }, seconds * 1000);
+    }
+    function readyForNextTask() {
+      document.getElementById('transitionBox').style.display = 'none';
+      showToast('Próximo passo engatilhado!');
+    }
+
+    // 9. Temporizador de Foco Adaptativo
+    function setFocusTimer(minutes) {
+      currentFocusDurationMinutes = minutes;
+      timerRemainingSeconds = minutes * 60;
+      updateTimerDisplay();
+      if (timerRunning) toggleTimer();
+    }
+    function toggleTimer() {
+      const btn = document.getElementById('btnTimerStart');
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        if (btn) btn.innerText = '▶ Continuar';
+      } else {
+        timerRunning = true;
+        if (btn) btn.innerText = '⏸ Pausar';
         timerInterval = setInterval(() => {
-          timerSecondsLeft--;
+          timerRemainingSeconds--;
           updateTimerDisplay();
-          if (timerSecondsLeft <= 0) {
+          if (timerRemainingSeconds <= 0) {
             clearInterval(timerInterval);
-            isTimerRunning = false;
-            document.getElementById('btnTimerStart').innerText = "▶ Começar";
-            showToast("Tempo concluído! Excelente início. 🎉");
-            document.getElementById('transitionBox').style.display = 'block';
-            switchNavTab('tab-hoje');
+            timerRunning = false;
+            if (btn) btn.innerText = '▶ Começar';
+            showToast('Tempo de foco concluído! Hora de uma pausa sem culpa.');
+            openModal('feedbackModal');
           }
         }, 1000);
       }
     }
-
     function updateTimerDisplay() {
-      const m = Math.floor(timerSecondsLeft / 60);
-      const s = timerSecondsLeft % 60;
-      document.getElementById('timerDisplay').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+      const m = String(Math.floor(timerRemainingSeconds / 60)).padStart(2, '0');
+      const s = String(timerRemainingSeconds % 60).padStart(2, '0');
+      const d = document.getElementById('timerDisplay');
+      if (d) d.innerText = m + ':' + s;
     }
-
     function reduceFocusTime() {
-      if (timerSecondsLeft > 60) {
-        timerSecondsLeft = Math.max(60, timerSecondsLeft - 120);
-        updateTimerDisplay();
-        showToast("Tempo reduzido. Vamos devagar.");
-      }
+      timerRemainingSeconds = Math.max(30, Math.floor(timerRemainingSeconds / 2));
+      updateTimerDisplay();
+      showToast('Tempo reduzido pela metade. Menos pressão.');
     }
-
     function switchFocusStrategy() {
-      openUnblockModal();
+      showToast('Vamos alternar a abordagem: que tal apenas abrir o arquivo?');
     }
-
     function finishFocusEarly() {
-      clearInterval(timerInterval);
-      isTimerRunning = false;
-      showToast("Feito! Qualquer tempo dedicado conta. ✓");
-      document.getElementById('transitionBox').style.display = 'block';
-      switchNavTab('tab-hoje');
-    }
-
-    // 11. Transição entre Tarefas (Item 11)
-    function startTransition(sec) {
-      showToast("Pausa de transição de " + sec + "s iniciada. Respire.");
-      setTimeout(() => {
-        showToast("Transição concluída. Pronto para o próximo passo!");
-      }, sec * 1000);
-    }
-
-    function readyForNextTask() {
-      document.getElementById('transitionBox').style.display = 'none';
+      if (timerInterval) clearInterval(timerInterval);
+      timerRunning = false;
       completeCurrentNowTask();
     }
 
-    // 12. Pausa Sem Culpa (Item 12: 7 tipos)
-    
-    let pauseInterval = null;
+    // 10. Pausa Sem Culpa (7 Tipos)
+    function openPauseModal() {
+      openModal('pauseModal');
+    }
+
+    function triggerPauseType(type) {
+      const messages = {
+        respirar: "🌬️ Respirar: Inspire em 4 segundos, segure 4 segundos, solte em 4 segundos.",
+        agua: "💧 Beber água: Levante-se, caminhe devagar e beba um copo d'água fresca.",
+        movimento: "🚶 Movimento: Solte os ombros, estique os braços e dê alguns passos.",
+        visual: "👀 Descanso visual: Olhe para um ponto distante pela janela por 20 segundos.",
+        estimulos: "🎧 Reduzir estímulos: Feche os olhos, diminua a luz e fique em silêncio.",
+        descansar: "🛋️ Descansar: Sente-se confortavelmente sem nenhuma cobrança de produtividade.",
+        silencio: "🤫 Silêncio: Permaneça em silêncio para que seu cérebro se reorganize."
+      };
+      const gBox = document.getElementById('pauseGuidanceBox');
+      if (gBox) gBox.innerText = messages[type] || "Pausa ativada com carinho.";
+      openModal('pauseModal');
+      startPause(5, type);
+    }
+
     function startPause(durationMinutes, type) {
       const cd = document.getElementById('pauseCountdown');
       const actions = document.getElementById('postPauseActions');
+      const dBtns = document.getElementById('pauseDurationBtns');
       if (cd) {
         cd.style.display = 'block';
-        let sec = (durationMinutes || 5) * 60;
         if (actions) actions.style.display = 'none';
+        if (dBtns) dBtns.style.display = 'none';
+        let sec = (durationMinutes || 5) * 60;
         if (pauseInterval) clearInterval(pauseInterval);
         pauseInterval = setInterval(() => {
           sec--;
           const m = String(Math.floor(sec / 60)).padStart(2, '0');
           const s = String(sec % 60).padStart(2, '0');
-          cd.innerText = `${m}:${s}`;
+          cd.innerText = m + ':' + s;
           if (sec <= 0) {
             clearInterval(pauseInterval);
             if (actions) actions.style.display = 'flex';
           }
         }, 1000);
       }
-      triggerPauseType(type || 'descansar');
     }
 
     function resumeFromPause(resumed) {
       const cd = document.getElementById('pauseCountdown');
       const actions = document.getElementById('postPauseActions');
+      const dBtns = document.getElementById('pauseDurationBtns');
       if (cd) cd.style.display = 'none';
       if (actions) actions.style.display = 'none';
+      if (dBtns) dBtns.style.display = 'flex';
       if (pauseInterval) clearInterval(pauseInterval);
+      closeModal('pauseModal');
       showToast(resumed ? 'Voltando com calma e sem pressa.' : 'Pausa estendida.');
     }
 
+    // 11. Feedback de Estratégias
+    async function sendStrategyFeedback(status) {
+      closeModal('feedbackModal');
+      await api('/api/feedback/strategy', 'POST', {
+        strategy: lastSelectedReason || 'geral',
+        helpful: status === true,
+        feedback_status: status
+      });
+      showToast('Obrigado! O Copiloto aprendeu um pouco mais sobre o seu momento.');
+    }
+
+    // 12. Captura por Voz (Web Speech API)
     function toggleVoiceCapture() {
-      listenForDump();
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        showToast('Captura por voz não suportada neste navegador. Use o campo de texto.');
+        return;
+      }
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'pt-BR';
+      recognition.interimResults = false;
+      showToast('Ouvindo em português (pt-BR)... Pode falar!');
+      recognition.onresult = (evt) => {
+        const text = evt.results[0][0].transcript;
+        const dumpInput = document.getElementById('brainDumpTextInput');
+        if (dumpInput) dumpInput.value = (dumpInput.value + ' ' + text).trim();
+        const stuckInput = document.getElementById('stuckTaskInput');
+        if (stuckInput && document.getElementById('stuckModal').style.display === 'flex') {
+          stuckInput.value = text;
+        }
+        showToast('Texto capturado com sucesso!');
+      };
+      recognition.onerror = () => {
+        showToast('Microfone silenciado ou permissão pendente.');
+      };
+      recognition.start();
     }
 
     function shareAppOnWhatsApp() {
@@ -1393,340 +2072,71 @@
       window.open('https://api.whatsapp.com/send?text=' + text, '_blank');
     }
 
-    function openPauseModal() {
-      openModal('pauseModal');
+    // 13. Padrões & Métricas
+    async function loadExecutiveStats() {
+      const stats = await api('/api/dashboard/patterns');
+      if (stats) {
+        const sm = document.getElementById('statMicroactions');
+        if (sm) sm.innerText = stats.micro_actions_completed || 0;
+        const sf = document.getElementById('statFocus');
+        if (sf) sf.innerText = (stats.focus_minutes_today || 0) + ' min';
+      }
     }
 
-    function triggerPauseType(type) {
-      closeModal('pauseModal');
-      const messages = {
-        respirar: "Respire fundo: 4 segundos inspirando, 6 segundos soltando o ar.",
-        movimento: "Fique em pé, estique os braços e dê 10 passos pela sala.",
-        agua: "Vá até a cozinha e beba um copo de água fresca devagar.",
-        visual: "Olhe para o ponto mais distante que puder pela janela por 60 segundos.",
-        estimulos: "Feche os olhos ou coloque fones para silenciar o ambiente.",
-        descansar: "Apenas recoste na cadeira por 5 minutos sem telas.",
-        sair: "Vá lá fora ou sinta a brisa do ar por 3 minutos."
-      };
-      showToast(messages[type] || "Pausa ativada. Descanse sem pressa.");
-      setFocusTimer(5);
-      switchNavTab('tab-foco');
+    // 14. Modos de Vida
+    async function activateLifeMode(mode) {
+      const res = await api('/api/modes/' + mode, 'POST');
+      const div = document.getElementById('lifeModeResult');
+      if (div && res) {
+        div.innerText = '✓ ' + (res.summary || 'Modo ativado com sucesso.');
+        div.style.display = 'block';
+      }
     }
 
-    // 16. Me Ajude a Explicar (Item 16)
+    // 15. Me Ajude a Explicar
     async function generateExplanation() {
       const text = document.getElementById('explainInput').value.trim();
-      const category = document.getElementById('explainContext').value;
+      const context = document.getElementById('explainContext').value;
       const tone = document.getElementById('explainTone').value;
-      if (!text) return showToast("Digite o que gostaria de explicar.");
-      const res = await api('/api/communication/explain', 'POST', { text, category, tone });
+      if (!text) return showToast('Digite o que precisa explicar.');
+      const res = await api('/api/communication/explain', 'POST', { situation: text, context, tone });
       const out = document.getElementById('explainOutput');
-      out.style.display = 'block';
-      out.innerHTML = '<strong>Mensagem pronta para enviar:</strong><br><br>' + res.output_text.replace(/\n/g, '<br>') + '<br><br><button class="btn-secondary" onclick="navigator.clipboard.writeText(\'' + res.output_text.replace(/'/g, "\\'") + '\'); showToast(\'Copiado!\');">📋 Copiar Texto</button>';
-    }
-
-    // 17, 18, 19. Modos de Vida
-    async function openContextAssistant(ctx) {
-      const box = document.getElementById('contextAssistantArea');
-      box.style.display = 'block';
-      if (ctx === 'casa') {
-        const res = await api('/api/modes/home', 'POST', { is_minimum_mode: true });
-        box.innerHTML = '<strong>Modo Casa (Mínimo Viável):</strong><br>' + res.first_step + '<br><br><button class="btn-main" onclick="document.getElementById(\'nowTitle\').innerText=\'' + res.first_step + '\'; switchNavTab(\'tab-hoje\');">Fazer Isso Agora</button>';
-      } else if (ctx === 'estudos') {
-        const res = await api('/api/modes/study', 'POST', { topic: 'Estudo de hoje' });
-        box.innerHTML = '<strong>Modo Estudos (Blocos Curtos):</strong><br>' + res.blocks.map(b => '• ' + b.title).join('<br>');
-      } else {
-        const res = await api('/api/modes/work', 'POST', { demand: 'Demandas do dia' });
-        box.innerHTML = '<strong>Modo Trabalho:</strong><br>' + res.first_concrete_step;
+      if (out && res) {
+        out.innerText = res.message || res.explanation || 'Mensagem gerada.';
+        out.style.display = 'block';
       }
     }
 
-    // 14 & 25. Regulação Emocional (Item 14 e 25)
-    async function regulateEmotion(emotion) {
-      const res = await api('/api/emotions', 'POST', { emotion });
-      const box = document.getElementById('emotionGuidanceBox');
-      box.style.display = 'block';
-      if (res.is_crisis) {
-        box.innerHTML = '<div style="color:var(--danger); font-weight:800;">' + res.message + '</div><br>' + res.recommendation + '<br><br><strong>' + res.hotline + '</strong>';
-      } else {
-        box.innerHTML = '<strong>' + res.emotion + ':</strong> ' + res.empathy_message + '<br><br>👉 <em>Exercício:</em> ' + res.grounding_exercise + '<br><br>' + res.gentle_suggestion;
-      }
-    }
-
-    // 2. Meu Estado & Sensorial (Item 2 e 13)
-    async function saveQuickStateLog() {
-      const focus = document.getElementById('stateFocusInput').value;
-      const overload = document.getElementById('stateOverloadInput').value;
-      await api('/api/state', 'POST', { focus, overload });
-      showToast("Estado registrado com sucesso.");
-    }
-
-    async function logSensoryTrigger(type) {
-      await api('/api/sensory', 'POST', { [type]: 'incomodando' });
-      const box = document.getElementById('sensoryActionBox');
-      box.style.display = 'block';
-      const hints = {
-        som: "Sugestão: Coloque fones com ruído branco ou feche a porta por 5 minutos.",
-        luz: "Sugestão: Diminua o brilho da tela e ative o Modo Baixo Estímulo abaixo.",
-        pessoas: "Sugestão: Sinalize delicadamente que precisa de 10 minutos de foco agora.",
-        visual: "Sugestão: Empurre a bagunça para fora do seu campo de visão imediato."
-      };
-      box.innerText = hints[type] || "Estímulo registrado. Proteja seus sentidos.";
-    }
-
-    // 15. Reflexão
-    async function saveReflection() {
-      const val = document.getElementById('reflectionInput').value.trim();
-      if (!val) return;
-      await api('/api/reflections', 'POST', { what_happened: val });
-      document.getElementById('reflectionInput').value = '';
-      showToast("Reflexão guardada com gentileza.");
-    }
-
-    // 21. Memória da IA (Item 21)
+    // 16. Memória da IA
     async function loadAiMemories() {
-      const list = await api('/api/memory');
-      const box = document.getElementById('aiMemoryList');
-      if (!box) return;
-      box.innerHTML = (list && list.length) 
-        ? list.map(m => '<div style="background:#182229; padding:8px 12px; border-radius:6px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;"><span>• ' + m.value + '</span><button onclick="deleteMemory(\'' + m.id + '\')" style="background:none; border:none; color:var(--danger); cursor:pointer;">✕</button></div>').join('')
-        : '<em>A IA ainda está aprendendo suas preferências de forma discreta.</em>';
-    }
-
-    async function deleteMemory(id) {
-      await api('/api/memory/' + id, 'DELETE');
-      showToast("Memória excluída com sucesso.");
-      await loadAiMemories();
-    }
-
-    // 22. Feedback
-    async function sendFeedback(helped) {
-      const suggestion = document.getElementById('feedbackSuggestion').value;
-      await api('/api/feedback/strategy', 'POST', { strategy: lastSelectedReason, helped, better_suggestion: suggestion });
-      closeModal('feedbackModal');
-      showToast("Obrigado pelo feedback!");
-    }
-
-    // 26. Acessibilidade
-    function toggleLowStimulus(active) {
-      document.body.classList.toggle('low-stimulus', active);
-      localStorage.setItem('pref_low_stimulus', active ? 'true' : 'false');
-    }
-    function toggleReducedMotion(active) {
-      document.body.classList.toggle('reduced-motion', active);
-      localStorage.setItem('pref_reduced_motion', active ? 'true' : 'false');
-    }
-    function setFontSize(size) {
-      document.body.classList.remove('font-large', 'font-xlarge');
-      if (size === 'large') document.body.classList.add('font-large');
-      if (size === 'xlarge') document.body.classList.add('font-xlarge');
-      localStorage.setItem('pref_font_size', size);
-    }
-    function initPreferences() {
-      if (localStorage.getItem('pref_low_stimulus') === 'true') {
-        document.body.classList.add('low-stimulus');
-        const c = document.getElementById('chkLowStimulus');
-        if (c) c.checked = true;
-      }
-      if (localStorage.getItem('pref_reduced_motion') === 'true') {
-        document.body.classList.add('reduced-motion');
-        const c = document.getElementById('chkReducedMotion');
-        if (c) c.checked = true;
-      }
-      setFontSize(localStorage.getItem('pref_font_size') || 'normal');
-    }
-
-    // 9. Gestão de Tarefas & Meu Dia
-    async function loadTasks() {
-      const tasks = await api('/api/tasks');
-      currentTasks = tasks || [];
-      const pending = currentTasks.filter(t => t.status !== 'concluido');
-      currentNowTask = pending.length > 0 ? pending[0] : null;
-
-      if (currentNowTask) {
-        document.getElementById('nowTitle').innerText = currentNowTask.title;
-        document.getElementById('nowMeta').innerText = "Tempo: " + (currentNowTask.duration_minutes || 5) + " min • Prioridade: " + (currentNowTask.priority || 'hoje');
-        document.getElementById('focusTaskName').innerText = currentNowTask.title;
-      } else {
-        document.getElementById('nowTitle').innerText = "Tudo em dia! Nenhuma ação pendente.";
-        document.getElementById('nowMeta').innerText = "Que tal uma pausa ou definir um próximo micropasso?";
-      }
-
-      // Renderiza lista completa
-      const allBox = document.getElementById('allTasksList');
-      if (allBox) {
-        allBox.innerHTML = currentTasks.map(t => 
-          '<div class="plan-item" style="' + (t.status === 'concluido' ? 'opacity:0.5; text-decoration:line-through;' : '') + '">' +
-            '<span>' + (t.status === 'concluido' ? '✓ ' : '🎯 ') + t.title + ' (' + t.duration_minutes + 'm)</span>' +
-            (t.status !== 'concluido' ? '<button class="btn-secondary" onclick="completeTaskById(\'' + t.id + '\')" style="padding:4px 8px; font-size:11px;">Concluir</button>' : '') +
-          '</div>'
-        ).join('');
-      }
-    }
-
-    async function loadDayPlan() {
-      const plan = await api('/api/day-plan');
-      const ess = document.getElementById('essentialList');
-      if (ess) {
-        ess.innerHTML = (plan.essential && plan.essential.length) 
-          ? plan.essential.map(e => '<div class="plan-item"><span>⭐ ' + (e.title || e) + '</span></div>').join('')
-          : '<em>Nenhum item essencial definido ainda.</em>';
-        document.getElementById('essentialCount').innerText = (plan.essential ? plan.essential.length : 0) + '/3';
-      }
-    }
-
-    async function completeCurrentNowTask() {
-      if (!currentNowTask) return;
-      await api('/api/tasks/' + currentNowTask.id + '/complete', 'POST');
-      showToast("Ação concluída! Um passo de cada vez. ✓");
-      await loadTasks();
-      await loadDashboardStats();
-    }
-
-    async function completeTaskById(id) {
-      await api('/api/tasks/' + id + '/complete', 'POST');
-      showToast("Concluído!");
-      await loadTasks();
-      await loadDashboardStats();
-    }
-
-    function openNewTaskModal() {
-      openModal('newTaskModal');
-    }
-
-    async function submitNewTask() {
-      const title = document.getElementById('newTaskTitle').value.trim();
-      const duration = Number(document.getElementById('newTaskDuration').value) || 5;
-      const group = document.getElementById('newTaskGroup').value;
-      if (!title) return showToast("Digite um título.");
-
-      await api('/api/tasks', 'POST', { title, duration_minutes: duration, priority: group === 'essential' ? 'urgente' : 'hoje' });
-      closeModal('newTaskModal');
-      document.getElementById('newTaskTitle').value = '';
-      showToast("Ação salva com sucesso!");
-      await loadTasks();
-    }
-
-    async function loadDashboardStats() {
-      const res = await api('/api/dashboard/patterns');
-      if (!res) return;
-      const m = document.getElementById('statMicroactions');
-      if (m) m.innerText = res.microactions_completed || 0;
-      const f = document.getElementById('statFocus');
-      if (f) f.innerText = res.focus_sessions_count || 0;
-      const obs = document.getElementById('patternsObservations');
-      if (obs && res.observations) {
-        obs.innerHTML = res.observations.map(o => '<p style="margin-bottom:6px;">• ' + o + '</p>').join('');
-      }
-    }
-
-    // Autenticação e Perfil
-    async function checkAuth() {
-      if (!authToken) {
-        document.getElementById('btnUserTag').innerText = "Entrar";
+      const res = await api('/api/memory');
+      const list = document.getElementById('aiMemoryList');
+      if (!list) return;
+      const mems = res.memories || [];
+      if (mems.length === 0) {
+        list.innerHTML = '<div style="font-size:12px; color:var(--text-muted); font-style:italic;">Nenhuma memória registrada no momento.</div>';
         return;
       }
-      try {
-        const res = await fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + authToken } });
-        if (res.ok) {
-          currentUser = await res.json();
-          document.getElementById('btnUserTag').innerText = currentUser.name ? currentUser.name.split(' ')[0] : 'Minha Conta';
-        } else {
-          authToken = null;
-          localStorage.removeItem('focogentil_token');
-        }
-      } catch (e) {}
+      list.innerHTML = mems.map(m => {
+        return '<div class="task-item">' +
+          '<span class="task-title-text">' + (m.key || 'Padrão') + ': ' + (m.value || m.observation || '') + '</span>' +
+          '<button class="task-btn-mini" onclick="deleteAiMemory(\'' + m.id + '\')">✕</button>' +
+          '</div>';
+      }).join('');
     }
 
-    function openProfileModal() {
-      if (currentUser) {
-        if (confirm("Conectado como " + currentUser.email + ". Deseja sair?")) {
-          localStorage.removeItem('focogentil_token');
-          location.reload();
-        }
-      } else {
-        const email = prompt("Digite seu e-mail para entrar:");
-        if (!email) return;
-        const password = prompt("Digite sua senha:");
-        if (!password) return;
-        loginUser(email, password);
-      }
+    async function deleteAiMemory(id) {
+      await api('/api/memory/' + id, 'DELETE');
+      await loadAiMemories();
+      showToast('Memória excluída.');
     }
 
-    async function loginUser(email, password) {
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-        const data = await res.json();
-        if (data.token) {
-          authToken = data.token;
-          localStorage.setItem('focogentil_token', authToken);
-          showToast("Login realizado com sucesso!");
-          checkAuth();
-          loadTasks();
-        } else {
-          alert("E-mail ou senha incorretos.");
-        }
-      } catch (e) {
-        alert("Erro de conexão ao autenticar.");
-      }
-    }
-
-    // Utilitários de API e Interface
-    async function api(path, method = 'GET', body = null) {
-      const headers = { 'Content-Type': 'application/json' };
-      if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
-      const opts = { method, headers };
-      if (body) opts.body = JSON.stringify(body);
-      try {
-        const r = await fetch(path, opts);
-        return await r.json();
-      } catch (e) {
-        return null;
-      }
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toastMsg');
-      if (!t) return;
-      t.innerText = msg;
-      t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3500);
-    }
-
-    function openModal(id) {
-      const m = document.getElementById(id);
-      if (m) m.style.display = 'flex';
-    }
-
-    function closeModal(id) {
-      const m = document.getElementById(id);
-      if (m) m.style.display = 'none';
-    }
-
-    // Voz Web Speech API (Item 27)
-    function listenForDump() {
-      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        return alert("Reconhecimento de voz não suportado neste navegador. Você pode digitar normalmente!");
-      }
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'pt-BR';
-      recognition.start();
-      showToast("Ouvindo com atenção... fale seus pensamentos.");
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById('brainDumpTextInput').value += ' ' + transcript;
-        showToast("Voz capturada!");
-      };
+    async function clearAllAiMemories() {
+      if (!confirm('Deseja realmente apagar TODAS as memórias da IA sobre seu funcionamento? Essa ação não pode ser desfeita.')) return;
+      const res = await api('/api/memory/clear-all', 'DELETE');
+      await loadAiMemories();
+      showToast(res.message || 'Todas as memórias foram apagadas.');
     }
   </script>
-
-  <!-- Floating Voice Button -->
-  <button id="btnVoiceFloat" class="btn-secondary" style="position:fixed; bottom:76px; right:16px; border-radius:50%; width:50px; height:50px; z-index:90; box-shadow:0 4px 14px rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; font-size:1.3rem; border-color:var(--primary);" onclick="toggleVoiceCapture()" title="Falar Pensamentos">🎙️</button>
-
 </body>
 </html>

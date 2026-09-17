@@ -52,7 +52,7 @@ function decomposeTask(projectText, energyLevel = 'media') {
         step_number: 1,
         title: ignitionAction,
         duration_minutes: ignitionMinutes,
-        why_it_helps: "Passo de ignição imediata com fricção quase zero para desbloquear a dopamina",
+        why_it_helps: "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
         urgency_score: 5
       },
       {
@@ -416,6 +416,58 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // 4.1 Despejar Tudo V3 (5 Categorias: Tarefas, Compromissos, Preocupações, Ideias, Decisões)
+  if (pathname === '/api/brain-dump-v3' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.parseBrainDumpV3(payload.text || payload.raw_text || '', payload.energy || 'media');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  // 4.2 Microação de 30 Segundos
+  if (pathname === '/api/tasks/micro-30s' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.generate30sMicroAction(payload.task || payload.task_title || '');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  // 4.3 Botão Inteligente "Ainda Não Consigo"
+  if (pathname === '/api/unblock/cant-do' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.handleAindaNaoConsigo(
+      payload.task || payload.task_title || '',
+      payload.option || 'menos_passos'
+    );
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  // 4.4 Intervenções Específicas do Estou Travado (8 Opções Principais)
+  if (pathname === '/api/unblock/detailed' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.executeDetailedUnblock(
+      payload.option || payload.reason || 'nao_sei_comecar',
+      payload.task || payload.task_title || '',
+      payload.extra_input || ''
+    );
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  // 4.5 Simplificador de Instruções ("Não entendi a tarefa")
+  if (pathname === '/api/tasks/simplify-instruction' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.simplifyInstruction(payload.instruction || payload.text || '');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
   // 5. Planejamento Adaptativo ("Meu Dia")
   if (pathname === '/api/day-plan' && req.method === 'GET') {
     const user = getAuthUser();
@@ -545,6 +597,15 @@ const server = http.createServer(async (req, res) => {
     const entry = db.saveAiMemory(userId, payload);
     res.writeHead(201, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ success: true, memory: entry }));
+    return;
+  }
+
+  if ((pathname === '/api/memory/clear-all' || pathname === '/api/memory') && req.method === 'DELETE') {
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const cleared = db.clearAllAiMemories(userId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: cleared, message: "Todas as memórias da IA foram apagadas com sucesso." }));
     return;
   }
 
@@ -712,7 +773,7 @@ const server = http.createServer(async (req, res) => {
     if (userMessage === '1') {
       const victoryMsg = (
         "🌟 *Sensacional! Parabéns pelo micropasso concluído!*\n" +
-        "A dopamina veio. Quer fazer a próxima etapa agora ou prefere uma pausa?\n\n" +
+        "Primeiro passo concluído! Quer fazer a próxima etapa agora ou prefere uma pausa?\n\n" +
         "Envie o próximo projeto ou digite *PAUSA* para respirar."
       );
       res.writeHead(200, { 'Content-Type': 'application/xml' });
@@ -1002,7 +1063,7 @@ const server = http.createServer(async (req, res) => {
     const payload = getPayload();
     const settings = db.getBillingSettings();
     const plan = payload.plan || 'vitalicio';
-    const amount = payload.amount || (plan === 'mensal' || plan === 'pro' ? 29.00 : 97.00);
+    const amount = payload.amount || (plan === 'mensal' || plan === 'pro' ? 29.00 : (Number(settings.price) || 49.90));
     const paymentId = 'CHG_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 
     const pixCode = pixService.generateBrCode({
@@ -1102,7 +1163,7 @@ const server = http.createServer(async (req, res) => {
       res.end(JSON.stringify({
         is_authorized: true,
         trial_status: trialStatus,
-        response_text: "🌟 *Sensacional! Parabéns pelo micropasso concluído!*\nA dopamina veio! Vamos para a próxima pequena vitória? 🎉"
+        response_text: "🌟 *Sensacional! Parabéns pelo micropasso concluído!*\nSeu cérebro deu o primeiro passo! Vamos para a próxima vitória com calma? 🎉"
       }));
       return;
     }

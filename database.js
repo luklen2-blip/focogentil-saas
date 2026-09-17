@@ -28,10 +28,10 @@ class LocalDatabase {
       subscriptions: [],    // [ { id, user_id, plan, status: 'active'|'cancelled', started_at } ]
       payments: [],         // [ { payment_id, user_phone, user_id, amount, status: 'pending'|'approved'|'failed'|'cancelled', provider, created_at, is_recurring: false } ]
       billing_settings: {
-        price: 97.00,
-        pix_key: 'contato.focogentil@gmail.com',
-        pix_name: 'FOCOGENTIL',
-        pix_city: 'SAO PAULO',
+        price: 49.90,
+        pix_key: 'luklen2@gmail.com',
+        pix_name: 'Luciano Sant Anna',
+        pix_city: 'Rio de Janeiro',
         mercadopago_token: ''
       }
     };
@@ -64,9 +64,9 @@ class LocalDatabase {
         if (!this.data.user_preferences) this.data.user_preferences = {};
         if (!this.data.worries) this.data.worries = [];
         if (!this.data.day_plans) this.data.day_plans = {};
-        if (!this.data.billing_settings || this.data.billing_settings.pix_name !== 'Luciano Sant Anna' || this.data.billing_settings.pix_key !== 'luklen2@gmail.com') {
+        if (!this.data.billing_settings || this.data.billing_settings.pix_name !== 'Luciano Sant Anna' || this.data.billing_settings.pix_key !== 'luklen2@gmail.com' || this.data.billing_settings.price !== 49.90) {
           this.data.billing_settings = {
-            price: (this.data.billing_settings && this.data.billing_settings.price) || 97.00,
+            price: 49.90,
             pix_key: 'luklen2@gmail.com',
             pix_name: 'Luciano Sant Anna',
             pix_city: 'Rio de Janeiro',
@@ -882,6 +882,13 @@ class LocalDatabase {
     return deleted;
   }
 
+  clearAllAiMemories(userId) {
+    if (!this.data.ai_memory) return true;
+    this.data.ai_memory = this.data.ai_memory.filter(m => m.user_id !== userId);
+    this._save();
+    return true;
+  }
+
   // 5. Feedback das Estratégias ("Isso ajudou?")
   saveStrategyFeedback(userId, feedbackData) {
     if (!this.data.strategy_feedback) this.data.strategy_feedback = [];
@@ -982,15 +989,19 @@ class LocalDatabase {
       breaks = [{ title: 'Pausa suave para água e respiração', duration_minutes: 5, is_break: true }];
     }
 
+    const isOverloaded = (planData.essential && planData.essential.length > 3) || (planData.essentials && planData.essentials.length > 3);
     this.data.day_plans[userKey] = {
       user_id: userId,
       date: todayKey,
       essential: essentials.slice(0, 3),
       essentials: essentials.slice(0, 3),
+      all_essentials: essentials,
       breaks: breaks,
       if_possible: planData.if_possible || [],
       can_wait: planData.can_wait || [],
       energy: planData.energy || 'media',
+      has_overflow: isOverloaded,
+      overflow_warning: isOverloaded ? "Seu dia parece cheio. Quer escolher o que realmente precisa acontecer hoje?" : null,
       updated_at: new Date().toISOString()
     };
     this._save();

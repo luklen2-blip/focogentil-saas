@@ -410,7 +410,7 @@ class AIService {
       },
       entediado: {
         title: "Estou entediado",
-        empathy: "Cérebros neurodivergentes precisam de estímulo de dopamina para iniciar tarefas monótonas.",
+        empathy: "Cérebros neurodivergentes precisam de novidade e passos muito curtos para ativar a iniciativa em tarefas monótonas.",
         strategy: "desafio_curto",
         action: `Desafio rápido: coloque um cronômetro de 3 minutos e veja o quanto consegue avançar antes do alarme tocar!`,
         duration_minutes: 3,
@@ -844,6 +844,27 @@ class AIService {
         mode: 'orientacao',
         guidance: 'Dificuldade de saber qual direção tomar. Vamos clarear suas prioridades com gentileza.',
         suggested_action: 'Gere seu Plano Mínimo do Dia com apenas as 2 ações essenciais.'
+      },
+      mente_acelerada: {
+        state: 'mente_acelerada',
+        title: 'Mente Acelerada',
+        mode: 'organizar_pensamentos',
+        guidance: 'Fluxo rápido de pensamentos competindo pela atenção. Não tente resolver tudo agora.',
+        suggested_action: 'Abra o Organizar Pensamentos e solte tudo em texto ou voz sem filtro.'
+      },
+      acelerado: {
+        state: 'mente_acelerada',
+        title: 'Mente Acelerada',
+        mode: 'organizar_pensamentos',
+        guidance: 'Fluxo rápido de pensamentos competindo pela atenção. Não tente resolver tudo agora.',
+        suggested_action: 'Abra o Organizar Pensamentos e solte tudo em texto ou voz sem filtro.'
+      },
+      travado: {
+        state: 'travado',
+        title: 'Estou Travado',
+        mode: 'desbloqueio',
+        guidance: 'Inércia ou bloqueio executivo. Não force o todo. Vamos descobrir apenas o menor primeiro movimento.',
+        suggested_action: 'Abra o motor Estou Travado e receba apenas a primeira microação.'
       }
     };
     return map[s] || {
@@ -874,6 +895,345 @@ class AIService {
     return {
       insights: observations,
       disclaimer: "Estas observações são baseadas no seu histórico de uso e servem como apoio à sua rotina, sem caráter de diagnóstico clínico."
+    };
+  }
+
+  // =============================================================
+  // 14. DESPEJAR TUDO V3 (5 CATEGORIAS FORMAIS)
+  // Tarefas, Compromissos, Preocupações, Ideias, Decisões
+  // =============================================================
+  async parseBrainDumpV3(text = '', energyLevel = 'media') {
+    const rawLines = (text || '')
+      .split(/[\n;.]|\be\b|\btambém\b|\bdepois\b/i)
+      .map(s => s.trim())
+      .filter(s => s.length > 2);
+
+    const categories = {
+      tasks: [],        // ✓ Tarefas
+      events: [],       // 📅 Compromissos
+      worries: [],      // 💭 Preocupações
+      ideas: [],        // 💡 Ideias
+      decisions: []     // ❓ Decisões
+    };
+
+    const worryTriggers = ['preocupado', 'preocupada', 'preocupação', 'medo', 'ansiedade', 'ansioso', 'ansiosa', 'e se', 'se der errado', 'inseguro', 'angústia', 'receio', 'culpa', 'nervoso'];
+    const eventTriggers = ['reunião', 'consulta', 'às', 'as', 'horas', 'amanhã', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo', 'compromisso', 'aniversário', 'médico', 'dentista', 'marcado', 'evento'];
+    const ideaTriggers = ['ideia', 'poderia', 'talvez', 'projeto', 'pensar em', 'criar', 'escrever sobre', 'imaginar', 'estudar sobre', 'e se criássemos'];
+    const decisionTriggers = ['decidir', 'escolher', 'dúvida', 'não sei se', 'comprar ou', 'fazer ou', 'qual escolher', 'decisão', 'indeciso'];
+
+    for (let i = 0; i < rawLines.length; i++) {
+      const line = rawLines[i];
+      const lower = line.toLowerCase();
+      const itemText = line.charAt(0).toUpperCase() + line.slice(1);
+      const itemId = 'bd3_' + Date.now() + '_' + i;
+
+      if (worryTriggers.some(w => lower.includes(w))) {
+        categories.worries.push({ id: itemId, text: itemText, category: 'preocupacao', default_action: 'guardar' });
+      } else if (eventTriggers.some(e => lower.includes(e))) {
+        categories.events.push({ id: itemId, text: itemText, category: 'compromisso', default_action: 'lembrete' });
+      } else if (decisionTriggers.some(d => lower.includes(d))) {
+        categories.decisions.push({ id: itemId, text: itemText, category: 'decisao', default_action: 'plano_dia' });
+      } else if (ideaTriggers.some(id => lower.includes(id))) {
+        categories.ideas.push({ id: itemId, text: itemText, category: 'ideia', default_action: 'guardar' });
+      } else {
+        categories.tasks.push({
+          id: itemId,
+          text: itemText,
+          title: itemText,
+          category: 'tarefa',
+          duration_minutes: energyLevel === 'baixa' ? 3 : 10,
+          default_action: 'tarefa'
+        });
+      }
+    }
+
+    if (rawLines.length > 0 && Object.values(categories).every(arr => arr.length === 0)) {
+      categories.tasks.push({
+        id: 'bd3_' + Date.now() + '_0',
+        text: text.trim(),
+        title: text.trim(),
+        category: 'tarefa',
+        duration_minutes: 5,
+        default_action: 'tarefa'
+      });
+    }
+
+    const firstAction = (categories.tasks[0] ? (categories.tasks[0].title || categories.tasks[0].text) : (categories.decisions[0] ? categories.decisions[0].text : "Fazer uma pequena pausa restaurativa"));
+
+    return {
+      message: "Tudo foi tirado da sua cabeça e organizado em 5 categorias acolhedoras. Nada será executado sem sua confirmação.",
+      summary: "Tudo foi tirado da sua cabeça e organizado em 5 categorias acolhedoras. Nada será executado sem sua confirmação.",
+      recommended_next_action: firstAction,
+      categories: categories,
+      counts: {
+        tasks: categories.tasks.length,
+        events: categories.events.length,
+        worries: categories.worries.length,
+        ideas: categories.ideas.length,
+        decisions: categories.decisions.length
+      },
+      available_actions: [
+        { key: 'to_task', label: 'Transformar em Tarefa' },
+        { key: 'to_day_plan', label: 'Plano do Dia' },
+        { key: 'to_reminder', label: 'Lembrete' },
+        { key: 'to_idea', label: 'Ideia' },
+        { key: 'to_store', label: 'Guardar' }
+      ]
+    };
+  }
+
+  // =============================================================
+  // 15. MICROAÇÃO DE 30 SEGUNDOS ("COMEÇAR POR 30 SEGUNDOS")
+  // =============================================================
+  async generate30sMicroAction(taskTitle = '') {
+    const clean = (taskTitle || 'sua tarefa').trim();
+    let action = `Posicione o material ou abra a página principal de "${clean}".`;
+    const lower = clean.toLowerCase();
+    if (lower.includes('estud') || lower.includes('ler') || lower.includes('livro')) {
+      action = `Abra o livro/material de "${clean}" na página inicial.`;
+    } else if (lower.includes('escrever') || lower.includes('email') || lower.includes('relatório') || lower.includes('texto')) {
+      action = `Abra o documento em branco e digite apenas a primeira palavra de "${clean}".`;
+    } else if (lower.includes('arrumar') || lower.includes('limpar') || lower.includes('cozinha') || lower.includes('quarto')) {
+      action = `Pegue apenas 1 único objeto de "${clean}" com a mão e coloque no lugar.`;
+    } else if (lower.includes('pagar') || lower.includes('banco') || lower.includes('conta')) {
+      action = `Abra o app do banco ou coloque a conta na sua frente.`;
+    }
+
+    return {
+      task: clean,
+      task_title: clean,
+      duration_seconds: 30,
+      time_seconds: 30,
+      micro_action: action,
+      reassurance: "Apenas 30 segundos de contato físico. Não se cobre terminar.",
+      prompt_after: "Pronto?",
+      options: ["Continuar", "Parar por enquanto"],
+      post_30s: {
+        prompt: "Pronto?",
+        options: [
+          { key: "continue", label: "Continuar", message: "Excelente! Você quebrou a inércia." },
+          { key: "stop", label: "Parar por enquanto", message: "Vitória do mesmo jeito! O contato inicial já conta e reduz o bloqueio para a próxima vez." }
+        ]
+      }
+    };
+  }
+
+  // =============================================================
+  // 16. BOTÃO INTELIGENTE: "AINDA NÃO CONSIGO"
+  // =============================================================
+  async handleAindaNaoConsigo(taskTitle = '', chosenOption = 'menos_passos') {
+    const clean = (taskTitle || 'sua tarefa').trim();
+    const opt = String(chosenOption || 'menos_passos').toLowerCase();
+    let res = {};
+
+    if (opt === 'menos_tempo') {
+      const micro30 = await this.generate30sMicroAction(clean);
+      res = {
+        option: 'menos_tempo',
+        title: "Versão de 30 Segundos",
+        message: "Tudo bem. Vamos reduzir o tempo ao mínimo absoluto:",
+        empathy: "Tudo bem. Vamos reduzir o tempo ao mínimo absoluto:",
+        action: micro30.micro_action,
+        action_step: micro30.micro_action,
+        duration_seconds: 30,
+        button: "FAZER OS 30 SEGUNDOS"
+      };
+    } else if (opt === 'explicar_melhor' || opt === 'explicar') {
+      res = {
+        option: 'explicar_melhor',
+        title: "Explicação em Linguagem Simples",
+        message: `Não se preocupe com o todo de "${clean}". Aqui está o que realmente importa agora:`,
+        empathy: `Não se preocupe com o todo de "${clean}". Aqui está o que realmente importa agora:`,
+        action: `Essa tarefa só precisa que você dê um toque inicial. Esqueça o resultado perfeito. O primeiro passo é apenas encostar no material.`,
+        action_step: `Essa tarefa só precisa que você dê um toque inicial. Esqueça o resultado perfeito. O primeiro passo é apenas encostar no material.`,
+        duration_minutes: 2,
+        button: "ENTENDI, TENTAR MICROAÇÃO"
+      };
+    } else if (opt === 'fazer_junto') {
+      res = {
+        option: 'fazer_junto',
+        title: "Modo Companhia (Fazer Junto)",
+        message: "Eu fico aqui com você. Vamos fazer um único movimento agora:",
+        empathy: "Eu fico aqui com você. Vamos fazer um único movimento agora:",
+        action: `Passo 1 de nós dois: Você só precisa olhar para "${clean}" e respirar fundo uma vez. Feito isso, me avise.`,
+        action_step: `Passo 1 de nós dois: Você só precisa olhar para "${clean}" e respirar fundo uma vez. Feito isso, me avise.`,
+        duration_minutes: 1,
+        button: "RESPIREI, QUAL O PRÓXIMO?"
+      };
+    } else if (opt === 'deixar_depois' || opt === 'adiar') {
+      res = {
+        option: 'deixar_depois',
+        title: "Guardar Sem Culpa",
+        message: "Deixar para depois quando você está no limite é um ato de sabedoria e autorregulação, não de preguiça.",
+        empathy: "Deixar para depois quando você está no limite é um ato de sabedoria e autorregulação, não de preguiça.",
+        action: `Guardamos "${clean}" com segurança para um momento de maior energia.`,
+        action_step: `Guardamos "${clean}" com segurança para um momento de maior energia.`,
+        button: "CONCLUIR POR HOJE"
+      };
+    } else if (opt === 'pausa' || opt === 'preciso_pausa') {
+      res = {
+        option: 'preciso_pausa',
+        title: "Pausa Restaurativa",
+        message: "Seu cérebro também precisa de momentos de recuperação. Vamos recarregar a bateria primeiro.",
+        empathy: "Seu cérebro também precisa de momentos de recuperação. Vamos recarregar a bateria primeiro.",
+        action: "Beba um copo de água fresca e olhe para o ponto mais distante pela janela por 2 minutos.",
+        action_step: "Beba um copo de água fresca e olhe para o ponto mais distante pela janela por 2 minutos.",
+        duration_minutes: 5,
+        button: "INICIAR PAUSA"
+      };
+    } else {
+      // 'menos_passos' (Default)
+      res = {
+        option: 'menos_passos',
+        title: "Menor Passo Físico Possível",
+        message: "Tudo bem! Se esse passo pareceu pesado, vamos fatiar para o menor átomo da realidade:",
+        empathy: "Tudo bem! Se esse passo pareceu pesado, vamos fatiar para o menor átomo da realidade:",
+        action: `Apenas aponte o dedo para onde "${clean}" está ou encoste a mão no material por 10 segundos.`,
+        action_step: `Apenas aponte o dedo para onde "${clean}" está ou encoste a mão no material por 10 segundos.`,
+        duration_seconds: 15,
+        button: "FIZ O MENOR PASSO"
+      };
+    }
+    return res;
+  }
+
+  // =============================================================
+  // 17. INTERVENÇÃO ESPECÍFICA DAS 8 OPÇÕES DO "ESTOU TRAVADO"
+  // =============================================================
+  async executeDetailedUnblock(optionKey, taskTitle = '', extraInput = '') {
+    const clean = (taskTitle || 'sua tarefa').trim();
+    const key = String(optionKey || 'nao_sei_comecar').toLowerCase();
+    let result = {};
+
+    if (key.includes('comecar') || key === 'nao_sei_por_onde_comecar') {
+      result = {
+        type: 'nao_sei_por_onde_comecar',
+        title: "Não sei por onde começar",
+        empathy: "Tudo bem não saber o todo. Vamos cuidar só do primeiro centímetro.",
+        step_title: "Somente o Primeiro Passo:",
+        action: `Pegue o que for necessário para "${clean}" e coloque tudo em um único lugar na sua frente.`,
+        action_step: `Pegue o que for necessário para "${clean}" e coloque tudo em um único lugar na sua frente.`,
+        duration_minutes: 2,
+        can_reduce_again: true,
+        reduce_button_label: "Isso ainda está grande",
+        action_button: "Fazer Este Passo (2 min)",
+        next_step_action: "reduzir_novamente"
+      };
+    } else if (key.includes('coisa_demais') || key.includes('tem_coisa_demais')) {
+      result = {
+        type: 'tem_coisa_demais',
+        title: "Tem coisa demais na cabeça",
+        empathy: "Sobrecarga mental paralisa. Vamos esvaziar a memória de trabalho.",
+        action: "Vamos tirar tudo da cabeça agora. Solte pensamentos sem filtro no Despejar Tudo e eu separo entre Tarefas, Compromissos, Preocupações, Ideias e Decisões.",
+        action_step: "Solte pensamentos sem filtro no Despejar Tudo para organizar.",
+        redirect_to: 'despejar_tudo',
+        action_button: "ABRIR DESPEJAR TUDO"
+      };
+    } else if (key.includes('sem_energia') || key.includes('energia')) {
+      result = {
+        type: 'estou_sem_energia',
+        title: "Estou sem energia",
+        empathy: "Quando a bateria está baixa, não forçamos o motor. Modo Bateria ativado.",
+        action: `Modo Bateria ativado. Escondemos o que não for essencial. Sua versão mínima de "${clean}" é: apenas o passo de 2 minutos sentando confortavelmente.`,
+        action_step: `Passo de 2 minutos: Sente-se confortavelmente e apenas abra o arquivo/material de "${clean}".`,
+        mode_activated: 'bateria',
+        action_button: "FAZER VERSÃO MÍNIMA"
+      };
+    } else if (key.includes('sem_tempo') || key.includes('tempo')) {
+      const minutes = Number(extraInput) || 5;
+      result = {
+        type: 'estou_sem_tempo',
+        title: `Estou sem tempo (${minutes} minutos)`,
+        empathy: `Qualquer tempo já é suficiente para quebrar a inércia.`,
+        action: `Adaptado para ${minutes} minutos: Faça apenas o que couber antes do alarme tocar em "${clean}". Quando o alarme apitar, você para sem culpa.`,
+        action_step: `Faça apenas o que couber em ${minutes} minutos em "${clean}". Quando apitar, encerre.`,
+        duration_minutes: minutes,
+        action_button: `INICIAR ${minutes} MINUTOS`
+      };
+    } else if (key.includes('procrastinando')) {
+      result = {
+        type: 'estou_procrastinando',
+        title: "Procrastinação não é preguiça",
+        empathy: "Não se culpe. Procrastinação é sinal de que a tarefa tem um atrito invisível.",
+        message: "O cérebro trava quando há uma barreira invisível. O que está dificultando começar?",
+        action: `Identifique o atrito em "${clean}": Falta clareza? Medo de errar? Tédio?`,
+        action_step: `Apenas dê o primeiro clique em "${clean}", sem obrigação de perfeição.`,
+        action_button: "DAR O PRIMEIRO CLIQUE",
+        barriers: [
+          { key: 'tarefa_grande', label: 'A tarefa é grande demais' },
+          { key: 'tarefa_confusa', label: 'A tarefa está confusa' },
+          { key: 'cansado', label: 'Estou cansado fisicamente/mentalmente' },
+          { key: 'entediado', label: 'Estou entediado / sem interesse' },
+          { key: 'medo_errar', label: 'Medo de errar / perfeccionismo' }
+        ]
+      };
+    } else if (key.includes('nao_entendi') || key.includes('instrucao')) {
+      result = {
+        type: 'nao_entendi_a_tarefa',
+        title: "Não entendi a tarefa",
+        empathy: "Instruções confusas geram paralisia imediata. Vamos simplificar.",
+        message: "Cole abaixo as instruções que você recebeu. Vou traduzir para português direto e passos claros.",
+        action: "Cole a instrução confusa para o Copiloto simplificar.",
+        action_step: "Traduzir a instrução confusa em 3 passos diretos.",
+        needs_input: true,
+        action_button: "SIMPLIFICAR AGORA",
+        input_placeholder: "Cole o texto da instrução aqui..."
+      };
+    } else if (key.includes('ansioso') || key.includes('ansiedade')) {
+      result = {
+        type: 'estou_ansioso',
+        title: "Estou ansioso",
+        empathy: "A ansiedade acelera a mente e trava o corpo. Vamos acalmar o sistema primeiro.",
+        action: "Solte a mandíbula e relaxe os ombros. Respire em 4 tempos pelo nariz e solte em 6 pela boca por 3 vezes.",
+        action_step: "Solte os ombros e faça 3 respirações suaves (4s inspira, 6s expira).",
+        exercise: "3 respirações suaves (4s inspira, 6s expira).",
+        follow_up: "Quer voltar para a tarefa agora ou prefere mais 2 minutos de calma?",
+        action_button: "RESPIRAR E ACALMAR"
+      };
+    } else {
+      result = {
+        type: 'outra_coisa',
+        title: "Estou Travado",
+        empathy: "Seu cérebro está pedindo um momento. Vamos acolher.",
+        action: `Vamos dar o menor passo físico possível em "${clean}". Apenas 60 segundos de atenção.`,
+        action_step: `Faça apenas 60 segundos de contato gentil com "${clean}".`,
+        duration_minutes: 1,
+        action_button: "FAZER POR 1 MINUTO"
+      };
+    }
+    return result;
+  }
+
+  // =============================================================
+  // 18. SIMPLIFICADOR DE INSTRUÇÃO CONFUSA ("NÃO ENTENDI")
+  // =============================================================
+  async simplifyInstruction(rawInstruction = '') {
+    const text = (rawInstruction || '').trim();
+    if (!text) {
+      return {
+        simplified: "Nenhuma instrução informada.",
+        simplified_summary: "Nenhuma instrução informada.",
+        steps: ["Identificar o que precisa ser feito.", "Fazer a primeira ação."],
+        sequential_steps: ["Identificar o que precisa ser feito.", "Fazer a primeira ação."],
+        first_action: "Identificar o que precisa ser feito.",
+        first_ignition_step: "Identificar o que precisa ser feito."
+      };
+    }
+
+    const sentences = text.split(/[.;\n]/).map(s => s.trim()).filter(s => s.length > 5);
+    const steps = sentences.slice(0, 3).map((s, idx) => `Passo ${idx + 1}: ${s}`);
+    if (steps.length === 0) {
+      steps.push(`Passo 1: Ler a primeira linha do documento.`);
+      steps.push(`Passo 2: Anotar a palavra principal.`);
+    }
+
+    return {
+      simplified: `Tradução direta: Faça uma parte de cada vez, sem se preocupar com detalhes secundários agora.`,
+      simplified_summary: `Tradução direta: Faça uma parte de cada vez, sem se preocupar com detalhes secundários agora.`,
+      steps: steps,
+      sequential_steps: steps,
+      first_action: steps[0],
+      first_ignition_step: steps[0]
     };
   }
 }
