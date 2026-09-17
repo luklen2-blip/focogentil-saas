@@ -56,6 +56,14 @@ class LocalDatabase {
         if (!this.data.ai_messages) this.data.ai_messages = [];
         if (!this.data.subscriptions) this.data.subscriptions = [];
         if (!this.data.payments) this.data.payments = [];
+        if (!this.data.state_logs) this.data.state_logs = [];
+        if (!this.data.sensory_logs) this.data.sensory_logs = [];
+        if (!this.data.reflections) this.data.reflections = [];
+        if (!this.data.ai_memory) this.data.ai_memory = [];
+        if (!this.data.strategy_feedback) this.data.strategy_feedback = [];
+        if (!this.data.user_preferences) this.data.user_preferences = {};
+        if (!this.data.worries) this.data.worries = [];
+        if (!this.data.day_plans) this.data.day_plans = {};
         if (!this.data.billing_settings) {
           this.data.billing_settings = {
             price: 97.00,
@@ -748,6 +756,299 @@ class LocalDatabase {
     }
     this._save();
     return this.data.billing_settings;
+  }
+
+  // =============================================================
+  // MÓDULOS DE FUNÇÃO EXECUTIVA E MEMÓRIA ADAPTATIVA
+  // =============================================================
+
+  // 1. Motor de Estado ("Meu Estado Agora")
+  logState(userId, stateData) {
+    if (!this.data.state_logs) this.data.state_logs = [];
+    const log = {
+      id: 'st_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      user_id: userId || 'demo_user',
+      state: stateData.state || stateData.energy || 'media',
+      energy: stateData.energy || stateData.state || 'media',           // 'muito_baixa'|'baixa'|'media'|'boa'|'muito_boa'
+      focus: stateData.focus || 'medio',             // 'disperso'|'medio'|'focado'
+      overload: stateData.overload || 'moderada',     // 'baixa'|'moderada'|'alta'|'extrema'
+      clarity: stateData.clarity || 'media',         // 'nebuloso'|'medio'|'claro'
+      willingness: stateData.willingness || 'media', // 'sem_forcas'|'media'|'disposto'
+      barrier_start: Boolean(stateData.barrier_start),
+      barrier_decide: Boolean(stateData.barrier_decide),
+      need_break: Boolean(stateData.need_break),
+      notes: stateData.notes || '',
+      created_at: new Date().toISOString()
+    };
+    this.data.state_logs.unshift(log);
+    // Também atualiza o nível do usuário
+    this.updateUserProfile(userId, { energy_level: stateData.energy });
+    this._save();
+    return log;
+  }
+
+  getStateHistory(userId, limit = 50) {
+    if (!this.data.state_logs) this.data.state_logs = [];
+    return this.data.state_logs
+      .filter(l => l.user_id === userId)
+      .slice(0, limit);
+  }
+
+  // 2. Ambiente e Sensorial ("Meu Ambiente")
+  logSensory(userId, sensoryData) {
+    if (!this.data.sensory_logs) this.data.sensory_logs = [];
+    const entry = {
+      id: 'sens_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      user_id: userId || 'demo_user',
+      sound: sensoryData.sound || 'normal',          // 'silencio'|'normal'|'barulho_incomodando'
+      light: sensoryData.light || 'normal',          // 'adequada'|'muito_forte'|'muito_escura'
+      people: sensoryData.people || 'normal',        // 'sozinho'|'poucas'|'muitas_distraindo'
+      temperature: sensoryData.temperature || 'ok', // 'frio'|'agradavel'|'calor'
+      textures: sensoryData.textures || 'ok',        // 'confortavel'|'incomodando'
+      notifications: sensoryData.notifications || 'normal', // 'baixas'|'excessivas'
+      visual_stimuli: sensoryData.visual_stimuli || 'normal', // 'limpo'|'bagunca_incomodando'
+      action_taken: sensoryData.action_taken || 'nenhuma',
+      created_at: new Date().toISOString()
+    };
+    this.data.sensory_logs.unshift(entry);
+    this._save();
+    return entry;
+  }
+
+  getSensoryHistory(userId, limit = 50) {
+    if (!this.data.sensory_logs) this.data.sensory_logs = [];
+    return this.data.sensory_logs.filter(s => s.user_id === userId).slice(0, limit);
+  }
+
+  // 3. Reflexão Autônoma ("Entender o que aconteceu")
+  saveReflection(userId, data) {
+    if (!this.data.reflections) this.data.reflections = [];
+    const entry = {
+      id: 'refl_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      user_id: userId || 'demo_user',
+      what_happened: (data.what_happened || '').trim(),
+      noticed: (data.noticed || '').trim(),
+      thoughts: (data.thoughts || '').trim(),
+      feelings: (data.feelings || '').trim(),
+      needed: (data.needed || '').trim(),
+      next_time: (data.next_time || '').trim(),
+      created_at: new Date().toISOString()
+    };
+    this.data.reflections.unshift(entry);
+    this._save();
+    return entry;
+  }
+
+  getReflections(userId, limit = 50) {
+    if (!this.data.reflections) this.data.reflections = [];
+    return this.data.reflections.filter(r => r.user_id === userId).slice(0, limit);
+  }
+
+  // 4. Memória Funcional da IA (Opt-in e com controle de exclusão)
+  saveAiMemory(userId, memoryItem) {
+    if (!this.data.ai_memory) this.data.ai_memory = [];
+    const entry = {
+      id: 'mem_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      user_id: userId || 'demo_user',
+      category: memoryItem.category || 'estrategia', // 'estrategia'|'horario'|'comunicacao'|'bloqueio'
+      key: (memoryItem.key || '').trim(),
+      value: (memoryItem.value || '').trim(),
+      confidence: memoryItem.confidence || 'media',
+      created_at: new Date().toISOString()
+    };
+    // Atualiza ou insere se já existe a chave
+    const existingIdx = this.data.ai_memory.findIndex(m => m.user_id === userId && m.key === entry.key);
+    if (existingIdx >= 0) {
+      this.data.ai_memory[existingIdx] = { ...this.data.ai_memory[existingIdx], ...entry };
+    } else {
+      this.data.ai_memory.unshift(entry);
+    }
+    this._save();
+    return entry;
+  }
+
+  getAiMemories(userId) {
+    if (!this.data.ai_memory) this.data.ai_memory = [];
+    return this.data.ai_memory.filter(m => m.user_id === userId);
+  }
+
+  deleteAiMemory(userId, memoryId) {
+    if (!this.data.ai_memory) return false;
+    const initial = this.data.ai_memory.length;
+    this.data.ai_memory = this.data.ai_memory.filter(m => !(m.user_id === userId && m.id === memoryId));
+    const deleted = this.data.ai_memory.length < initial;
+    if (deleted) this._save();
+    return deleted;
+  }
+
+  // 5. Feedback das Estratégias ("Isso ajudou?")
+  saveStrategyFeedback(userId, feedbackData) {
+    if (!this.data.strategy_feedback) this.data.strategy_feedback = [];
+    const entry = {
+      id: 'fb_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      user_id: userId || 'demo_user',
+      strategy: feedbackData.strategy || 'geral',
+      helped: feedbackData.helped || 'sim', // 'sim'|'mais_ou_menos'|'nao'
+      better_suggestion: feedbackData.better_suggestion || '',
+      task_title: feedbackData.task_title || '',
+      created_at: new Date().toISOString()
+    };
+    this.data.strategy_feedback.unshift(entry);
+    this._save();
+    return entry;
+  }
+
+  getStrategyFeedback(userId, limit = 50) {
+    if (!this.data.strategy_feedback) this.data.strategy_feedback = [];
+    return this.data.strategy_feedback.filter(f => f.user_id === userId).slice(0, limit);
+  }
+
+  // 6. Perfil de Preferências do Usuário
+  getUserPreferences(userId) {
+    if (!this.data.user_preferences) this.data.user_preferences = {};
+    return this.data.user_preferences[userId] || {
+      instruction_length: 'passo_a_passo', // 'muito_curta'|'passo_a_passo'|'detalhada'
+      format: 'misto',                     // 'texto'|'voz'|'visual'|'misto'
+      when_tired: 'passos_minimos',        // 'passos_minimos'|'ajuda_escolher'|'pausas'|'uma_tarefa'
+      low_stimulus_mode: false,
+      reduced_motion: false,
+      font_size: 'normal',                 // 'normal'|'grande'|'muito_grande'
+      gentle_reminders_enabled: true,
+      notifications_frequency: 'moderada'  // 'baixa'|'moderada'|'desligada'
+    };
+  }
+
+  updateUserPreferences(userId, newPrefs) {
+    if (!this.data.user_preferences) this.data.user_preferences = {};
+    const current = this.getUserPreferences(userId);
+    this.data.user_preferences[userId] = { ...current, ...newPrefs };
+    this._save();
+    return this.data.user_preferences[userId];
+  }
+
+  // 7. Área de Preocupações ("Guardar Preocupação" no Despejar Tudo)
+  saveWorry(userId, text, category = 'geral') {
+    if (!this.data.worries) this.data.worries = [];
+    const entry = {
+      id: 'wry_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      user_id: userId || 'demo_user',
+      text: (text || '').trim(),
+      category: category,
+      status: 'guardada', // 'guardada'|'acolhida'|'resolvida'
+      created_at: new Date().toISOString()
+    };
+    this.data.worries.unshift(entry);
+    this._save();
+    return entry;
+  }
+
+  getWorries(userId) {
+    if (!this.data.worries) this.data.worries = [];
+    return this.data.worries.filter(w => w.user_id === userId);
+  }
+
+  resolveWorry(userId, worryId) {
+    if (!this.data.worries) return null;
+    const item = this.data.worries.find(w => w.user_id === userId && w.id === worryId);
+    if (item) {
+      item.status = 'resolvida';
+      item.resolved_at = new Date().toISOString();
+      this._save();
+      return item;
+    }
+    return null;
+  }
+
+  // 8. Planejamento Adaptativo ("Meu Dia")
+  saveDayPlan(userId, planData) {
+    if (!this.data.day_plans) this.data.day_plans = {};
+    const todayKey = new Date().toISOString().split('T')[0];
+    const userKey = `${userId}_${todayKey}`;
+
+    let essentials = planData.essentials || planData.essential;
+    if (!essentials || essentials.length === 0) {
+      if (planData.energy === 'baixa') {
+        essentials = [{ title: 'Avançar na única prioridade de hoje por 5 minutos', duration_minutes: 5 }];
+      } else {
+        essentials = [
+          { title: 'Primeira prioridade do dia', duration_minutes: 15 },
+          { title: 'Segunda prioridade do dia', duration_minutes: 15 }
+        ];
+      }
+    }
+    let breaks = planData.breaks;
+    if (!breaks || breaks.length === 0) {
+      breaks = [{ title: 'Pausa suave para água e respiração', duration_minutes: 5, is_break: true }];
+    }
+
+    this.data.day_plans[userKey] = {
+      user_id: userId,
+      date: todayKey,
+      essential: essentials.slice(0, 3),
+      essentials: essentials.slice(0, 3),
+      breaks: breaks,
+      if_possible: planData.if_possible || [],
+      can_wait: planData.can_wait || [],
+      energy: planData.energy || 'media',
+      updated_at: new Date().toISOString()
+    };
+    this._save();
+    return this.data.day_plans[userKey];
+  }
+
+  getDayPlan(userId) {
+    if (!this.data.day_plans) this.data.day_plans = {};
+    const todayKey = new Date().toISOString().split('T')[0];
+    const userKey = `${userId}_${todayKey}`;
+    return this.data.day_plans[userKey] || {
+      user_id: userId,
+      date: todayKey,
+      essential: [],
+      if_possible: [],
+      can_wait: []
+    };
+  }
+
+  // 9. Dashboard de Tendências ("Como tenho funcionado?") - Sem score ou ranking
+  getUserPatterns(userId) {
+    const userTasks = (this.data.tasks || []).filter(t => t.user_id === userId);
+    const completedTasks = userTasks.filter(t => t.status === 'concluido');
+    const stateLogs = (this.data.state_logs || []).filter(s => s.user_id === userId);
+    const focusSessions = (this.data.focus_sessions || []).filter(f => f.user_id === userId);
+    const reflections = (this.data.reflections || []).filter(r => r.user_id === userId);
+    const feedbackList = (this.data.strategy_feedback || []).filter(f => f.user_id === userId);
+
+    const helpfulStrategies = feedbackList.filter(f => f.helped === 'sim').map(f => f.strategy);
+
+    // Contagem de microações
+    const microTasksCompleted = (this.data.projects || [])
+      .filter(p => p.user_id === userId)
+      .reduce((acc, p) => acc + (p.micro_tasks ? p.micro_tasks.filter(m => m.completed).length : 0), 0);
+
+    return {
+      has_ranking: false,
+      has_score: false,
+      tasks_started: userTasks.length,
+      tasks_completed: completedTasks.length,
+      microactions_completed: microTasksCompleted + completedTasks.length,
+      focus_sessions_count: focusSessions.length,
+      reflections_count: reflections.length,
+      state_checks_count: stateLogs.length,
+      most_helpful_strategies: Array.from(new Set(helpfulStrategies)).slice(0, 5),
+      adaptive_insights: [
+        "Você costuma começar melhor quando fatiamos a tarefa para menos de 2 minutos.",
+        "Fazer pausas suaves antes de iniciar a próxima tarefa reduz a sobrecarga."
+      ],
+      observations: [
+        microTasksCompleted > 2 
+          ? "Dividir tarefas em passos menores tem facilitado seus inícios." 
+          : "Começar com ações microscópicas reduz a paralisia.",
+        stateLogs.some(s => s.energy === 'baixa')
+          ? "Você tem respeitado momentos de menor energia, alternando com pausas."
+          : "Você mantém boa consciência do seu nível de clareza mental.",
+        "Nenhuma nota de produtividade ou cobrança. Cada pequeno passo concluído conta."
+      ]
+    };
   }
 }
 

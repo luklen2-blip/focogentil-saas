@@ -356,6 +356,282 @@ const server = http.createServer(async (req, res) => {
   }
 
   // =============================================================
+  // 4.1 ROTAS DE FUNÇÃO EXECUTIVA, ESTADO E REGULAÇÃO V2.1
+  // =============================================================
+
+  // 1. Motor de Estado ("Meu Estado Agora")
+  if (pathname === '/api/state' && req.method === 'POST') {
+    const payload = getPayload();
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const log = db.logState(userId, payload);
+    const guidance = await aiService.adaptiveStateGuidance(payload.state || payload.energy || 'media');
+    res.writeHead(201, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, state: log, log, guidance }));
+    return;
+  }
+
+  if (pathname === '/api/state/history' && req.method === 'GET') {
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const history = db.getStateHistory(userId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, history }));
+    return;
+  }
+
+  // 2. Estou Travado - Intervenções Específicas
+  if (pathname === '/api/unblock/intervene' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.unblockIntervention(
+      payload.reason || 'nao_sei_comecar',
+      payload.task || payload.task_title || payload.title || '',
+      payload.user_state || {},
+      payload.stage || 1
+    );
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  // 3. Decompositor Progressivo em 5 Níveis
+  if (pathname === '/api/tasks/decompose' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.decomposeTaskProgressive(
+      payload.task || payload.task_title || payload.title || '',
+      payload.level || 1,
+      payload.energy || 'media'
+    );
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  // 4. Despejar Tudo V2 (Tarefas vs Preocupações)
+  if (pathname === '/api/brain-dump-v2' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.parseBrainDumpV2(payload.text || payload.raw_text || '', payload.energy || 'media');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  // 5. Planejamento Adaptativo ("Meu Dia")
+  if (pathname === '/api/day-plan' && req.method === 'GET') {
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const plan = db.getDayPlan(userId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(plan));
+    return;
+  }
+
+  if (pathname === '/api/day-plan' && req.method === 'POST') {
+    const payload = getPayload();
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const saved = db.saveDayPlan(userId, payload);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, plan: saved }));
+    return;
+  }
+
+  // 6. Ambiente e Sensorial ("Meu Ambiente")
+  if (pathname === '/api/sensory' && req.method === 'POST') {
+    const payload = getPayload();
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const entry = db.logSensory(userId, payload);
+    const guidance = "Ambiente ajustado com gentileza. Diminua os estímulos ao redor e respire fundo.";
+    res.writeHead(201, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, entry, guidance }));
+    return;
+  }
+
+  if (pathname === '/api/sensory/history' && req.method === 'GET') {
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const history = db.getSensoryHistory(userId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, history }));
+    return;
+  }
+
+  // 7. Regulação Emocional com Guardrail de Segurança (CVV 188)
+  if (pathname === '/api/emotions' && req.method === 'POST') {
+    const payload = getPayload();
+    const guidance = await aiService.emotionalRegulationGuidance(payload.emotion || '');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(guidance));
+    return;
+  }
+
+  // 8. Reflexão ("Entender o que aconteceu")
+  if (pathname === '/api/reflections' && req.method === 'POST') {
+    const payload = getPayload();
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const saved = db.saveReflection(userId, payload);
+    res.writeHead(201, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, reflection: saved }));
+    return;
+  }
+
+  if (pathname === '/api/reflections' && req.method === 'GET') {
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const list = db.getReflections(userId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(list));
+    return;
+  }
+
+  // 9. Comunicação: "Me ajude a explicar"
+  if (pathname === '/api/communication/explain' && req.method === 'POST') {
+    const payload = getPayload();
+    const explanation = await aiService.helpExplain(
+      payload.text || '',
+      payload.category || 'trabalho',
+      payload.tone || 'gentil'
+    );
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(explanation));
+    return;
+  }
+
+  // 10. Modos de Vida (Estudos, Trabalho, Casa)
+  if (pathname === '/api/modes/study' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.studyModeAssistant(payload.topic || '', payload.subaction || 'dividir');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  if (pathname === '/api/modes/work' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.workModeAssistant(payload.demand || payload.task || '', payload.category || 'projetos');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  if (pathname === '/api/modes/home' && req.method === 'POST') {
+    const payload = getPayload();
+    const result = await aiService.homeModeAssistant(
+      payload.demand || '',
+      payload.category || 'limpeza',
+      Boolean(payload.is_minimum_mode)
+    );
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  // 11. Memória Funcional da IA (Visualização e Exclusão pelo Usuário)
+  if (pathname === '/api/memory' && req.method === 'GET') {
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const memories = db.getAiMemories(userId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, memories }));
+    return;
+  }
+
+  if (pathname === '/api/memory' && req.method === 'POST') {
+    const payload = getPayload();
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const entry = db.saveAiMemory(userId, payload);
+    res.writeHead(201, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, memory: entry }));
+    return;
+  }
+
+  const memoryDeleteMatch = pathname.match(/^\/api\/memory\/([^/]+)$/);
+  if (memoryDeleteMatch && req.method === 'DELETE') {
+    const memoryId = memoryDeleteMatch[1];
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const deleted = db.deleteAiMemory(userId, memoryId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: deleted }));
+    return;
+  }
+
+  // 12. Feedback de Estratégias
+  if (pathname === '/api/feedback/strategy' && req.method === 'POST') {
+    const payload = getPayload();
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const fb = db.saveStrategyFeedback(userId, payload);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, feedback: fb }));
+    return;
+  }
+
+  // 13. Dashboard de Tendências ("Como tenho funcionado?")
+  if (pathname === '/api/dashboard/patterns' && req.method === 'GET') {
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const patterns = db.getUserPatterns(userId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(patterns));
+    return;
+  }
+
+  // 14. Perfil de Preferências
+  if (pathname === '/api/preferences' && req.method === 'GET') {
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const prefs = db.getUserPreferences(userId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(prefs));
+    return;
+  }
+
+  if (pathname === '/api/preferences' && (req.method === 'PUT' || req.method === 'POST')) {
+    const payload = getPayload();
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const updated = db.updateUserPreferences(userId, payload);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, preferences: updated }));
+    return;
+  }
+
+  // 15. Área de Preocupações
+  if (pathname === '/api/worries' && req.method === 'GET') {
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const worries = db.getWorries(userId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, worries }));
+    return;
+  }
+
+  if (pathname === '/api/worries' && req.method === 'POST') {
+    const payload = getPayload();
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const worry = db.saveWorry(userId, payload.text, payload.category);
+    res.writeHead(201, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, worry }));
+    return;
+  }
+
+  const worryResolveMatch = pathname.match(/^\/api\/worries\/([^/]+)\/resolve$/);
+  if (worryResolveMatch && req.method === 'POST') {
+    const worryId = worryResolveMatch[1];
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const resolved = db.resolveWorry(userId, worryId);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: !!resolved, worry: resolved }));
+    return;
+  }
+
+  // =============================================================
   // 5. PAINEL ADMINISTRATIVO V2
   // =============================================================
   if (pathname === '/api/admin/metrics' && req.method === 'GET') {
