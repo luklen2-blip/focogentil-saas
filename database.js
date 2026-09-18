@@ -235,9 +235,13 @@ class LocalDatabase {
   }
 
   // --- Usuários Legados e WhatsApp (Compatibilidade Total) ---
-  getUser(phone) {
-    const norm = this.normalizePhone(phone);
-    return this.data.users[norm] || Object.values(this.data.users).find(u => u.phone_number === norm) || null;
+  getUser(identifier) {
+    if (!identifier) return null;
+    const clean = String(identifier).trim();
+    if (this.data.users[clean]) return this.data.users[clean];
+    const norm = this.normalizePhone(clean);
+    if (this.data.users[norm]) return this.data.users[norm];
+    return Object.values(this.data.users).find(u => u.id === clean || u.phone_number === norm || (u.email && u.email.toLowerCase() === clean.toLowerCase())) || null;
   }
 
   registerOrGetUser(phone, name = null) {
@@ -304,18 +308,40 @@ class LocalDatabase {
     }
   }
 
-  expireTrialNow(phone) {
-    const user = this.registerOrGetUser(phone);
-    user.trial_started_at = new Date(Date.now() - 31 * 60 * 1000).toISOString();
+  expireTrialNow(userIdOrPhone) {
+    const user = this.getUser(userIdOrPhone) || this.registerOrGetUser(userIdOrPhone);
+    user.trial_started_at = new Date(Date.now() - 35 * 60 * 1000).toISOString();
+    user.created_at = new Date(Date.now() - 35 * 60 * 1000).toISOString();
     this._save();
     return user;
   }
 
-  resetTrial(phone) {
-    const user = this.registerOrGetUser(phone);
+  resetTrial(userIdOrPhone) {
+    const user = this.getUser(userIdOrPhone) || this.registerOrGetUser(userIdOrPhone);
     user.trial_started_at = new Date().toISOString();
     this._save();
     return user;
+  }
+
+  checkFeatureAccess(userIdOrPhone, feature = 'ai') {
+    const user = this.getUser(userIdOrPhone);
+    if (!user) {
+      return { allowed: true, plan: 'gratuito', in_trial: true };
+    }
+    if (user.is_lifetime_active || user.plan === 'vitalicio' || user.plan === 'pro') {
+      return { allowed: true, plan: user.plan, in_trial: false, is_lifetime: user.plan === 'vitalicio' };
+    }
+    const trial = this.getTrialStatus(user.id || user.phone_number || userIdOrPhone);
+    if (trial.in_trial) {
+      return { allowed: true, plan: 'gratuito', in_trial: true, remaining_seconds: trial.remaining_seconds };
+    }
+    return {
+      allowed: false,
+      plan: 'gratuito',
+      in_trial: false,
+      error: 'UPGRADE_REQUIRED',
+      message: 'Seu período de avaliação gratuita terminou. Assine o plano Pro ou Vitalício (R$ 49,90) para continuar usando as ferramentas de IA.'
+    };
   }
 
   activateLifetimeLicense(phone, paymentId, amount, provider, customerName = null) {

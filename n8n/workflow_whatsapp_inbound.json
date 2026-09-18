@@ -1,0 +1,145 @@
+{
+  "name": "FocoGentil - WhatsApp Inbound & Decomposição Neurodivergente",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "twilio-whatsapp-inbound",
+        "options": {}
+      },
+      "name": "Twilio WhatsApp Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ],
+      "id": "webhook-twilio-inbound"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body.From }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "name": "Valida Remetente",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        460,
+        300
+      ],
+      "id": "if-valid-sender"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://backend:8000/webhook/twilio",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "From",
+              "value": "={{ $json.body.From }}"
+            },
+            {
+              "name": "Body",
+              "value": "={{ $json.body.Body || '' }}"
+            },
+            {
+              "name": "MediaUrl0",
+              "value": "={{ $json.body.MediaUrl0 || '' }}"
+            },
+            {
+              "name": "ProfileName",
+              "value": "={{ $json.body.ProfileName || 'Amigo' }}"
+            }
+          ]
+        },
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        }
+      },
+      "name": "Processar no Motor Neurodivergente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        680,
+        280
+      ],
+      "id": "http-neuro-backend"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.data }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/xml"
+              }
+            ]
+          }
+        }
+      },
+      "name": "Resposta TwiML para Twilio",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        900,
+        280
+      ],
+      "id": "respond-twiml"
+    }
+  ],
+  "connections": {
+    "Twilio WhatsApp Webhook": {
+      "main": [
+        [
+          {
+            "node": "Valida Remetente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valida Remetente": {
+      "main": [
+        [
+          {
+            "node": "Processar no Motor Neurodivergente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar no Motor Neurodivergente": {
+      "main": [
+        [
+          {
+            "node": "Resposta TwiML para Twilio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

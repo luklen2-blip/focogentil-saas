@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tests/validate_system.js && node tests/test_e2e.js && node tests/test_v2_commercial.js",
+    "test": "node tests/run_all.js",
     "test:v2": "node tests/test_v2_commercial.js",
-    "test:legacy": "node tests/validate_system.js && node tests/test_e2e.js"
+    "test:all": "node tests/run_all.js"
   },
   "keywords": [
     "focogentil",

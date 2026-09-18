@@ -1100,25 +1100,74 @@ class AIService {
   // =============================================================
   // 17. INTERVENÇÃO ESPECÍFICA DAS 8 OPÇÕES DO "ESTOU TRAVADO"
   // =============================================================
-  async executeDetailedUnblock(optionKey, taskTitle = '', extraInput = '') {
+  async executeDetailedUnblock(optionKey, taskTitle = '', extraInput = '', stage = 1) {
     const clean = (taskTitle || 'sua tarefa').trim();
     const key = String(optionKey || 'nao_sei_comecar').toLowerCase();
+    const currentStage = Math.max(1, Number(stage) || 1);
     let result = {};
 
     if (key.includes('comecar') || key === 'nao_sei_por_onde_comecar') {
-      result = {
-        type: 'nao_sei_por_onde_comecar',
-        title: "Não sei por onde começar",
-        empathy: "Tudo bem não saber o todo. Vamos cuidar só do primeiro centímetro.",
-        step_title: "Somente o Primeiro Passo:",
-        action: `Pegue o que for necessário para "${clean}" e coloque tudo em um único lugar na sua frente.`,
-        action_step: `Pegue o que for necessário para "${clean}" e coloque tudo em um único lugar na sua frente.`,
-        duration_minutes: 2,
-        can_reduce_again: true,
-        reduce_button_label: "Isso ainda está grande",
-        action_button: "Fazer Este Passo (2 min)",
-        next_step_action: "reduzir_novamente"
-      };
+      if (currentStage === 1) {
+        result = {
+          type: 'nao_sei_por_onde_comecar',
+          title: "Não sei por onde começar",
+          empathy: "Tudo bem não saber o todo. Vamos cuidar só do primeiro centímetro.",
+          step_title: "Somente o Primeiro Passo (Nível 1):",
+          action: `Pegue o que for necessário para "${clean}" e coloque tudo em um único lugar na sua frente.`,
+          action_step: `Pegue o que for necessário para "${clean}" e coloque tudo em um único lugar na sua frente.`,
+          duration_minutes: 2,
+          stage: 1,
+          can_reduce_again: true,
+          reduce_button_label: "Isso ainda está grande 🤏",
+          action_button: "Fazer Este Passo (2 min)",
+          next_step_action: "reduzir_novamente"
+        };
+      } else if (currentStage === 2) {
+        result = {
+          type: 'nao_sei_por_onde_comecar',
+          title: "Reduzindo ainda mais",
+          empathy: "Diminuindo a exigência. Vamos olhar para uma única unidade.",
+          step_title: "Micropasso Reduzido (Nível 2):",
+          action: `Pegue apenas UM documento ou item de "${clean}". Não olhe para o restante.`,
+          action_step: `Pegue apenas UM documento ou item de "${clean}". Não olhe para o restante.`,
+          duration_minutes: 1,
+          stage: 2,
+          can_reduce_again: true,
+          reduce_button_label: "Ainda está grande 🤏",
+          action_button: "Pegar 1 Item (1 min)",
+          next_step_action: "reduzir_novamente"
+        };
+      } else if (currentStage === 3) {
+        result = {
+          type: 'nao_sei_por_onde_comecar',
+          title: "Redução atômica",
+          empathy: "Quase sem esforço. Apenas aproximação visual.",
+          step_title: "Ação Quase Invisível (Nível 3):",
+          action: `Escolha qualquer item ou documento de "${clean}" e apenas olhe para ele por 10 segundos.`,
+          action_step: `Escolha qualquer item ou documento de "${clean}" e apenas olhe para ele por 10 segundos.`,
+          duration_minutes: 1,
+          stage: 3,
+          can_reduce_again: true,
+          reduce_button_label: "Ainda preciso de menos 🤏",
+          action_button: "Apenas Olhar (10s)",
+          next_step_action: "reduzir_novamente"
+        };
+      } else {
+        result = {
+          type: 'nao_sei_por_onde_comecar',
+          title: "Ação física mínima",
+          empathy: "Apenas quebrando a inércia motora com gentileza.",
+          step_title: "Contato Físico Simples (Nível 4):",
+          action: `Apenas aponte com o dedo para o material de "${clean}" e respire fundo uma vez. Contato feito!`,
+          action_step: `Apenas aponte com o dedo para o material de "${clean}" e respire fundo uma vez.`,
+          duration_minutes: 1,
+          stage: 4,
+          can_reduce_again: false,
+          reduce_button_label: "Contato Feito ✓",
+          action_button: "Feito com Sucesso ✓",
+          next_step_action: "concluir_ignicao"
+        };
+      }
     } else if (key.includes('coisa_demais') || key.includes('tem_coisa_demais')) {
       result = {
         type: 'tem_coisa_demais',
@@ -1134,7 +1183,7 @@ class AIService {
         type: 'estou_sem_energia',
         title: "Estou sem energia",
         empathy: "Quando a bateria está baixa, não forçamos o motor. Modo Bateria ativado.",
-        action: `Modo Bateria ativado. Escondemos o que não for essencial. Sua versão mínima de "${clean}" é: apenas o passo de 2 minutos sentando confortavelmente.`,
+        action: `Modo Bateria ativado: escolha apenas uma superfície para organizar ou sente-se confortavelmente e apenas abra "${clean}".`,
         action_step: `Passo de 2 minutos: Sente-se confortavelmente e apenas abra o arquivo/material de "${clean}".`,
         mode_activated: 'bateria',
         action_button: "FAZER VERSÃO MÍNIMA"
@@ -1151,20 +1200,66 @@ class AIService {
         action_button: `INICIAR ${minutes} MINUTOS`
       };
     } else if (key.includes('procrastinando')) {
+      const barrier = String(extraInput || '').toLowerCase();
+      let barrierTitle = "Procrastinação não é preguiça";
+      let barrierEmpathy = "Não se culpe. Procrastinação é sinal de que a tarefa tem um atrito invisível.";
+      let barrierAction = `Apenas dê o primeiro clique em "${clean}", sem obrigação de perfeição.`;
+      let barrierButton = "DAR O PRIMEIRO CLIQUE";
+
+      if (barrier.includes('grande')) {
+        barrierTitle = "Tarefa grande demais";
+        barrierEmpathy = "A tarefa ativou o freio de emergência do cérebro. Vamos fingir que o resto não existe por 2 minutos.";
+        barrierAction = `Escreva em um papel apenas a PRIMEIRA linha ou palavra de "${clean}".`;
+        barrierButton = "ESCREVER 1 PALAVRA";
+      } else if (barrier.includes('confusa')) {
+        barrierTitle = "Tarefa confusa";
+        barrierEmpathy = "Falta de clareza gera paralisia natural. Vamos definir apenas a primeira ação física direta.";
+        barrierAction = `Defina em 5 palavras o primeiro movimento físico necessário para "${clean}".`;
+        barrierButton = "DEFINIR 1 MOVIMENTO";
+      } else if (barrier.includes('cansado')) {
+        barrierTitle = "Cansaço físico ou mental";
+        barrierEmpathy = "O corpo está pedindo acolhimento. Modo Bateria ativado.";
+        barrierAction = `Sente-se confortavelmente e fique apenas 2 minutos com o arquivo de "${clean}" aberto.`;
+        barrierButton = "FAZER 2 MINUTOS SENTADO";
+      } else if (barrier.includes('tedio') || barrier.includes('entediado')) {
+        barrierTitle = "Tédio ou falta de estímulo";
+        barrierEmpathy = "O cérebro precisa de novidade para engatar. Vamos fazer um desafio relâmpago de 30 segundos.";
+        barrierAction = `Veja quanto você consegue rabiscar de "${clean}" em exatos 30 segundos!`;
+        barrierButton = "DESAFIO DE 30 SEGUNDOS";
+      } else if (barrier.includes('medo') || barrier.includes('errar')) {
+        barrierTitle = "Medo de errar / Perfeccionismo";
+        barrierEmpathy = "Perfeccionismo é medo disfarçado de exigência. Feito é muito melhor do que perfeito.";
+        barrierAction = `Faça propositalmente uma versão rascunhada, feia e rápida de "${clean}" por 2 minutos.`;
+        barrierButton = "FAZER RASCUNHO FEIO";
+      } else if (barrier.includes('escolher')) {
+        barrierTitle = "Paralisia de escolha";
+        barrierEmpathy = "Muitas opções travam a decisão. O Copiloto escolheu por você.";
+        barrierAction = `Comece pelo primeiríssimo item de "${clean}". Os demais ficam congelados até você terminar.`;
+        barrierButton = "INICIAR ESCOLHA DO COPILOTO";
+      } else if (barrier.includes('ambiente')) {
+        barrierTitle = "Ambiente com atrito";
+        barrierEmpathy = "Estímulos excessivos competem pela sua atenção. Vamos rebaixar os ruídos.";
+        barrierAction = `Coloque fones ou feche os olhos por 20 segundos e respire fundo antes de abrir "${clean}".`;
+        barrierButton = "FECHAR OLHOS E RESPIRAR";
+      }
+
       result = {
         type: 'estou_procrastinando',
-        title: "Procrastinação não é preguiça",
-        empathy: "Não se culpe. Procrastinação é sinal de que a tarefa tem um atrito invisível.",
+        title: barrierTitle,
+        empathy: barrierEmpathy,
         message: "O cérebro trava quando há uma barreira invisível. O que está dificultando começar?",
-        action: `Identifique o atrito em "${clean}": Falta clareza? Medo de errar? Tédio?`,
-        action_step: `Apenas dê o primeiro clique em "${clean}", sem obrigação de perfeição.`,
-        action_button: "DAR O PRIMEIRO CLIQUE",
+        action: barrierAction,
+        action_step: barrierAction,
+        action_button: barrierButton,
         barriers: [
-          { key: 'tarefa_grande', label: 'A tarefa é grande demais' },
-          { key: 'tarefa_confusa', label: 'A tarefa está confusa' },
-          { key: 'cansado', label: 'Estou cansado fisicamente/mentalmente' },
-          { key: 'entediado', label: 'Estou entediado / sem interesse' },
-          { key: 'medo_errar', label: 'Medo de errar / perfeccionismo' }
+          { key: 'tarefa_grande', label: '📦 Tarefa grande demais' },
+          { key: 'tarefa_confusa', label: '❓ Tarefa confusa' },
+          { key: 'cansado', label: '🪫 Cansado física/mentalmente' },
+          { key: 'entediado', label: '🥱 Entediado / sem interesse' },
+          { key: 'medo_errar', label: '🎯 Medo de errar / perfeccionismo' },
+          { key: 'nao_sei_escolher', label: '🧭 Não sei escolher' },
+          { key: 'ambiente', label: '🔊 Ambiente com atrito' },
+          { key: 'outra_coisa', label: '💬 Outra barreira' }
         ]
       };
     } else if (key.includes('nao_entendi') || key.includes('instrucao')) {
@@ -1234,6 +1329,92 @@ class AIService {
       sequential_steps: steps,
       first_action: steps[0],
       first_ignition_step: steps[0]
+    };
+  }
+
+  // =============================================================
+  // 19. INFERÊNCIA COGNITIVA DE ESTADO POR CONVERSA (ITEM 3)
+  // =============================================================
+  async inferStateAndIntervention(text = '', currentContext = {}) {
+    const raw = String(text || '').toLowerCase().trim();
+    
+    // Análise semântica e comportamental de marcadores
+    const hasSobrecarga = /(muit[ao]s?|pilha|tr[eê]s trabalhos|mil coisas|não dou conta|sobrecarregad[ao]|acumulad[ao]|pressão|sufocad[ao]|demais)/i.test(raw);
+    const hasPoucoTempo = /(minutos|reunião daqui|pouco tempo|sem tempo|correndo|urgente|daqui a|não tenho tempo|prazo)/i.test(raw);
+    const hasTravamento = /(não consigo começar|travad[ao]|empacad[ao]|não sei por onde|imóvel|paralisad[ao]|bloquead[ao]|procrastin)/i.test(raw);
+    const hasBaixaEnergia = /(cansad[ao]|exausto|sem energia|baixa energia|morto de sono|sem forças|esgotad[ao]|bateria fraca|desânimo)/i.test(raw);
+    const hasMenteAcelerada = /(mente acelerada|acelerad[ao]|pensamentos voando|não paro de pensar|mil pensamentos|ansios[ao]|pânico|angústia)/i.test(raw);
+    const hasConfuso = /(não entendi|confus[ao]|complicad[ao]|perdido|não sei o que fazer)/i.test(raw);
+
+    const inferredStates = [];
+    if (hasSobrecarga) inferredStates.push('sobrecarregado');
+    if (hasPoucoTempo) inferredStates.push('pouco_tempo');
+    if (hasTravamento) inferredStates.push('travado');
+    if (hasBaixaEnergia) inferredStates.push('baixa_energia');
+    if (hasMenteAcelerada) inferredStates.push('mente_acelerada');
+    if (hasConfuso) inferredStates.push('confuso');
+
+    let primaryState = 'equilibrado';
+    let label = '🟡 Equilibrado';
+    let interventionMessage = '';
+    let firstAction = '';
+    let durationMinutes = 5;
+
+    // Regra de Ouro: Quanto maior a sobrecarga, MENOR a resposta (Item 11 e 24)
+    if (hasSobrecarga && hasPoucoTempo) {
+      primaryState = 'sobrecarga_tempo';
+      label = '😵 Sobrecarga + ⏰ Pouco Tempo';
+      interventionMessage = 'Detectamos sobrecarga e urgência de tempo. Vamos desligar o ruído e priorizar somente a próxima ação.';
+      firstAction = 'Escolha apenas 1 trabalho e abra o arquivo agora. O restante fica congelado.';
+      durationMinutes = 2;
+    } else if (hasSobrecarga || (hasTravamento && hasMenteAcelerada)) {
+      primaryState = 'sobrecarregado';
+      label = '😵 Sobrecarregado';
+      interventionMessage = 'Sua mente está cheia. Antes de executar qualquer tarefa, vamos esvaziar a cabeça.';
+      firstAction = 'Despeje tudo o que está pensando no Despejar Tudo para aliviar a sobrecarga.';
+      durationMinutes = 2;
+    } else if (hasBaixaEnergia) {
+      primaryState = 'baixa_energia';
+      label = '🔴 Baixa Energia';
+      interventionMessage = 'Respeitamos seu corpo. Modo Bateria ativado: apenas o mínimo viável.';
+      firstAction = 'Sente-se confortavelmente e abra o material por apenas 2 minutos.';
+      durationMinutes = 2;
+    } else if (hasTravamento) {
+      primaryState = 'travado';
+      label = '🧱 Travado para Iniciar';
+      interventionMessage = 'Tudo bem travar. Não vamos fazer a tarefa inteira. Vamos apenas tocar nela.';
+      firstAction = 'Apenas abra o documento ou material. Nada de escrever por enquanto.';
+      durationMinutes = 1;
+    } else if (hasPoucoTempo) {
+      primaryState = 'pouco_tempo';
+      label = '⏰ Tempo Limitado';
+      interventionMessage = 'Tempo curto é excelente para criar foco. Faça apenas o que couber no cronômetro.';
+      firstAction = 'Trabalhe na primeira pendência até o alarme tocar. Quando apitar, encerre sem culpa.';
+      durationMinutes = 5;
+    } else if (hasMenteAcelerada) {
+      primaryState = 'mente_acelerada';
+      label = '🌀 Mente Acelerada';
+      interventionMessage = 'Pensamentos demais geram ansiedade. Vamos desacelerar com 3 respirações.';
+      firstAction = 'Solte os ombros, inspire em 4 tempos e expire em 6 por 3 vezes.';
+      durationMinutes = 1;
+    } else {
+      primaryState = 'foco_padrao';
+      label = '🟢 Pronto para Avançar';
+      interventionMessage = 'Entendido. Vamos transformar sua intenção no próximo passo claro.';
+      firstAction = `Iniciar o primeiro movimento prático em: "${raw.slice(0, 40) || 'sua prioridade'}".`;
+      durationMinutes = 5;
+    }
+
+    return {
+      success: true,
+      user_input: text,
+      inferred_states: inferredStates.length > 0 ? inferredStates : [primaryState],
+      primary_state: primaryState,
+      state_label: label,
+      intervention_message: interventionMessage,
+      first_action: firstAction,
+      duration_minutes: durationMinutes,
+      recommended_tool: hasSobrecarga ? 'despejar_tudo' : (hasTravamento ? 'estou_travado' : 'foco')
     };
   }
 }

@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /app
+Allow: /checkout
+Allow: /termos
+Allow: /privacidade
+Disallow: /api/
+Disallow: /admin
+
+Sitemap: https://focogentil.com.br/sitemap.xml

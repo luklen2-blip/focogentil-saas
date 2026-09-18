@@ -5,3 +5,7 @@ scratch/
 cloudflared.exe
 .DS_Store
 Thumbs.db
+
+active_tunnel.json
+public_tunnel_url.txt
+tunnel_output.txt

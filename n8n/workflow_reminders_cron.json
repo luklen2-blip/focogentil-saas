@@ -1,0 +1,88 @@
+{
+  "name": "FocoGentil - Cron de Lembretes Automáticos",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "name": "Agendador a cada 5 minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        260,
+        300
+      ],
+      "id": "cron-trigger-5m"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://backend:8000/cron/dispatch-reminders",
+        "options": {}
+      },
+      "name": "Disparar Lembretes Vencidos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        500,
+        300
+      ],
+      "id": "http-dispatch-reminders"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.reminders_dispatched }}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "name": "Houve Lembretes Enviados?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        720,
+        300
+      ],
+      "id": "if-reminders-sent"
+    }
+  ],
+  "connections": {
+    "Agendador a cada 5 minutos": {
+      "main": [
+        [
+          {
+            "node": "Disparar Lembretes Vencidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Disparar Lembretes Vencidos": {
+      "main": [
+        [
+          {
+            "node": "Houve Lembretes Enviados?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

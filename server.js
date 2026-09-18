@@ -380,6 +380,49 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // 1.1 Inferência Cognitiva de Estado por Conversa (Item 3)
+  if (pathname === '/api/state/infer' && req.method === 'POST') {
+    const payload = getPayload();
+    const user = getAuthUser();
+    const userId = user ? user.id : 'demo_user';
+    const result = await aiService.inferStateAndIntervention(payload.text || payload.message || '', payload.context || {});
+    // Persiste no log de estados se detectado
+    if (result.primary_state) {
+      db.logState(userId, { state: result.primary_state, trigger: 'conversational_infer', input: payload.text });
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+    return;
+  }
+
+  // 1.2 Controle Real de Limites e Recursos Pro (Itens 19 e 27 - Teste 15)
+  if ((pathname === '/api/features/check' || pathname === '/api/pro/access') && (req.method === 'GET' || req.method === 'POST')) {
+    const user = getAuthUser();
+    const access = db.checkFeatureAccess(user ? user.id : 'demo_user');
+    if (!access.allowed) {
+      res.writeHead(403, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(access));
+      return;
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(access));
+    return;
+  }
+
+  // 1.3 Simulação de Expiração de Teste para Auditoria (Item 27 - Teste 15)
+  if (pathname === '/api/test/expire-trial' && req.method === 'POST') {
+    const user = getAuthUser();
+    if (user) {
+      db.expireTrialNow(user.id);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, message: 'Trial expirado para teste.' }));
+      return;
+    }
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Não autorizado.' }));
+    return;
+  }
+
   // 2. Estou Travado - Intervenções Específicas
   if (pathname === '/api/unblock/intervene' && req.method === 'POST') {
     const payload = getPayload();
@@ -452,7 +495,8 @@ const server = http.createServer(async (req, res) => {
     const result = await aiService.executeDetailedUnblock(
       payload.option || payload.reason || 'nao_sei_comecar',
       payload.task || payload.task_title || '',
-      payload.extra_input || ''
+      payload.extra_input || '',
+      payload.stage || 1
     );
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));

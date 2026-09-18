@@ -1,0 +1,103 @@
+{
+  "name": "FocoGentil - Ativação de Pagamento Único (Sem Vínculo Contínuo)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "payment-approved-webhook",
+        "options": {}
+      },
+      "name": "Webhook Gateway de Pagamento",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        260,
+        300
+      ],
+      "id": "webhook-payment-approved"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza os dados do gateway (Mercado Pago, Stripe ou Kiwify/Hotmart)\n// e assegura que é um pagamento único sem cobrança recorrente.\nconst body = $input.item.json.body || $input.item.json;\n\nconst phone = body.phone_number || body.customer_phone || (body.payer && body.payer.phone && body.payer.phone.number) || '';\nconst paymentId = body.id || body.payment_id || body.data?.id || 'PAY_' + Date.now();\nconst amount = body.transaction_amount || body.amount || 0;\nconst customerName = body.customer_name || (body.payer && body.payer.first_name) || 'Cliente';\n\n// Garante que é pagamento único (is_recurring: false)\nreturn {\n  json: {\n    phone_number: phone,\n    payment_id: String(paymentId),\n    amount: Number(amount),\n    customer_name: customerName,\n    provider: body.provider || 'mercadopago',\n    is_recurring: false\n  }\n};"
+      },
+      "name": "Extrair Dados & Validar Pagamento Único",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ],
+      "id": "code-validate-one-time"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://backend:8000/webhook/payment",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"phone_number\": \"{{ $json.phone_number }}\",\n  \"payment_id\": \"{{ $json.payment_id }}\",\n  \"amount\": {{ $json.amount }},\n  \"customer_name\": \"{{ $json.customer_name }}\",\n  \"provider\": \"{{ $json.provider }}\",\n  \"is_recurring\": false\n}"
+      },
+      "name": "Ativar Licença Vitalícia no Backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        300
+      ],
+      "id": "http-activate-license"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"message\": \"Licença de pagamento único ativada com sucesso sem assinatura recorrente!\"\n}",
+        "options": {}
+      },
+      "name": "Confirmar para Gateway",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        920,
+        300
+      ],
+      "id": "respond-gateway"
+    }
+  ],
+  "connections": {
+    "Webhook Gateway de Pagamento": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados & Validar Pagamento Único",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados & Validar Pagamento Único": {
+      "main": [
+        [
+          {
+            "node": "Ativar Licença Vitalícia no Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ativar Licença Vitalícia no Backend": {
+      "main": [
+        [
+          {
+            "node": "Confirmar para Gateway",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
