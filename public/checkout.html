@@ -376,7 +376,7 @@
         <p>Acesso completo para sempre sem renovações</p>
       </div>
       <div class="plan-price-callout">
-        <div class="val" id="tabVitalicioPrice">R$ 49,90</div>
+        <div class="val" id="tabVitalicioPrice">R$ 97,00</div>
         <div class="period">pagamento único</div>
       </div>
     </div>
@@ -425,7 +425,7 @@
       <div class="price-tag">
         <div>
           <div style="color: var(--text-muted); font-size: 12px;" id="priceTagLabel">Valor com Acesso Vitalício:</div>
-          <div class="price-current" id="displayPrice">R$ 49,90</div>
+          <div class="price-current" id="displayPrice">R$ 97,00</div>
           <div class="price-info" id="displayPriceSub">⚡ Pagamento Único • Sem Mensalidade</div>
         </div>
       </div>
@@ -507,7 +507,7 @@
         <!-- Aviso Legal de Idade Mínima -->
         <div style="background: #182229; border: 1px solid #2a3942; border-radius: 8px; padding: 12px; margin-bottom: 14px; font-size: 11.5px; color: var(--text-muted); line-height: 1.4;">
           <strong style="color: #53bdeb; display: block; margin-bottom: 3px;">🧒 Diretriz de Idade Mínima & Pagamento:</strong>
-          Uso recomendado a partir de <strong>13 anos</strong> (com consentimento dos pais ou responsáveis para menores de 18 anos). A contratação dos planos pagos é exclusiva para <strong>maiores de 18 anos</strong> ou assistidos pelo titular financeiro.
+          Uso recomendado a partir de <strong>13 anos</strong>. Usuários menores de idade devem utilizar o serviço com conhecimento e acompanhamento dos responsáveis, conforme as regras aplicáveis. A contratação dos planos pagos é restrita a maiores de 18 anos.<strong>maiores de 18 anos</strong> ou assistidos pelo titular financeiro.
         </div>
 
         <!-- Botão Principal de Submissão -->
@@ -525,7 +525,7 @@
       <div style="font-size: 12px; color: var(--pix-cyan); font-weight: bold; text-transform: uppercase;">
         ⚡ Pague via PIX Instantâneo
       </div>
-      <h2 style="font-size: 24px; margin: 6px 0;" id="pixModalAmount">R$ 49,90</h2>
+      <h2 style="font-size: 24px; margin: 6px 0;" id="pixModalAmount">R$ 97,00</h2>
       
       <div id="pixStatusBadge" style="background: rgba(236, 201, 75, 0.15); border: 1px solid var(--gold); color: var(--gold); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px;">
         ⏳ Status: Aguardando Pagamento (Pendente)
@@ -584,7 +584,7 @@
   </div>
 
   <script>
-    let currentSettings = { price: 49.90, pix_key: 'luklen2@gmail.com', pix_name: 'Luciano Sant Anna', pix_city: 'Rio de Janeiro' };
+    let currentSettings = { price: 97.00, pix_key: 'luklen2@gmail.com', pix_name: 'Luciano Sant Anna', pix_city: 'Rio de Janeiro' };
     let currentPlan = 'vitalicio'; // 'vitalicio' | 'mensal'
     let selectedMethod = 'pix'; // 'pix' | 'card'
     let currentGeneratedPix = null;
@@ -645,8 +645,7 @@
         productBadge.className = 'badge-highlight badge-vitalicio';
         productBadge.innerText = '💎 Pagamento Único • Acesso Vitalício';
         productTitle.innerText = 'FocoGentil Copilot para WhatsApp e Web';
-        productDesc.innerText = 'O primeiro copiloto conversacional desenhado especificamente para pessoas com TDAH, autismo e disfunção executiva. Um único investimento para ter tudo para sempre.';
-        featGuarantee.innerHTML = '<span>✓</span> <strong>Sem Mensalidades:</strong> Um único pagamento com acesso garantido sem assinaturas.';
+        productDesc.innerText = 'O copiloto para planejamento pessoal, organização mental e suporte à função executiva. Um único investimento para acesso completo sem mensalidade futura.<span>✓</span> <strong>Sem Mensalidades:</strong> Um único pagamento com acesso garantido sem assinaturas.';
         guaranteeBox.innerHTML = '<strong>🔒 Compromisso Sem Vínculo Contínuo:</strong> Você não terá renovação automática nem cobranças extras. Uma compra = acesso para sempre.';
 
         priceTagLabel.innerText = 'Valor com Acesso Vitalício:';

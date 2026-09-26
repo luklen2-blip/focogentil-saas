@@ -11,7 +11,8 @@ const testSuites = [
   'tests/test_executive_function.js',
   'tests/test_adaptive_copilot_v3.js',
   'tests/test_adaptive_personas.js',
-  'tests/test_master_evolution_15.js'
+  'tests/test_master_evolution_15.js',
+  'tests/test_audit_a_to_t.js'
 ];
 
 function checkHealth() {
@@ -38,7 +39,7 @@ async function main() {
   }
 
   console.log('====================================================');
-  console.log('🚀 EXECUTANDO TODAS AS SUÍTES DE TESTES (112 TESTES)');
+  console.log('🚀 EXECUTANDO TODAS AS SUÍTES DE TESTES (132 TESTES)');
   console.log('====================================================\n');
 
   try {
@@ -49,7 +50,7 @@ async function main() {
     }
 
     console.log('\n====================================================');
-    console.log('🏆 TODOS OS 112 TESTES PASSARAM COM 100% DE SUCESSO!');
+    console.log('🏆 TODOS OS 132 TESTES PASSARAM COM 100% DE SUCESSO!');
     console.log('====================================================');
   } catch (err) {
     console.error('❌ Falha na execução de testes:', err.stdout || err.message);

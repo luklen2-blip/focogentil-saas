@@ -163,7 +163,7 @@ async function runV2Tests() {
         stage: 1
       });
       assert.strictEqual(res1.status, 200);
-      assert(res1.json.action_step.includes('Apenas abra'));
+      assert(res1.json.action_step.includes('Abra o documento') || res1.json.action_step.includes('Apenas abra'));
 
       const res2 = await request('/api/ai/unblock', 'POST', {
         task: 'Fazer o relatório trimestral',

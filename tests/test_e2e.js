@@ -147,7 +147,7 @@ async function runE2ETests() {
     });
 
     // 7. Teste de Simulação via Interface Web (JSON API)
-    await it('API do Simulador Web funciona com suporte a Teoria das Colheres (energia)', async () => {
+    await it('API do Simulador Web funciona com suporte a Adaptação por nível de energia', async () => {
       const res = await request('/api/simulate', 'POST', {
         phone: testPhone,
         message: 'Preparar almoço saudável',

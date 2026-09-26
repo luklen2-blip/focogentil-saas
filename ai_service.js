@@ -113,7 +113,7 @@ class AIService {
         empathy_message: empathyText,
         clean_task: cleanTitle,
         dialog: "Não vamos fazer a tarefa inteira agora.",
-        action_step: `Apenas abra o material ou local de "${cleanTitle}" e respire fundo.`,
+        action_step: `Abra o documento ou material de "${cleanTitle}" e escreva apenas o título. Pronto. O primeiro passo já começou.`,
         duration_minutes: 2,
         button_text: "COMEÇAR"
       };
@@ -376,7 +376,7 @@ class AIService {
         title: "Não sei por onde começar",
         empathy: "Quando o início parece uma névoa, a solução não é planejar tudo. É apenas fazer contato com a tarefa.",
         strategy: "primeiro_passo",
-        action: `Apenas abra o material ou arquivo de "${cleanTitle}" e respire fundo uma vez.`,
+        action: `Abra o documento de "${cleanTitle}" e escreva apenas o título. Pronto. O primeiro passo já começou.`,
         duration_minutes: 2,
         action_button: "ABRI O MATERIAL",
         stage2_action: `Apenas aponte com o dedo para a tela ou pegue o objeto de "${cleanTitle}". Não faça mais nada por 1 minuto.`
@@ -551,7 +551,7 @@ class AIService {
       5: {
         level_name: "Primeiro Movimento Físico",
         description: `O menor contato com a realidade física`,
-        next_step: `Pegar o celular na mão, ou abrir a aba do navegador e respirar fundo`,
+        next_step: `Pegar o celular na mão, ou abrir a aba do navegador e escrever apenas o título. Pronto. O primeiro passo já começou.`,
         duration_minutes: 1
       }
     };
@@ -992,7 +992,7 @@ class AIService {
     if (lower.includes('estud') || lower.includes('ler') || lower.includes('livro')) {
       action = `Abra o livro/material de "${clean}" na página inicial.`;
     } else if (lower.includes('escrever') || lower.includes('email') || lower.includes('relatório') || lower.includes('texto')) {
-      action = `Abra o documento em branco e digite apenas a primeira palavra de "${clean}".`;
+      action = `Abra o documento e escreva apenas o título de "${clean}". Pronto. O primeiro passo já começou.`;
     } else if (lower.includes('arrumar') || lower.includes('limpar') || lower.includes('cozinha') || lower.includes('quarto')) {
       action = `Pegue apenas 1 único objeto de "${clean}" com a mão e coloque no lugar.`;
     } else if (lower.includes('pagar') || lower.includes('banco') || lower.includes('conta')) {
@@ -1158,8 +1158,8 @@ class AIService {
           title: "Ação física mínima",
           empathy: "Apenas quebrando a inércia motora com gentileza.",
           step_title: "Contato Físico Simples (Nível 4):",
-          action: `Apenas aponte com o dedo para o material de "${clean}" e respire fundo uma vez. Contato feito!`,
-          action_step: `Apenas aponte com o dedo para o material de "${clean}" e respire fundo uma vez.`,
+          action: `Apenas aponte com o dedo ou toque no material de "${clean}". Contato físico feito!`,
+          action_step: `Apenas aponte com o dedo ou toque no material de "${clean}". Contato físico feito!`,
           duration_minutes: 1,
           stage: 4,
           can_reduce_again: false,
@@ -1383,7 +1383,7 @@ class AIService {
       primaryState = 'travado';
       label = '🧱 Travado para Iniciar';
       interventionMessage = 'Tudo bem travar. Não vamos fazer a tarefa inteira. Vamos apenas tocar nela.';
-      firstAction = 'Apenas abra o documento ou material. Nada de escrever por enquanto.';
+      firstAction = 'Abra o documento e escreva apenas o título. Pronto. O primeiro passo já começou.';
       durationMinutes = 1;
     } else if (hasPoucoTempo) {
       primaryState = 'pouco_tempo';

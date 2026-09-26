@@ -28,7 +28,7 @@ class LocalDatabase {
       subscriptions: [],    // [ { id, user_id, plan, status: 'active'|'cancelled', started_at } ]
       payments: [],         // [ { payment_id, user_phone, user_id, amount, status: 'pending'|'approved'|'failed'|'cancelled', provider, created_at, is_recurring: false } ]
       billing_settings: {
-        price: 49.90,
+        price: 97.00,
         pix_key: 'luklen2@gmail.com',
         pix_name: 'Luciano Sant Anna',
         pix_city: 'Rio de Janeiro',
@@ -64,9 +64,9 @@ class LocalDatabase {
         if (!this.data.user_preferences) this.data.user_preferences = {};
         if (!this.data.worries) this.data.worries = [];
         if (!this.data.day_plans) this.data.day_plans = {};
-        if (!this.data.billing_settings || this.data.billing_settings.pix_name !== 'Luciano Sant Anna' || this.data.billing_settings.pix_key !== 'luklen2@gmail.com' || this.data.billing_settings.price !== 49.90) {
+        if (!this.data.billing_settings || this.data.billing_settings.pix_name !== 'Luciano Sant Anna' || this.data.billing_settings.pix_key !== 'luklen2@gmail.com' || this.data.billing_settings.price !== 97.00) {
           this.data.billing_settings = {
-            price: 49.90,
+            price: 97.00,
             pix_key: 'luklen2@gmail.com',
             pix_name: 'Luciano Sant Anna',
             pix_city: 'Rio de Janeiro',
@@ -340,7 +340,7 @@ class LocalDatabase {
       plan: 'gratuito',
       in_trial: false,
       error: 'UPGRADE_REQUIRED',
-      message: 'Seu período de avaliação gratuita terminou. Assine o plano Pro ou Vitalício (R$ 49,90) para continuar usando as ferramentas de IA.'
+      message: 'Seu período de avaliação gratuita terminou. Assine o plano Pro (R$ 29/mês) ou Vitalício (R$ 97) para continuar usando as ferramentas de IA.'
     };
   }
 

@@ -10,7 +10,7 @@
 
 1. **Passo de Ignição (Fricção Zero):**
    - O primeiro passo leva **menos de 3 a 5 minutos** (ex: *"Apenas abra o documento e escreva o título"*). Isso quebra a inércia da função executiva.
-2. **Teoria das Colheres (Nível de Energia):**
+2. **Adaptação por nível de energia (Nível de Energia):**
    - Respeita o nível de bateria do usuário (Baixa, Média, Alta). Em dias de esgotamento, oferece apenas tarefas passivas ou o menor passo possível.
 3. **Lembretes Livres de Culpa (*Shame-Free*):**
    - Se o usuário não concluiu uma etapa, o copiloto não cobra nem gera ansiedade. Oferece opções acolhedoras:

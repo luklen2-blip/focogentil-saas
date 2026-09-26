@@ -214,7 +214,7 @@ async function runMasterSpecTests() {
       });
       assert.strictEqual(res1.status, 200);
       assert(res1.json.empathy_message.includes('Procrastinação'));
-      assert(res1.json.action_step.includes('Apenas abra'));
+      assert(res1.json.action_step.includes('Abra o documento') || res1.json.action_step.includes('Apenas abra'));
 
       const res2 = await request('/api/ai/unblock', 'POST', {
         task: 'Limpar a mesa de trabalho',

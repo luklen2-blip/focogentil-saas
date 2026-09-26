@@ -149,6 +149,16 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+    function enforceProFeature(res) {
+    const user = getAuthUser();
+    const access = db.checkFeatureAccess(user ? user.id : 'demo_user');
+    if (!access.allowed) {
+      res.writeHead(403, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(access));
+      return false;
+    }
+    return true;
+  }
   function getAuthUser() {
     const authHeader = req.headers['authorization'] || '';
     if (authHeader.startsWith('Bearer ')) {
@@ -439,6 +449,7 @@ const server = http.createServer(async (req, res) => {
 
   // 3. Decompositor Progressivo em 5 Níveis
   if (pathname === '/api/tasks/decompose' && req.method === 'POST') {
+    if (!enforceProFeature(res)) return;
     const payload = getPayload();
     const result = await aiService.decomposeTaskProgressive(
       payload.task || payload.task_title || payload.title || '',
@@ -452,6 +463,7 @@ const server = http.createServer(async (req, res) => {
 
   // 4. Despejar Tudo V2 (Tarefas vs Preocupações)
   if (pathname === '/api/brain-dump-v2' && req.method === 'POST') {
+    if (!enforceProFeature(res)) return;
     const payload = getPayload();
     const result = await aiService.parseBrainDumpV2(payload.text || payload.raw_text || '', payload.energy || 'media');
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -461,6 +473,7 @@ const server = http.createServer(async (req, res) => {
 
   // 4.1 Despejar Tudo V3 (5 Categorias: Tarefas, Compromissos, Preocupações, Ideias, Decisões)
   if (pathname === '/api/brain-dump-v3' && req.method === 'POST') {
+    if (!enforceProFeature(res)) return;
     const payload = getPayload();
     const result = await aiService.parseBrainDumpV3(payload.text || payload.raw_text || '', payload.energy || 'media');
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -491,6 +504,7 @@ const server = http.createServer(async (req, res) => {
 
   // 4.4 Intervenções Específicas do Estou Travado (8 Opções Principais)
   if (pathname === '/api/unblock/detailed' && req.method === 'POST') {
+    if (!enforceProFeature(res)) return;
     const payload = getPayload();
     const result = await aiService.executeDetailedUnblock(
       payload.option || payload.reason || 'nao_sei_comecar',
@@ -677,6 +691,7 @@ const server = http.createServer(async (req, res) => {
 
   // 13. Dashboard de Tendências ("Como tenho funcionado?")
   if (pathname === '/api/dashboard/patterns' && req.method === 'GET') {
+    if (!enforceProFeature(res)) return;
     const user = getAuthUser();
     const userId = user ? user.id : 'demo_user';
     const patterns = db.getUserPatterns(userId);
@@ -1107,7 +1122,7 @@ const server = http.createServer(async (req, res) => {
     const payload = getPayload();
     const settings = db.getBillingSettings();
     const plan = payload.plan || 'vitalicio';
-    const amount = payload.amount || (plan === 'mensal' || plan === 'pro' ? 29.00 : (Number(settings.price) || 49.90));
+    const amount = payload.amount || (plan === 'mensal' || plan === 'pro' ? 29.00 : (Number(settings.price) || 97.00));
     const paymentId = 'CHG_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 
     const pixCode = pixService.generateBrCode({
@@ -1217,7 +1232,7 @@ const server = http.createServer(async (req, res) => {
       res.end(JSON.stringify({
         is_authorized: true,
         trial_status: trialStatus,
-        response_text: "🤏 *Sem crise!* Vamos dividir em etapas ainda menores:\n👉 *Apenas abra a pasta ou pegue o material na mão e respire.*\nQuando fizer, clique no 1!"
+        response_text: "🤏 *Sem crise!* Vamos dividir em etapas ainda menores:\n👉 *Abra o documento e escreva apenas o título. Pronto. O primeiro passo já começou.*\nQuando fizer, clique no 1!"
       }));
       return;
     }

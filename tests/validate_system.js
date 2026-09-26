@@ -153,7 +153,7 @@ test('Cálculo de lembrete respeita horários de silêncio (22h - 8h)', () => {
 // -------------------------------------------------------------
 test('Usuário novo recebe 30 minutos de teste antes de ser cobrado', () => {
   const db = require('../database');
-  const testTrialPhone = '+551198888000' + Math.floor(Math.random() * 100);
+  const testTrialPhone = '+551198888000' + (Date.now() % 100000);
   
   // Novo usuário entra no sistema
   db.registerOrGetUser(testTrialPhone);
