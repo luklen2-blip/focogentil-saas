@@ -34,9 +34,9 @@ class PixService {
   /**
    * Gera a string oficial do PIX Copia e Cola (BR Code estático ou dinâmico)
    */
-  generateBrCode({ pixKey = 'luklen2@gmail.com', amount, merchantName = 'Luciano Sant Anna', merchantCity = 'Rio de Janeiro', txid = '***' }) {
+  generateBrCode({ pixKey = 'luklen2@gmail.com', amount = 97.00, merchantName = 'Luciano Sant Anna', merchantCity = 'Rio de Janeiro', txid = '***' }) {
     const cleanKey = String(pixKey || 'luklen2@gmail.com').trim();
-    const formattedAmount = Number(amount).toFixed(2);
+    const formattedAmount = Number(amount || 97.00).toFixed(2);
     
     // 26: Merchant Account Information
     const gui = this.formatField('00', 'br.gov.bcb.pix');
@@ -48,17 +48,18 @@ class PixService {
     // 53: Moeda (986 = BRL)
     const currency = this.formatField('53', '986');
     // 54: Valor da transação
-    const amountField = this.formatField('54', formattedAmount);
+    const amountField = Number(formattedAmount) > 0 ? this.formatField('54', formattedAmount) : '';
     // 58: País (BR)
     const country = this.formatField('58', 'BR');
     // 59: Nome do recebedor (máx 25 caracteres, sem acentos)
-    const cleanName = (merchantName || 'Luciano Sant Anna').normalize("NFD").replace(/[\u0300-\u036f]/g, "").slice(0, 25).toUpperCase();
+    const cleanName = (merchantName || 'Luciano Sant Anna').normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9 ]/g, "").slice(0, 25).trim().toUpperCase();
     const nameField = this.formatField('59', cleanName || 'LUCIANO SANT ANNA');
     // 60: Cidade do recebedor (máx 15 caracteres, sem acentos)
-    const cleanCity = (merchantCity || 'Rio de Janeiro').normalize("NFD").replace(/[\u0300-\u036f]/g, "").slice(0, 15).toUpperCase();
+    const cleanCity = (merchantCity || 'Rio de Janeiro').normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9 ]/g, "").slice(0, 15).trim().toUpperCase();
     const cityField = this.formatField('60', cleanCity || 'RIO DE JANEIRO');
     // 62: Dados adicionais (txid)
-    const txidSubfield = this.formatField('05', txid || '***');
+    const safeTxid = String(txid || '***').replace(/[^a-zA-Z0-9*]/g, '').slice(0, 25) || '***';
+    const txidSubfield = this.formatField('05', safeTxid);
     const additionalData = this.formatField('62', txidSubfield);
 
     // Concatenação dos campos base + indicador de CRC (6304)

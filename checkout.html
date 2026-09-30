@@ -552,6 +552,10 @@
         🔄 Verificar Confirmação do Pagamento
       </button>
 
+      <a id="btnPixWhatsApp" href="#" target="_blank" style="display: none; align-items: center; justify-content: center; gap: 8px; width: 100%; background: #25d366; color: #111b21; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 13.5px; text-decoration: none; margin-top: 10px; box-sizing: border-box;">
+        💬 Já pagou? Enviar Comprovante no WhatsApp
+      </a>
+
       <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.4;" id="pixWaitingHelpText">
         Assim que sua transferência for processada pela instituição financeira, o FocoGentil será liberado automaticamente.
       </p>
@@ -753,7 +757,7 @@
     // Carrega configurações comerciais salvas no servidor
     async function loadSettings() {
       try {
-        const res = await fetch('/api/settings');
+        const res = await fetch('/api/settings/public');
         currentSettings = await res.json();
         
         const formatted = Number(currentSettings.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -860,13 +864,22 @@
           document.getElementById('pixModalAmount').innerText = Number(pixData.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
           document.getElementById('pixQrImage').src = pixData.qr_code_url;
           document.getElementById('pixCopiaCola').value = pixData.pix_code;
-          document.getElementById('pixBeneficiary').innerText = pixData.merchant_name || 'FOCOGENTIL';
-          document.getElementById('pixKeyDisplay').innerText = pixData.pix_key;
+          document.getElementById('pixBeneficiary').innerText = pixData.merchant_name || 'Luciano Sant Anna';
+          document.getElementById('pixKeyDisplay').innerText = pixData.pix_key || 'luklen2@gmail.com';
 
           if (currentPlan === 'mensal') {
             document.getElementById('pixModalDesc').innerText = 'Escaneie o QR Code abaixo para pagar a 1ª mensalidade de R$ 29,00 e liberar seu WhatsApp e Web App na hora:';
           } else {
             document.getElementById('pixModalDesc').innerText = 'Escaneie o QR Code abaixo para pagar o acesso vitalício sem nenhuma mensalidade futura:';
+          }
+
+          const waPhone = '5581999990001';
+          const planTitle = currentPlan === 'mensal' ? 'Plano Pro Mensal' : 'Acesso Vitalício';
+          const waText = `Olá Luciano! Acabei de pagar o FocoGentil via PIX no valor de ${Number(pixData.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} (${planTitle}).\n\nNome: ${name}\nE-mail: ${email}\nWhatsApp: ${phone}\nID Pagamento: ${pixData.payment_id}\n\nSegue o comprovante para ativação imediata!`;
+          const btnWa = document.getElementById('btnPixWhatsApp');
+          if (btnWa) {
+            btnWa.href = `https://wa.me/${waPhone}?text=${encodeURIComponent(waText)}`;
+            btnWa.style.display = 'flex';
           }
 
           document.getElementById('pixModal').style.display = 'flex';

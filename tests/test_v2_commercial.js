@@ -27,7 +27,7 @@ function it(desc, fn) {
 function request(path, method = 'GET', body = null, headers = {}) {
   return new Promise((resolve, reject) => {
     const postData = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : null;
-    const reqHeaders = { ...headers };
+    const reqHeaders = { 'X-Admin-Key': 'FocoGentil@Admin2026!MasterKey', ...headers };
     if (postData && !reqHeaders['Content-Type']) {
       reqHeaders['Content-Type'] = 'application/json';
     }

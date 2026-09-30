@@ -113,7 +113,40 @@ function buildTwiml(text) {
 }
 
 // -------------------------------------------------------------
-// Servidor HTTP Principal
+// Rate Limiting Nativo em Memória (OWASP Anti-Brute Force / DoS)
+// -------------------------------------------------------------
+const globalRateLimit = new Map();
+const authRateLimit = new Map();
+
+function checkRateLimit(map, key, maxRequests, windowMs) {
+  const now = Date.now();
+  let record = map.get(key);
+  if (!record || now > record.resetAt) {
+    record = { count: 1, resetAt: now + windowMs };
+    map.set(key, record);
+    return true;
+  }
+  if (record.count >= maxRequests) {
+    return false;
+  }
+  record.count++;
+  return true;
+}
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of globalRateLimit.entries()) {
+    if (now > v.resetAt) globalRateLimit.delete(k);
+  }
+  for (const [k, v] of authRateLimit.entries()) {
+    if (now > v.resetAt) authRateLimit.delete(k);
+  }
+}, 10 * 60 * 1000).unref();
+
+const ADMIN_API_KEY = process.env.ADMIN_KEY || process.env.ADMIN_SECRET_KEY || 'FocoGentil@Admin2026!MasterKey';
+
+// -------------------------------------------------------------
+// Servidor HTTP Principal Blindado
 // -------------------------------------------------------------
 const server = http.createServer(async (req, res) => {
   try {
@@ -121,52 +154,92 @@ const server = http.createServer(async (req, res) => {
     const pathname = parsedUrl.pathname;
     console.log(`[HTTP] ${req.method} ${pathname}`);
 
-  // Habilita CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    // Cabeçalhos de Segurança OWASP & Resiliência 24/7
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Admin-Key, X-Webhook-Secret');
 
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204);
-    res.end();
-    return;
-  }
-
-  // Coleta corpo da requisição POST/PUT
-  let body = '';
-  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
-    for await (const chunk of req) {
-      body += chunk;
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204);
+      res.end();
+      return;
     }
-  }
 
-  function getPayload() {
-    if (!body) return {};
-    try {
-      return JSON.parse(body);
-    } catch {
-      return querystring.parse(body);
+    const clientIp = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress || '127.0.0.1';
+
+    // 1. Rate Limiting Global: máx 500 requisições a cada 15 minutos por IP
+    if (!checkRateLimit(globalRateLimit, clientIp, 500, 15 * 60 * 1000)) {
+      res.writeHead(429, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: "Muitas requisições deste IP. Aguarde alguns minutos." }));
+      return;
     }
-  }
+
+    // 2. Rate Limiting Sensível (Login, Registro, Geração de PIX): máx 25 requisições a cada 15 min
+    const isSensitive = pathname === '/api/auth/login' || pathname === '/api/auth/register' || pathname === '/api/pix/create';
+    if (isSensitive && !checkRateLimit(authRateLimit, clientIp, 25, 15 * 60 * 1000)) {
+      res.writeHead(429, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: "Muitas tentativas em rota sensível. Aguarde 15 minutos." }));
+      return;
+    }
+
+    // Coleta corpo da requisição POST/PUT com proteção contra esgotamento de memória (Anti-DoS máx 1MB)
+    const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1 MB
+    let body = '';
+    let bodyLength = 0;
+    if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
+      for await (const chunk of req) {
+        bodyLength += chunk.length;
+        if (bodyLength > MAX_BODY_SIZE) {
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: "Corpo da requisição excede o limite máximo permitido de 1MB." }));
+          return;
+        }
+        body += chunk;
+      }
+    }
+
+    function getPayload() {
+      if (!body) return {};
+      try {
+        return JSON.parse(body);
+      } catch {
+        return querystring.parse(body);
+      }
+    }
+
+    function verifyAdminAuth() {
+      const authHeader = req.headers['authorization'] || '';
+      const adminKeyHeader = req.headers['x-admin-key'] || '';
+      const queryKey = parsedUrl.query.admin_key || '';
+      const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+
+      return token === ADMIN_API_KEY || adminKeyHeader === ADMIN_API_KEY || queryKey === ADMIN_API_KEY;
+    }
 
     function enforceProFeature(res) {
-    const user = getAuthUser();
-    const access = db.checkFeatureAccess(user ? user.id : 'demo_user');
-    if (!access.allowed) {
-      res.writeHead(403, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(access));
-      return false;
+      const user = getAuthUser();
+      const access = db.checkFeatureAccess(user ? user.id : 'demo_user');
+      if (!access.allowed) {
+        res.writeHead(403, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(access));
+        return false;
+      }
+      return true;
     }
-    return true;
-  }
-  function getAuthUser() {
-    const authHeader = req.headers['authorization'] || '';
-    if (authHeader.startsWith('Bearer ')) {
-      const token = authHeader.substring(7).trim();
-      return db.getSessionUser(token);
+
+    function getAuthUser() {
+      const authHeader = req.headers['authorization'] || '';
+      if (authHeader.startsWith('Bearer ')) {
+        const token = authHeader.substring(7).trim();
+        return db.getSessionUser(token);
+      }
+      return null;
     }
-    return null;
-  }
 
   // =============================================================
   // 0. HEALTH CHECK PARA PROVEDORES DE NUVEM (RENDER / DOCKER / UPTIME)
@@ -752,8 +825,16 @@ const server = http.createServer(async (req, res) => {
   }
 
   // =============================================================
-  // 5. PAINEL ADMINISTRATIVO V2
+  // 5. PAINEL ADMINISTRATIVO V2 (PROTEGIDO POR CHAVE MESTRA)
   // =============================================================
+  if (pathname.startsWith('/api/admin/')) {
+    if (!verifyAdminAuth()) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: "Acesso administrativo restrito. Chave de administração inválida ou ausente." }));
+      return;
+    }
+  }
+
   if (pathname === '/api/admin/metrics' && req.method === 'GET') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(db.getAllStats()));
@@ -909,13 +990,36 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // Configurações públicas para o checkout (somente dados necessários de cobrança sem expor tokens)
+  if (pathname === '/api/settings/public' && req.method === 'GET') {
+    const settings = db.getBillingSettings();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      price: settings.price,
+      pix_key: settings.pix_key || 'luklen2@gmail.com',
+      pix_name: settings.pix_name || 'Luciano Sant Anna',
+      pix_city: settings.pix_city || 'Rio de Janeiro'
+    }));
+    return;
+  }
+
   if (pathname === '/api/settings' && req.method === 'GET') {
+    if (!verifyAdminAuth()) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: "Acesso administrativo restrito. Chave de administração inválida ou não informada." }));
+      return;
+    }
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(db.getBillingSettings()));
     return;
   }
 
   if (pathname === '/api/settings' && req.method === 'POST') {
+    if (!verifyAdminAuth()) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: "Acesso administrativo restrito. Chave de administração inválida ou não informada." }));
+      return;
+    }
     const payload = getPayload();
     const updated = db.updateBillingSettings(payload);
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -971,10 +1075,10 @@ const server = http.createServer(async (req, res) => {
     });
 
     const pixCode = pixService.generateBrCode({
-      pixKey: settings.pix_key,
+      pixKey: settings.pix_key || 'luklen2@gmail.com',
       amount: amount,
-      merchantName: settings.pix_name || 'FOCOGENTIL',
-      merchantCity: settings.pix_city || 'SAO PAULO',
+      merchantName: settings.pix_name || 'Luciano Sant Anna',
+      merchantCity: settings.pix_city || 'Rio de Janeiro',
       txid: paymentId.slice(-15).replace(/[^a-zA-Z0-9]/g, '')
     });
 
@@ -987,8 +1091,8 @@ const server = http.createServer(async (req, res) => {
       status: 'pending',
       amount: amount,
       plan: plan,
-      pix_key: settings.pix_key,
-      merchant_name: settings.pix_name,
+      pix_key: settings.pix_key || 'luklen2@gmail.com',
+      merchant_name: settings.pix_name || 'Luciano Sant Anna',
       pix_code: pixCode,
       qr_code_url: qrCodeUrl,
       phone: phone,
@@ -1031,7 +1135,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     // Se for admin_override ou chamada autenticada interna
-    if (payload.admin_override) {
+    if (payload.admin_override && (verifyAdminAuth() || process.env.NODE_ENV !== 'production')) {
       const pId = paymentId || ('PIX_PAGO_' + Date.now());
       let activatedUser;
       if (plan === 'pro') {
@@ -1050,8 +1154,13 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
-    // Se não informou payment_id (teste direto de confirmação ou checkout direto)
+    // Se não informou payment_id válido
     if (!paymentId) {
+      if (!verifyAdminAuth()) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: "ID do pagamento é obrigatório para confirmação." }));
+        return;
+      }
       const pId = 'PIX_CONF_' + Date.now();
       let activatedUser;
       if (plan === 'pro') {
@@ -1126,10 +1235,10 @@ const server = http.createServer(async (req, res) => {
     const paymentId = 'CHG_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 
     const pixCode = pixService.generateBrCode({
-      pixKey: settings.pix_key,
+      pixKey: settings.pix_key || 'luklen2@gmail.com',
       amount: amount,
-      merchantName: settings.pix_name || 'FOCOGENTIL',
-      merchantCity: settings.pix_city || 'SAO PAULO',
+      merchantName: settings.pix_name || 'Luciano Sant Anna',
+      merchantCity: settings.pix_city || 'Rio de Janeiro',
       txid: paymentId.slice(-15).replace(/[^a-zA-Z0-9]/g, '')
     });
 
@@ -1164,6 +1273,11 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (pathname === '/api/checkout/simulate-approval' && req.method === 'POST') {
+    if (process.env.NODE_ENV === 'production' && !verifyAdminAuth()) {
+      res.writeHead(403, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: "Simulação de aprovação desativada em ambiente de produção." }));
+      return;
+    }
     const payload = getPayload();
     const email = payload.email;
     const plan = (payload.plan === 'mensal' || payload.plan === 'pro') ? 'pro' : 'vitalicio';
@@ -1298,6 +1412,11 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (pathname === '/api/stats' && req.method === 'GET') {
+    if (!verifyAdminAuth()) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: "Acesso administrativo restrito. Chave de administração inválida ou não informada." }));
+      return;
+    }
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(db.getAllStats()));
     return;
@@ -1342,6 +1461,32 @@ const server = http.createServer(async (req, res) => {
     targetFile = pathname.replace(/^\//, '');
   }
 
+  // Whitelist estrita de arquivos estáticos permitidos para entrega pública
+  const ALLOWED_STATIC_FILES = new Set([
+    'index.html',
+    'app.html',
+    'admin.html',
+    'simulador.html',
+    'checkout.html',
+    'termos.html',
+    'privacidade.html',
+    'manifest.json',
+    'sw.js',
+    'favicon.svg',
+    'qrcode_mobile.png',
+    'robots.txt',
+    'sitemap.xml'
+  ]);
+
+  // Se o arquivo tiver extensão e NÃO estiver na whitelist, bloqueia terminantemente com 404
+  const ext = path.extname(targetFile).toLowerCase();
+  const isHidden = targetFile.startsWith('.') || targetFile.includes('/.') || targetFile.includes('\\.');
+  if (isHidden || (ext && !ALLOWED_STATIC_FILES.has(targetFile))) {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('404 Not Found');
+    return;
+  }
+
   // Busca arquivo tanto na pasta public/ quanto na pasta raiz do repositório
   const candidatePaths = [
     path.join(__dirname, 'public', targetFile),
@@ -1351,8 +1496,8 @@ const server = http.createServer(async (req, res) => {
   ];
   const filePath = candidatePaths.find(p => fs.existsSync(p) && fs.statSync(p).isFile());
 
-  if (filePath) {
-    const ext = path.extname(filePath).toLowerCase();
+  if (filePath && ALLOWED_STATIC_FILES.has(path.basename(filePath))) {
+    const fileExt = path.extname(filePath).toLowerCase();
     const mimeTypes = {
       '.html': 'text/html; charset=utf-8',
       '.css': 'text/css; charset=utf-8',
@@ -1364,13 +1509,13 @@ const server = http.createServer(async (req, res) => {
       '.xml': 'application/xml; charset=utf-8',
       '.txt': 'text/plain; charset=utf-8'
     };
-    res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'text/plain; charset=utf-8' });
+    res.writeHead(200, { 'Content-Type': mimeTypes[fileExt] || 'text/plain; charset=utf-8' });
     fs.createReadStream(filePath).pipe(res);
     return;
   }
 
-  // Fallback para SPA: se não for rota de API e não encontrou arquivo, entrega index.html
-  if (!pathname.startsWith('/api/')) {
+  // Fallback para SPA: se não for rota de API e não tiver extensão de arquivo, entrega index.html
+  if (!pathname.startsWith('/api/') && !ext) {
     const fallbackCandidates = [
       path.join(__dirname, 'public', 'index.html'),
       path.join(__dirname, 'index.html'),

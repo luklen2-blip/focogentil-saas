@@ -49,6 +49,7 @@
       <a href="/app" class="btn-outline">Abrir App</a>
       <a href="/simulador.html" class="btn-outline">Simulador WhatsApp</a>
       <a href="/checkout.html" class="btn-outline">Checkout</a>
+      <button onclick="sessionStorage.removeItem('focogentil_admin_key'); location.reload();" class="btn-outline" style="border-color: #e53e3e; color: #e53e3e; cursor: pointer;">🔒 Bloquear</button>
     </div>
   </header>
 
@@ -209,25 +210,60 @@
   </div>
 
   <script>
+    function getAdminKey() {
+      let key = sessionStorage.getItem('focogentil_admin_key');
+      const params = new URLSearchParams(window.location.search);
+      const urlKey = params.get('admin_key') || params.get('key');
+      if (urlKey) {
+        key = urlKey;
+        sessionStorage.setItem('focogentil_admin_key', key);
+      }
+      if (!key) {
+        key = prompt('🔒 Acesso Restrito — Painel de Administração FocoGentil\nInsira a Chave Mestra Administrativa (ADMIN_KEY):');
+        if (key) {
+          key = key.trim();
+          sessionStorage.setItem('focogentil_admin_key', key);
+        }
+      }
+      return key || '';
+    }
+
+    function getAdminHeaders() {
+      const key = getAdminKey();
+      return {
+        'Content-Type': 'application/json',
+        'X-Admin-Key': key,
+        'Authorization': `Bearer ${key}`
+      };
+    }
+
     async function loadAdminData() {
       try {
-        const resStats = await fetch('/api/stats');
+        const resStats = await fetch('/api/stats', { headers: getAdminHeaders() });
+        if (resStats.status === 401) {
+          sessionStorage.removeItem('focogentil_admin_key');
+          alert("Chave de administração inválida ou não informada.");
+          location.reload();
+          return;
+        }
         const stats = await resStats.json();
 
-        document.getElementById('mUsers').innerText = stats.total_users;
-        document.getElementById('mLifetime').innerText = stats.active_lifetime_users;
-        document.getElementById('mTasks').innerText = stats.total_tasks || stats.total_projects;
+        document.getElementById('mUsers').innerText = stats.total_users || 0;
+        document.getElementById('mLifetime').innerText = stats.active_lifetime_users || 0;
+        document.getElementById('mTasks').innerText = stats.total_tasks || stats.total_projects || 0;
         document.getElementById('mCompleted').innerText = stats.completed_tasks || 0;
         document.getElementById('mRevenue').innerText = Number(stats.total_revenue_brl || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-        const resSettings = await fetch('/api/settings');
-        const cfg = await resSettings.json();
-        document.getElementById('cfgPrice').value = cfg.price;
-        document.getElementById('cfgPixKey').value = cfg.pix_key || '';
-        document.getElementById('cfgPixName').value = cfg.pix_name || 'Luciano Sant Anna';
-        document.getElementById('cfgPixCity').value = cfg.pix_city || 'Rio de Janeiro';
+        const resSettings = await fetch('/api/settings', { headers: getAdminHeaders() });
+        if (resSettings.ok) {
+          const cfg = await resSettings.json();
+          document.getElementById('cfgPrice').value = cfg.price || 97.00;
+          document.getElementById('cfgPixKey').value = cfg.pix_key || 'luklen2@gmail.com';
+          document.getElementById('cfgPixName').value = cfg.pix_name || 'Luciano Sant Anna';
+          document.getElementById('cfgPixCity').value = cfg.pix_city || 'Rio de Janeiro';
+        }
 
-        const resUsers = await fetch('/api/admin/users');
+        const resUsers = await fetch('/api/admin/users', { headers: getAdminHeaders() });
         if (resUsers.ok) {
           const users = await resUsers.json();
           renderUsersTable(users);
@@ -242,7 +278,7 @@
     async function loadPayments() {
       const tbody = document.getElementById('paymentsTableBody');
       try {
-        const res = await fetch('/api/admin/payments');
+        const res = await fetch('/api/admin/payments', { headers: getAdminHeaders() });
         if (res.ok) {
           const payments = await res.json();
           renderPaymentsTable(payments);
@@ -297,7 +333,7 @@
       try {
         const res = await fetch('/api/admin/payments/update-status', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAdminHeaders(),
           body: JSON.stringify({ payment_id: paymentId, status })
         });
         const data = await res.json();
@@ -340,7 +376,7 @@
       try {
         const res = await fetch('/api/settings', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAdminHeaders(),
           body: JSON.stringify(payload)
         });
         const data = await res.json();

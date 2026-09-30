@@ -23,10 +23,10 @@
       "created_at": "2026-09-04T15:15:23.668Z"
     },
     "+5511999998888": {
-      "id": "usr_1789687888007_729c1c75",
-      "email": "luciano_1789687887966@focogentil.com",
-      "password_hash": "e627fcb2514f04a40ba15f98cab3ace9bb6dbf0d69fe337a8b5c5c1db7ae9d11c0f116e76a3bd9b5d5c869930b8a42175c8a4bf924d98210d526c7f1cd56e27f",
-      "salt": "6ba8b6c5cf39df573144ea24b6aab801",
+      "id": "usr_1790803068246_4591bbd1",
+      "email": "luciano_1790803068160@focogentil.com",
+      "password_hash": "81388194128905ed2050384d78ebfc24f4197cb7d4adb4d403f9804b57b56e495b2f090c993162fc85a4c9628158ca2590210b21f2620c1f8a37cf3ad6653c8a",
+      "salt": "857061ba01a78d473650e43c6f963e10",
       "name": "Luciano Silva",
       "phone_number": "+5511999998888",
       "plan": "vitalicio",
@@ -39,8 +39,8 @@
       "focus_duration_min": 25,
       "break_duration_min": 5,
       "calm_mode": false,
-      "created_at": "2026-09-17T23:31:28.008Z",
-      "trial_started_at": "2026-09-17T23:31:28.009Z",
+      "created_at": "2026-09-30T21:17:48.246Z",
+      "trial_started_at": "2026-09-30T21:17:48.248Z",
       "trial_duration_minutes": 30
     },
     "+5521992113903": {
@@ -141,10 +141,10 @@
       "trial_duration_minutes": 30
     },
     "+5511988887777": {
-      "id": "usr_1789687886952_c59882ca",
-      "email": "teste_1789687886912@focogentil.com",
-      "password_hash": "c2bc95978843b8ebd372222f819328296642ade58beccaacba9e990fe734e43d9615c0f01f556b9c10fcb148aadf878c47da1be62f1dc1bf43817307e2283638",
-      "salt": "cf26a723ba72e625c7f0494d42ba6191",
+      "id": "usr_1790803066556_619ecd04",
+      "email": "teste_1790803066484@focogentil.com",
+      "password_hash": "0014248a122ee652a13aa8beb43074977a24755b4f544b1cfc10992c8edfea1b9c1e66a9097a6a51e2e3af4134b87c0aa2e4d366eee527292c8e313eac80643d",
+      "salt": "f6a9f725866c9965cca2062d1d6ae75a",
       "name": "Marina Foco",
       "phone_number": "+5511988887777",
       "plan": "gratuito",
@@ -157,8 +157,8 @@
       "focus_duration_min": 25,
       "break_duration_min": 5,
       "calm_mode": false,
-      "created_at": "2026-09-17T23:31:26.953Z",
-      "trial_started_at": "2026-09-17T23:31:26.954Z",
+      "created_at": "2026-09-30T21:17:46.556Z",
+      "trial_started_at": "2026-09-30T21:17:46.558Z",
       "trial_duration_minutes": 30
     },
     "+55119888800095": {
@@ -1422,10 +1422,10 @@
       "trial_duration_minutes": 30
     },
     "+5511977776666": {
-      "id": "usr_1789687888233_5fe83c9a",
-      "email": "beatriz_1789687887966@focogentil.com",
-      "password_hash": "6990779e3d37678ff28c870df4bc541319876c2d04efc0ba5a10a128ba52e4f50936892817a4809a66e0f3e6b16dacb32ac7954b7a76cc1c14d3089bc1514d16",
-      "salt": "4e2374b111a6423ace563d335b14d8d3",
+      "id": "usr_1790803068554_8fd7ccc6",
+      "email": "beatriz_1790803068160@focogentil.com",
+      "password_hash": "8183773b2b8981f58479e699a8fce46a05af10e214ce7310e59fcb7b36f79c975ffedf61c2a0cf65d4adba9e23c9a7d8a1bbe279306e09e9808e44e14b986c58",
+      "salt": "30686be6892e6a5c02f4c9c19dbc3dcb",
       "name": "Beatriz Santos",
       "phone_number": "+5511977776666",
       "plan": "gratuito",
@@ -1438,8 +1438,8 @@
       "focus_duration_min": 25,
       "break_duration_min": 5,
       "calm_mode": false,
-      "created_at": "2026-09-17T23:31:28.233Z",
-      "trial_started_at": "2026-09-17T23:31:28.233Z",
+      "created_at": "2026-09-30T21:17:48.554Z",
+      "trial_started_at": "2026-09-30T21:17:48.554Z",
       "trial_duration_minutes": 30
     },
     "usr_1788714767561_255707a1": {
@@ -6481,6 +6481,741 @@
       "created_at": "2026-09-26T11:25:11.087Z",
       "trial_started_at": "2026-09-26T11:25:11.087Z",
       "trial_duration_minutes": 30
+    },
+    "+55119888800021068": {
+      "id": "usr_1790802521069_6f142808",
+      "phone_number": "+55119888800021068",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Teste",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:08:41.084Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:33:41.077Z",
+      "trial_started_at": "2026-09-30T20:33:41.077Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790802521069_6f142808": {
+      "id": "usr_1790802521069_6f142808",
+      "phone_number": "+55119888800021068",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Teste",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:08:41.084Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:33:41.077Z",
+      "trial_started_at": "2026-09-30T20:33:41.077Z",
+      "trial_duration_minutes": 30
+    },
+    "+558198995267": {
+      "id": "usr_1790802521689_80d435c9",
+      "phone_number": "+558198995267",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Luciano Neuro",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:08:41.743Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:33:41.726Z",
+      "trial_started_at": "2026-09-30T20:33:41.726Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790802521689_80d435c9": {
+      "id": "usr_1790802521689_80d435c9",
+      "phone_number": "+558198995267",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Luciano Neuro",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:08:41.743Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:33:41.726Z",
+      "trial_started_at": "2026-09-30T20:33:41.726Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790802522343_433d24bd": {
+      "id": "usr_1790802522343_433d24bd",
+      "email": "teste_1790802522261@focogentil.com",
+      "password_hash": "9cb75a444ef232cc21ad5c4256e21c94ec3ecfaf7dfa4949d8279fb1cbd93394bef9666e0c1728a4c2955769f6da7a48964f2543af08baa85a90c1d2668b1660",
+      "salt": "79aa4b1e6b113ea46588095d0419dca5",
+      "name": "Marina Foco",
+      "phone_number": "+5511988887777",
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "alta",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:08:42.343Z",
+      "trial_started_at": "2026-09-30T21:08:42.346Z",
+      "trial_duration_minutes": 30
+    },
+    "+55119888800084906": {
+      "id": "usr_1790802984907_e24e90f2",
+      "phone_number": "+55119888800084906",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Teste",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:16:24.925Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:41:24.917Z",
+      "trial_started_at": "2026-09-30T20:41:24.917Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790802984907_e24e90f2": {
+      "id": "usr_1790802984907_e24e90f2",
+      "phone_number": "+55119888800084906",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Teste",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:16:24.925Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:41:24.917Z",
+      "trial_started_at": "2026-09-30T20:41:24.917Z",
+      "trial_duration_minutes": 30
+    },
+    "+558192720131": {
+      "id": "usr_1790802985291_b04cd5f8",
+      "phone_number": "+558192720131",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Luciano Neuro",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:16:25.344Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:41:25.326Z",
+      "trial_started_at": "2026-09-30T20:41:25.326Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790802985291_b04cd5f8": {
+      "id": "usr_1790802985291_b04cd5f8",
+      "phone_number": "+558192720131",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Luciano Neuro",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:16:25.344Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:41:25.326Z",
+      "trial_started_at": "2026-09-30T20:41:25.326Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790802985854_be183795": {
+      "id": "usr_1790802985854_be183795",
+      "email": "teste_1790802985756@focogentil.com",
+      "password_hash": "dad11722a6835ebaf4c35d3cdaea91b9016f0ec67a6b8a026f6a4674423ee9d1dd80517bb601d36fe51cff3c140f3e1dda65899d68c6071fba7682cc8bc3a79d",
+      "salt": "35affa34ae01f548a45e34cdcb89d11d",
+      "name": "Marina Foco",
+      "phone_number": "+5511988887777",
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "alta",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:16:25.854Z",
+      "trial_started_at": "2026-09-30T21:16:25.856Z",
+      "trial_duration_minutes": 30
+    },
+    "+55119888800032312": {
+      "id": "usr_1790803032313_b7f32453",
+      "phone_number": "+55119888800032312",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Teste",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:17:12.331Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:42:12.322Z",
+      "trial_started_at": "2026-09-30T20:42:12.322Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803032313_b7f32453": {
+      "id": "usr_1790803032313_b7f32453",
+      "phone_number": "+55119888800032312",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Teste",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:17:12.331Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:42:12.322Z",
+      "trial_started_at": "2026-09-30T20:42:12.322Z",
+      "trial_duration_minutes": 30
+    },
+    "+558197445086": {
+      "id": "usr_1790803032692_3bed20aa",
+      "phone_number": "+558197445086",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Luciano Neuro",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:17:12.762Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:42:12.744Z",
+      "trial_started_at": "2026-09-30T20:42:12.744Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803032692_3bed20aa": {
+      "id": "usr_1790803032692_3bed20aa",
+      "phone_number": "+558197445086",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Luciano Neuro",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:17:12.762Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:42:12.744Z",
+      "trial_started_at": "2026-09-30T20:42:12.744Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803033243_35527279": {
+      "id": "usr_1790803033243_35527279",
+      "email": "teste_1790803033169@focogentil.com",
+      "password_hash": "992d8287745a1b82f15252e194948ba9be227b9107eb24e3cef2d9d96cfdf68983f278852cf5bc46a3ca9ea83c34b76abb0ae5c5c12021088248183b4e7008fc",
+      "salt": "f67401eb1efd79e0d9374a53a24a7f0e",
+      "name": "Marina Foco",
+      "phone_number": "+5511988887777",
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "alta",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:13.244Z",
+      "trial_started_at": "2026-09-30T21:17:13.247Z",
+      "trial_duration_minutes": 30
+    },
+    "+551197109128": {
+      "id": "usr_1790803033937_9cff9386",
+      "phone_number": "+551197109128",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Assinante Mensal",
+      "plan": "pro",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": true,
+      "paid_at": "2026-09-30T21:17:13.948Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:13.937Z",
+      "trial_started_at": "2026-09-30T21:17:13.939Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803033937_9cff9386": {
+      "id": "usr_1790803033937_9cff9386",
+      "phone_number": "+551197109128",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Assinante Mensal",
+      "plan": "pro",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": true,
+      "paid_at": "2026-09-30T21:17:13.948Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:13.937Z",
+      "trial_started_at": "2026-09-30T21:17:13.939Z",
+      "trial_duration_minutes": 30
+    },
+    "+55119888800065341": {
+      "id": "usr_1790803065343_be40d6b8",
+      "phone_number": "+55119888800065341",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Teste",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:17:45.383Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:42:45.358Z",
+      "trial_started_at": "2026-09-30T20:42:45.358Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803065343_be40d6b8": {
+      "id": "usr_1790803065343_be40d6b8",
+      "phone_number": "+55119888800065341",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Teste",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:17:45.383Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:42:45.358Z",
+      "trial_started_at": "2026-09-30T20:42:45.358Z",
+      "trial_duration_minutes": 30
+    },
+    "+558194508180": {
+      "id": "usr_1790803065909_f5487795",
+      "phone_number": "+558194508180",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Luciano Neuro",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:17:45.990Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:42:45.964Z",
+      "trial_started_at": "2026-09-30T20:42:45.964Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803065909_f5487795": {
+      "id": "usr_1790803065909_f5487795",
+      "phone_number": "+558194508180",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Luciano Neuro",
+      "plan": "vitalicio",
+      "is_lifetime_active": true,
+      "has_recurring_subscription": false,
+      "paid_at": "2026-09-30T21:17:45.990Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:42:45.964Z",
+      "trial_started_at": "2026-09-30T20:42:45.964Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803066556_619ecd04": {
+      "id": "usr_1790803066556_619ecd04",
+      "email": "teste_1790803066484@focogentil.com",
+      "password_hash": "0014248a122ee652a13aa8beb43074977a24755b4f544b1cfc10992c8edfea1b9c1e66a9097a6a51e2e3af4134b87c0aa2e4d366eee527292c8e313eac80643d",
+      "salt": "f6a9f725866c9965cca2062d1d6ae75a",
+      "name": "Marina Foco",
+      "phone_number": "+5511988887777",
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "alta",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:46.556Z",
+      "trial_started_at": "2026-09-30T21:17:46.558Z",
+      "trial_duration_minutes": 30
+    },
+    "+551199499207": {
+      "id": "usr_1790803067098_1b95e4ba",
+      "phone_number": "+551199499207",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Assinante Mensal",
+      "plan": "pro",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": true,
+      "paid_at": "2026-09-30T21:17:47.109Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:47.098Z",
+      "trial_started_at": "2026-09-30T21:17:47.100Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803067098_1b95e4ba": {
+      "id": "usr_1790803067098_1b95e4ba",
+      "phone_number": "+551199499207",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente Assinante Mensal",
+      "plan": "pro",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": true,
+      "paid_at": "2026-09-30T21:17:47.109Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:47.098Z",
+      "trial_started_at": "2026-09-30T21:17:47.100Z",
+      "trial_duration_minutes": 30
+    },
+    "+551199947218": {
+      "id": "usr_1790803067142_4b54708c",
+      "phone_number": "+551199947218",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente PIX Mensal",
+      "plan": "pro",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": true,
+      "paid_at": "2026-09-30T21:17:47.150Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:47.142Z",
+      "trial_started_at": "2026-09-30T21:17:47.142Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803067142_4b54708c": {
+      "id": "usr_1790803067142_4b54708c",
+      "phone_number": "+551199947218",
+      "email": null,
+      "password_hash": null,
+      "salt": null,
+      "name": "Cliente PIX Mensal",
+      "plan": "pro",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": true,
+      "paid_at": "2026-09-30T21:17:47.150Z",
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:47.142Z",
+      "trial_started_at": "2026-09-30T21:17:47.142Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803068246_4591bbd1": {
+      "id": "usr_1790803068246_4591bbd1",
+      "email": "luciano_1790803068160@focogentil.com",
+      "password_hash": "81388194128905ed2050384d78ebfc24f4197cb7d4adb4d403f9804b57b56e495b2f090c993162fc85a4c9628158ca2590210b21f2620c1f8a37cf3ad6653c8a",
+      "salt": "857061ba01a78d473650e43c6f963e10",
+      "name": "Luciano Silva",
+      "phone_number": "+5511999998888",
+      "plan": "vitalicio",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "baixa",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:48.246Z",
+      "trial_started_at": "2026-09-30T21:17:48.248Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803068318_f2fa6d45": {
+      "id": "usr_1790803068318_f2fa6d45",
+      "email": "temp_1790803068314@focogentil.com",
+      "password_hash": "9d63fac60588cb648003598e884e9228750323e2ee76fca261886945b3ca1323d2a263f795c0636cae4b11c658282f4d3b2e336b99dba0b887c0d439797391c3",
+      "salt": "2ea37c27352b8fa26e75d2a22beedd42",
+      "name": "Temp User",
+      "phone_number": null,
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:48.318Z",
+      "trial_started_at": "2026-09-30T21:17:48.318Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803068554_8fd7ccc6": {
+      "id": "usr_1790803068554_8fd7ccc6",
+      "email": "beatriz_1790803068160@focogentil.com",
+      "password_hash": "8183773b2b8981f58479e699a8fce46a05af10e214ce7310e59fcb7b36f79c975ffedf61c2a0cf65d4adba9e23c9a7d8a1bbe279306e09e9808e44e14b986c58",
+      "salt": "30686be6892e6a5c02f4c9c19dbc3dcb",
+      "name": "Beatriz Santos",
+      "phone_number": "+5511977776666",
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:48.554Z",
+      "trial_started_at": "2026-09-30T21:17:48.554Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803068975_185cb2c3": {
+      "id": "usr_1790803068975_185cb2c3",
+      "email": "neuro_1790803068933@teste.com",
+      "password_hash": "da55896e467addec0f24e21b1fd4565538cd9b02a4021c2ac422da3cfa1ffbe869cf1bde852ea700c8f79013029baebdc82a3173898b61d4446b3b8f267f464c",
+      "salt": "4939563dc3afb27edeee71d65d14e7a0",
+      "name": "Neuro Test User",
+      "phone_number": null,
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:17:48.975Z",
+      "trial_started_at": "2026-09-30T21:17:48.977Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803141157_67934d34": {
+      "id": "usr_1790803141157_67934d34",
+      "email": "persona_1790803141094@teste.com",
+      "password_hash": "50c273af4bc598d0e73791a3482a6609192b1eb3a3281518b3d7398a1537d013b14f84d517fced3e082e2fa8f7918d7af1196026c823f64cf35812669f61936e",
+      "salt": "9fce2bbc762d30c3fec47f7ec14a035a",
+      "name": "Persona Tester",
+      "phone_number": null,
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:19:01.157Z",
+      "trial_started_at": "2026-09-30T21:19:01.157Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803141650_2aadeb3f": {
+      "id": "usr_1790803141650_2aadeb3f",
+      "email": "master15_1790803141589@teste.com",
+      "password_hash": "e1ed6bba1a3aa1cb3b66f02cbf021c87d94f39f82713989acd8ddd0445d38f02e2164df8c3b78472c93a12056d3964e06c63aa42187b458cb176946b67a80b71",
+      "salt": "de426d9d5eb657370eed185abb16f4a6",
+      "name": "Master Tester",
+      "phone_number": null,
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:19:01.650Z",
+      "trial_started_at": "2026-09-30T21:19:01.650Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803141847_c92039c5": {
+      "id": "usr_1790803141847_c92039c5",
+      "email": "free_exp_1790803141838@teste.com",
+      "password_hash": "9a60f62e1f9aeca746c37bff44019ee66845142a32e340fb78aeba07fe3b46ad71dcf68f5df944b80b17bbfb8e509ed012b7858e6aef8358b16e58b99d75e416",
+      "salt": "9ec682068b7d75e1b2dd6cc8b3703469",
+      "name": "Free Expired",
+      "phone_number": null,
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:44:01.868Z",
+      "trial_started_at": "2026-09-30T20:44:01.868Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803142167_ab858429": {
+      "id": "usr_1790803142167_ab858429",
+      "email": "audit_user_1790803142103@teste.com",
+      "password_hash": "1f129f38e3fc5b2a2efa96c054d67d9f242a5760b43b1cf58ce61c99f053ac1c2d2a3daee1d46c6dfff6985a2870f005e3eddb570dcaf84994ab49216e24c737",
+      "salt": "6ee54fc91795472061fb18f94198c5ce",
+      "name": "Auditor FocoGentil",
+      "phone_number": null,
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "alta",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T21:19:02.167Z",
+      "trial_started_at": "2026-09-30T21:19:02.167Z",
+      "trial_duration_minutes": 30
+    },
+    "usr_1790803142357_785addad": {
+      "id": "usr_1790803142357_785addad",
+      "email": "free_audit_1790803142350@teste.com",
+      "password_hash": "f07831f7fecd11a81d2b50c086e415e0a93c6280226c8e50cc5eef8b4680bba8a32cc015e6a747372db17f3c7956f13ac63e108902358e48c5aedf842e878d9d",
+      "salt": "3f6121970fa5e7b05b4f9086e5350d07",
+      "name": "Free User Auditor",
+      "phone_number": null,
+      "plan": "gratuito",
+      "is_lifetime_active": false,
+      "has_recurring_subscription": false,
+      "paid_at": null,
+      "energy_level": "media",
+      "quiet_hours_start": 22,
+      "quiet_hours_end": 8,
+      "focus_duration_min": 25,
+      "break_duration_min": 5,
+      "calm_mode": false,
+      "created_at": "2026-09-30T20:44:02.391Z",
+      "trial_started_at": "2026-09-30T20:44:02.390Z",
+      "trial_duration_minutes": 30
     }
   },
   "sessions": {
@@ -7248,6 +7983,91 @@
       "user_id": "usr_1790424011054_abba60a4",
       "created_at": "2026-09-26T12:00:11.069Z",
       "expires_at": "2026-10-26T12:00:11.069Z"
+    },
+    "da08c855062d7d49cc9da644b9e22744c3c71ea44319a032dcd47ff8e91c1c06": {
+      "user_id": "usr_1790802522343_433d24bd",
+      "created_at": "2026-09-30T21:08:42.355Z",
+      "expires_at": "2026-10-30T21:08:42.354Z"
+    },
+    "194316074a9a451bc604e8ea306b497976539bc1348bd18becaeb7ad4c3bd3af": {
+      "user_id": "usr_1790802522343_433d24bd",
+      "created_at": "2026-09-30T21:08:42.382Z",
+      "expires_at": "2026-10-30T21:08:42.382Z"
+    },
+    "8cbab1c05a87470269255490706d521406bfe4ee06e999007e85488df563cb67": {
+      "user_id": "usr_1790802985854_be183795",
+      "created_at": "2026-09-30T21:16:25.865Z",
+      "expires_at": "2026-10-30T21:16:25.865Z"
+    },
+    "befe1eb13b12c9e969fee7a8e056d9f0f5fd1ced205487772efaae318b963660": {
+      "user_id": "usr_1790802985854_be183795",
+      "created_at": "2026-09-30T21:16:25.901Z",
+      "expires_at": "2026-10-30T21:16:25.901Z"
+    },
+    "d99baea4618f6239c5e08f5966c1f4abdb893d1836a72273482739266eda24d0": {
+      "user_id": "usr_1790803033243_35527279",
+      "created_at": "2026-09-30T21:17:13.258Z",
+      "expires_at": "2026-10-30T21:17:13.258Z"
+    },
+    "60dfd5a1907629fede77229977451302e3d18cd4c512b1226ce34121ec22b0c3": {
+      "user_id": "usr_1790803033243_35527279",
+      "created_at": "2026-09-30T21:17:13.283Z",
+      "expires_at": "2026-10-30T21:17:13.283Z"
+    },
+    "987a78704abb47319e50e1a6a991bbe915e27fbd71b4fc4e80bf70622c31748a": {
+      "user_id": "usr_1790803066556_619ecd04",
+      "created_at": "2026-09-30T21:17:46.566Z",
+      "expires_at": "2026-10-30T21:17:46.566Z"
+    },
+    "e6b5e24f8b53a24e2ea564fb24bcd31581fadd325a35224b2e5441982bcd04cb": {
+      "user_id": "usr_1790803066556_619ecd04",
+      "created_at": "2026-09-30T21:17:46.590Z",
+      "expires_at": "2026-10-30T21:17:46.590Z"
+    },
+    "a42f3dee86d20888d771597ed4cae3961fc4ca8186db7cc33ee995030ed5bb35": {
+      "user_id": "usr_1790803068246_4591bbd1",
+      "created_at": "2026-09-30T21:17:48.274Z",
+      "expires_at": "2026-10-30T21:17:48.274Z"
+    },
+    "63fdca75a1b25bf157400ee9df14b36488bd3f333326aabf3d9d9a916fa41cfd": {
+      "user_id": "usr_1790803068246_4591bbd1",
+      "created_at": "2026-09-30T21:17:48.301Z",
+      "expires_at": "2026-10-30T21:17:48.301Z"
+    },
+    "873ce2f896826c9176886ea150f2a738b179bea760e2da769024cdd0765c1885": {
+      "user_id": "usr_1790803068554_8fd7ccc6",
+      "created_at": "2026-09-30T21:17:48.565Z",
+      "expires_at": "2026-10-30T21:17:48.565Z"
+    },
+    "30893d72d462fa4d08a1f552d602a7af7ff4e3e97084b0210e15bc707cd19f71": {
+      "user_id": "usr_1790803068975_185cb2c3",
+      "created_at": "2026-09-30T21:17:48.987Z",
+      "expires_at": "2026-10-30T21:17:48.987Z"
+    },
+    "fe0044358759d3b8342ba408e9f6c5abc1711c1f3799a549b0f374a7874596f2": {
+      "user_id": "usr_1790803141157_67934d34",
+      "created_at": "2026-09-30T21:19:01.167Z",
+      "expires_at": "2026-10-30T21:19:01.167Z"
+    },
+    "b70735bafc9fa0557b5a244491a073bc4a62d5a26b73328c133030b393167763": {
+      "user_id": "usr_1790803141650_2aadeb3f",
+      "created_at": "2026-09-30T21:19:01.658Z",
+      "expires_at": "2026-10-30T21:19:01.658Z"
+    },
+    "116ddc66b277a72a2f6719e83f65858004ba642151f2d1d0e93ec916aa1eb56e": {
+      "user_id": "usr_1790803141847_c92039c5",
+      "created_at": "2026-09-30T21:19:01.856Z",
+      "expires_at": "2026-10-30T21:19:01.856Z"
+    },
+    "1ed37392d71299c0537d29d9a334d6784c8c944e7eb1a3184bdeada803260d9d": {
+      "user_id": "usr_1790803142167_ab858429",
+      "created_at": "2026-09-30T21:19:02.176Z",
+      "expires_at": "2026-10-30T21:19:02.176Z"
+    },
+    "49e74e7d99d5726ae6d3ea89e9fd45bee4e7c6151c678eb53d60891669c67899": {
+      "user_id": "usr_1790803142357_785addad",
+      "created_at": "2026-09-30T21:19:02.367Z",
+      "expires_at": "2026-10-30T21:19:02.367Z"
     }
   },
   "tasks": [
@@ -8773,6 +9593,210 @@
       "status": "agora",
       "parent_id": null,
       "created_at": "2026-09-26T12:00:11.079Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790802522403_7812",
+      "user_id": "usr_1790802522343_433d24bd",
+      "title": "Abrir planilha e respirar fundo",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 5,
+      "status": "concluido",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:08:42.403Z",
+      "completed_at": "2026-09-30T21:08:42.429Z"
+    },
+    {
+      "id": "tsk_1790802522414_5533",
+      "user_id": "usr_1790802522343_433d24bd",
+      "title": "Preencher primeira linha da planilha",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 10,
+      "status": "agora",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:08:42.414Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790802985926_5666",
+      "user_id": "usr_1790802985854_be183795",
+      "title": "Abrir planilha e respirar fundo",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 5,
+      "status": "concluido",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:16:25.926Z",
+      "completed_at": "2026-09-30T21:16:25.952Z"
+    },
+    {
+      "id": "tsk_1790802985938_7604",
+      "user_id": "usr_1790802985854_be183795",
+      "title": "Preencher primeira linha da planilha",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 10,
+      "status": "agora",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:16:25.938Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803033302_6449",
+      "user_id": "usr_1790803033243_35527279",
+      "title": "Abrir planilha e respirar fundo",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 5,
+      "status": "concluido",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:17:13.302Z",
+      "completed_at": "2026-09-30T21:17:13.326Z"
+    },
+    {
+      "id": "tsk_1790803033312_9191",
+      "user_id": "usr_1790803033243_35527279",
+      "title": "Preencher primeira linha da planilha",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 10,
+      "status": "agora",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:17:13.313Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803066609_4900",
+      "user_id": "usr_1790803066556_619ecd04",
+      "title": "Abrir planilha e respirar fundo",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 5,
+      "status": "concluido",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:17:46.609Z",
+      "completed_at": "2026-09-30T21:17:46.633Z"
+    },
+    {
+      "id": "tsk_1790803066620_9361",
+      "user_id": "usr_1790803066556_619ecd04",
+      "title": "Preencher primeira linha da planilha",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 10,
+      "status": "agora",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:17:46.620Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803068380_3141",
+      "user_id": "usr_1790803068246_4591bbd1",
+      "title": "Abrir o editor, respirar e escrever uma frase curta",
+      "description": "",
+      "priority": "urgente",
+      "duration_minutes": 7,
+      "status": "concluido",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:17:48.380Z",
+      "completed_at": "2026-09-30T21:17:48.432Z"
+    },
+    {
+      "id": "tsk_1790803068396_1994",
+      "user_id": "usr_1790803068246_4591bbd1",
+      "title": "Revisar parágrafo inicial",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 10,
+      "status": "agora",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:17:48.396Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803141232_8018",
+      "user_id": "demo_user",
+      "title": "Tarefa Importante 1",
+      "description": "",
+      "priority": "ALTA",
+      "duration_minutes": 10,
+      "status": "proximo",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:19:01.232Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803141245_2121",
+      "user_id": "demo_user",
+      "title": "Tarefa Secundária 2",
+      "description": "",
+      "priority": "NORMAL",
+      "duration_minutes": 10,
+      "status": "proximo",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:19:01.245Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803141257_4127",
+      "user_id": "demo_user",
+      "title": "Tarefa Secundária 3",
+      "description": "",
+      "priority": "BAIXA",
+      "duration_minutes": 10,
+      "status": "proximo",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:19:01.257Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803141740_2746",
+      "user_id": "usr_1790803141650_2aadeb3f",
+      "title": "Módulo Principal",
+      "description": "",
+      "priority": "ALTA",
+      "duration_minutes": 10,
+      "status": "agora",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:19:01.740Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803141802_9475",
+      "user_id": "usr_1790803141650_2aadeb3f",
+      "title": "Tarefa Desistida",
+      "description": "",
+      "priority": "PODE_ESPERAR",
+      "duration_minutes": 10,
+      "status": "proximo",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:19:01.802Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803142329_7121",
+      "user_id": "usr_1790803142167_ab858429",
+      "title": "Minha Tarefa de Auditoria Real",
+      "description": "",
+      "priority": "AGORA",
+      "duration_minutes": 10,
+      "status": "agora",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:19:02.329Z",
+      "completed_at": null
+    },
+    {
+      "id": "tsk_1790803142380_1369",
+      "user_id": "usr_1790803142357_785addad",
+      "title": "Tarefa Básica Gratuita",
+      "description": "",
+      "priority": "hoje",
+      "duration_minutes": 10,
+      "status": "agora",
+      "parent_id": null,
+      "created_at": "2026-09-30T21:19:02.380Z",
       "completed_at": null
     }
   ],
@@ -13374,6 +14398,614 @@
           "urgency_score": 2
         }
       ]
+    },
+    {
+      "id": "proj_1790802521700",
+      "user_phone": "+558198995267",
+      "title": "Quero organizar meu dia",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:08:41.700Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Quero organizar meu dia' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790802521758",
+      "user_phone": "+558198995267",
+      "title": "Preciso arrumar minha mesa de estudo",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:08:41.758Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Preciso arrumar minha mesa de estudo' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790802521817",
+      "user_phone": "+558198995267",
+      "title": "Preparar almoço saudável",
+      "energy_level": "baixa",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:08:41.817Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Pegar um copo d'água e apenas sentar na mesa de trabalho",
+          "duration_minutes": 2,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790802521862",
+      "user_phone": "+558198995267",
+      "title": "Preciso lavar a louça acumulada na pia e sepa",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:08:41.862Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Preciso lavar a louça acumulada na pia e sepa' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790802985302",
+      "user_phone": "+558192720131",
+      "title": "Quero organizar meu dia",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:16:25.302Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Quero organizar meu dia' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790802985357",
+      "user_phone": "+558192720131",
+      "title": "Preciso arrumar minha mesa de estudo",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:16:25.357Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Preciso arrumar minha mesa de estudo' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790802985400",
+      "user_phone": "+558192720131",
+      "title": "Preparar almoço saudável",
+      "energy_level": "baixa",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:16:25.400Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Pegar um copo d'água e apenas sentar na mesa de trabalho",
+          "duration_minutes": 2,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790802985437",
+      "user_phone": "+558192720131",
+      "title": "Preciso lavar a louça acumulada na pia e sepa",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:16:25.437Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Preciso lavar a louça acumulada na pia e sepa' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790803032705",
+      "user_phone": "+558197445086",
+      "title": "Quero organizar meu dia",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:17:12.705Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Quero organizar meu dia' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790803032776",
+      "user_phone": "+558197445086",
+      "title": "Preciso arrumar minha mesa de estudo",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:17:12.776Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Preciso arrumar minha mesa de estudo' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790803032820",
+      "user_phone": "+558197445086",
+      "title": "Preparar almoço saudável",
+      "energy_level": "baixa",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:17:12.820Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Pegar um copo d'água e apenas sentar na mesa de trabalho",
+          "duration_minutes": 2,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790803032858",
+      "user_phone": "+558197445086",
+      "title": "Preciso lavar a louça acumulada na pia e sepa",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:17:12.858Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Preciso lavar a louça acumulada na pia e sepa' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790803065926",
+      "user_phone": "+558194508180",
+      "title": "Quero organizar meu dia",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:17:45.926Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Quero organizar meu dia' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790803066010",
+      "user_phone": "+558194508180",
+      "title": "Preciso arrumar minha mesa de estudo",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:17:46.010Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Preciso arrumar minha mesa de estudo' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790803066077",
+      "user_phone": "+558194508180",
+      "title": "Preparar almoço saudável",
+      "energy_level": "baixa",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:17:46.077Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Pegar um copo d'água e apenas sentar na mesa de trabalho",
+          "duration_minutes": 2,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
+    },
+    {
+      "id": "proj_1790803066135",
+      "user_phone": "+558194508180",
+      "title": "Preciso lavar a louça acumulada na pia e sepa",
+      "energy_level": "media",
+      "gentle_tip": "Você não precisa terminar tudo hoje. Faça só o Passo 1 e já considere uma vitória!",
+      "created_at": "2026-09-30T21:17:46.135Z",
+      "micro_tasks": [
+        {
+          "step_number": 1,
+          "title": "Apenas abrir o material/local de 'Preciso lavar a louça acumulada na pia e sepa' e respirar fundo",
+          "duration_minutes": 3,
+          "why_it_helps": "Passo de ignição imediata com fricção quase zero para reduzir a inércia e facilitar o início",
+          "urgency_score": 5
+        },
+        {
+          "step_number": 2,
+          "title": "Escrever 2 ou 3 tópicos essenciais sem se preocupar com perfeição",
+          "duration_minutes": 8,
+          "why_it_helps": "Foco atômico para dar tração inicial",
+          "urgency_score": 4
+        },
+        {
+          "step_number": 3,
+          "title": "Executar o ponto central por 10 minutos com alarme suave",
+          "duration_minutes": 10,
+          "why_it_helps": "Contorno da cegueira temporal com bloco curto de tempo",
+          "urgency_score": 3
+        },
+        {
+          "step_number": 4,
+          "title": "Pausa restaurativa de 5 min para alongar e beber água",
+          "duration_minutes": 5,
+          "why_it_helps": "Prevenção de esgotamento e recarga cognitiva",
+          "urgency_score": 2
+        }
+      ]
     }
   ],
   "reminders": [
@@ -14465,6 +16097,150 @@
       "scheduled_at": "2026-09-17T23:34:26.723Z",
       "is_dispatched": true,
       "status": "dispatched"
+    },
+    {
+      "id": "rem_1790802521708_488",
+      "user_phone": "+558198995267",
+      "task_title": "Apenas abrir o material/local de 'Quero organizar meu dia' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:11:41.708Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790802521770_898",
+      "user_phone": "+558198995267",
+      "task_title": "Apenas abrir o material/local de 'Preciso arrumar minha mesa de estudo' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:11:41.770Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790802521827_931",
+      "user_phone": "+558198995267",
+      "task_title": "Pegar um copo d'água e apenas sentar na mesa de trabalho",
+      "duration_minutes": 2,
+      "scheduled_at": "2026-09-30T21:10:41.827Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790802521870_170",
+      "user_phone": "+558198995267",
+      "task_title": "Apenas abrir o material/local de 'Preciso lavar a louça acumulada na pia e sepa' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:11:41.870Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790802985309_297",
+      "user_phone": "+558192720131",
+      "task_title": "Apenas abrir o material/local de 'Quero organizar meu dia' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:19:25.309Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790802985365_728",
+      "user_phone": "+558192720131",
+      "task_title": "Apenas abrir o material/local de 'Preciso arrumar minha mesa de estudo' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:19:25.365Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790802985407_547",
+      "user_phone": "+558192720131",
+      "task_title": "Pegar um copo d'água e apenas sentar na mesa de trabalho",
+      "duration_minutes": 2,
+      "scheduled_at": "2026-09-30T21:18:25.407Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790802985446_96",
+      "user_phone": "+558192720131",
+      "task_title": "Apenas abrir o material/local de 'Preciso lavar a louça acumulada na pia e sepa' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:19:25.446Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790803032726_445",
+      "user_phone": "+558197445086",
+      "task_title": "Apenas abrir o material/local de 'Quero organizar meu dia' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:20:12.726Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790803032784_925",
+      "user_phone": "+558197445086",
+      "task_title": "Apenas abrir o material/local de 'Preciso arrumar minha mesa de estudo' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:20:12.784Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790803032828_13",
+      "user_phone": "+558197445086",
+      "task_title": "Pegar um copo d'água e apenas sentar na mesa de trabalho",
+      "duration_minutes": 2,
+      "scheduled_at": "2026-09-30T21:19:12.828Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790803032867_41",
+      "user_phone": "+558197445086",
+      "task_title": "Apenas abrir o material/local de 'Preciso lavar a louça acumulada na pia e sepa' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:20:12.867Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790803065938_975",
+      "user_phone": "+558194508180",
+      "task_title": "Apenas abrir o material/local de 'Quero organizar meu dia' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:20:45.938Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790803066022_946",
+      "user_phone": "+558194508180",
+      "task_title": "Apenas abrir o material/local de 'Preciso arrumar minha mesa de estudo' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:20:46.022Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790803066091_710",
+      "user_phone": "+558194508180",
+      "task_title": "Pegar um copo d'água e apenas sentar na mesa de trabalho",
+      "duration_minutes": 2,
+      "scheduled_at": "2026-09-30T21:19:46.091Z",
+      "is_dispatched": false,
+      "status": "pending"
+    },
+    {
+      "id": "rem_1790803066148_546",
+      "user_phone": "+558194508180",
+      "task_title": "Apenas abrir o material/local de 'Preciso lavar a louça acumulada na pia e sepa' e respirar fundo",
+      "duration_minutes": 3,
+      "scheduled_at": "2026-09-30T21:20:46.148Z",
+      "is_dispatched": false,
+      "status": "pending"
     }
   ],
   "routines": [],
@@ -15028,6 +16804,84 @@
       "user_id": "usr_1789687888007_729c1c75",
       "energy_level": "baixa",
       "timestamp": "2026-09-17T23:31:28.141Z"
+    },
+    {
+      "id": "en_1790802521792_161",
+      "user_id": "usr_1790802521689_80d435c9",
+      "energy_level": "baixa",
+      "timestamp": "2026-09-30T21:08:41.792Z"
+    },
+    {
+      "id": "en_1790802521843_971",
+      "user_id": "usr_1790802521689_80d435c9",
+      "energy_level": "media",
+      "timestamp": "2026-09-30T21:08:41.843Z"
+    },
+    {
+      "id": "en_1790802522466_986",
+      "user_id": "usr_1790802522343_433d24bd",
+      "energy_level": "alta",
+      "timestamp": "2026-09-30T21:08:42.466Z"
+    },
+    {
+      "id": "en_1790802985383_816",
+      "user_id": "usr_1790802985291_b04cd5f8",
+      "energy_level": "baixa",
+      "timestamp": "2026-09-30T21:16:25.383Z"
+    },
+    {
+      "id": "en_1790802985420_886",
+      "user_id": "usr_1790802985291_b04cd5f8",
+      "energy_level": "media",
+      "timestamp": "2026-09-30T21:16:25.420Z"
+    },
+    {
+      "id": "en_1790802985990_719",
+      "user_id": "usr_1790802985854_be183795",
+      "energy_level": "alta",
+      "timestamp": "2026-09-30T21:16:25.990Z"
+    },
+    {
+      "id": "en_1790803032802_167",
+      "user_id": "usr_1790803032692_3bed20aa",
+      "energy_level": "baixa",
+      "timestamp": "2026-09-30T21:17:12.802Z"
+    },
+    {
+      "id": "en_1790803032841_154",
+      "user_id": "usr_1790803032692_3bed20aa",
+      "energy_level": "media",
+      "timestamp": "2026-09-30T21:17:12.841Z"
+    },
+    {
+      "id": "en_1790803033359_341",
+      "user_id": "usr_1790803033243_35527279",
+      "energy_level": "alta",
+      "timestamp": "2026-09-30T21:17:13.359Z"
+    },
+    {
+      "id": "en_1790803066050_16",
+      "user_id": "usr_1790803065909_f5487795",
+      "energy_level": "baixa",
+      "timestamp": "2026-09-30T21:17:46.050Z"
+    },
+    {
+      "id": "en_1790803066110_952",
+      "user_id": "usr_1790803065909_f5487795",
+      "energy_level": "media",
+      "timestamp": "2026-09-30T21:17:46.110Z"
+    },
+    {
+      "id": "en_1790803066666_59",
+      "user_id": "usr_1790803066556_619ecd04",
+      "energy_level": "alta",
+      "timestamp": "2026-09-30T21:17:46.666Z"
+    },
+    {
+      "id": "en_1790803068476_806",
+      "user_id": "usr_1790803068246_4591bbd1",
+      "energy_level": "baixa",
+      "timestamp": "2026-09-30T21:17:48.476Z"
     }
   ],
   "ai_conversations": [],
@@ -16579,6 +18433,200 @@
       "status": "approved",
       "created_at": "2026-09-17T23:31:27.555Z",
       "is_recurring": true
+    },
+    {
+      "payment_id": "PIX_TRIAL_OK",
+      "user_phone": "+55119888800021068",
+      "user_id": "usr_1790802521069_6f142808",
+      "amount": 97,
+      "provider": "pix",
+      "status": "approved",
+      "created_at": "2026-09-30T21:08:41.084Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_LIFETIME_888",
+      "user_phone": "+558198995267",
+      "user_id": "usr_1790802521689_80d435c9",
+      "amount": 97,
+      "provider": "mercadopago",
+      "status": "approved",
+      "created_at": "2026-09-30T21:08:41.743Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_1790802522555_vwo75",
+      "user_phone": "+5511977776666",
+      "user_id": null,
+      "customer_name": "Comprador Real",
+      "customer_email": "comprador@focogentil.com",
+      "amount": 97,
+      "plan": "vitalicio",
+      "provider": "pix",
+      "status": "approved",
+      "created_at": "2026-09-30T21:08:42.555Z",
+      "updated_at": "2026-09-30T21:08:42.573Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_TRIAL_OK",
+      "user_phone": "+55119888800084906",
+      "user_id": "usr_1790802984907_e24e90f2",
+      "amount": 97,
+      "provider": "pix",
+      "status": "approved",
+      "created_at": "2026-09-30T21:16:24.925Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_LIFETIME_888",
+      "user_phone": "+558192720131",
+      "user_id": "usr_1790802985291_b04cd5f8",
+      "amount": 97,
+      "provider": "mercadopago",
+      "status": "approved",
+      "created_at": "2026-09-30T21:16:25.344Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_1790802986040_j7zja",
+      "user_phone": "+5511977776666",
+      "user_id": null,
+      "customer_name": "Comprador Real",
+      "customer_email": "comprador@focogentil.com",
+      "amount": 97,
+      "plan": "vitalicio",
+      "provider": "pix",
+      "status": "approved",
+      "created_at": "2026-09-30T21:16:26.041Z",
+      "updated_at": "2026-09-30T21:16:26.066Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_TRIAL_OK",
+      "user_phone": "+55119888800032312",
+      "user_id": "usr_1790803032313_b7f32453",
+      "amount": 97,
+      "provider": "pix",
+      "status": "approved",
+      "created_at": "2026-09-30T21:17:12.331Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_LIFETIME_888",
+      "user_phone": "+558197445086",
+      "user_id": "usr_1790803032692_3bed20aa",
+      "amount": 97,
+      "provider": "mercadopago",
+      "status": "approved",
+      "created_at": "2026-09-30T21:17:12.762Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_1790803033527_atrh4",
+      "user_phone": "+5511977776666",
+      "user_id": null,
+      "customer_name": "Comprador Real",
+      "customer_email": "comprador@focogentil.com",
+      "amount": 97,
+      "plan": "vitalicio",
+      "provider": "pix",
+      "status": "approved",
+      "created_at": "2026-09-30T21:17:13.528Z",
+      "updated_at": "2026-09-30T21:17:13.546Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "CARD_SUB_1790803033935",
+      "user_phone": "+551197109128",
+      "user_id": "usr_1790803033937_9cff9386",
+      "amount": 29,
+      "provider": "card",
+      "status": "approved",
+      "created_at": "2026-09-30T21:17:13.948Z",
+      "is_recurring": true
+    },
+    {
+      "payment_id": "PIX_1790803033967_ww2qr",
+      "user_phone": "+551195548108",
+      "user_id": null,
+      "customer_name": "Cliente PIX Mensal",
+      "customer_email": null,
+      "amount": 29,
+      "plan": "pro",
+      "provider": "pix",
+      "status": "pending",
+      "created_at": "2026-09-30T21:17:13.967Z",
+      "updated_at": "2026-09-30T21:17:13.967Z",
+      "is_recurring": true
+    },
+    {
+      "payment_id": "PIX_TRIAL_OK",
+      "user_phone": "+55119888800065341",
+      "user_id": "usr_1790803065343_be40d6b8",
+      "amount": 97,
+      "provider": "pix",
+      "status": "approved",
+      "created_at": "2026-09-30T21:17:45.383Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_LIFETIME_888",
+      "user_phone": "+558194508180",
+      "user_id": "usr_1790803065909_f5487795",
+      "amount": 97,
+      "provider": "mercadopago",
+      "status": "approved",
+      "created_at": "2026-09-30T21:17:45.990Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "PIX_1790803066721_u5h84",
+      "user_phone": "+5511977776666",
+      "user_id": null,
+      "customer_name": "Comprador Real",
+      "customer_email": "comprador@focogentil.com",
+      "amount": 97,
+      "plan": "vitalicio",
+      "provider": "pix",
+      "status": "approved",
+      "created_at": "2026-09-30T21:17:46.722Z",
+      "updated_at": "2026-09-30T21:17:46.741Z",
+      "is_recurring": false
+    },
+    {
+      "payment_id": "CARD_SUB_1790803067097",
+      "user_phone": "+551199499207",
+      "user_id": "usr_1790803067098_1b95e4ba",
+      "amount": 29,
+      "provider": "card",
+      "status": "approved",
+      "created_at": "2026-09-30T21:17:47.109Z",
+      "is_recurring": true
+    },
+    {
+      "payment_id": "PIX_1790803067126_covqi",
+      "user_phone": "+551199947218",
+      "user_id": null,
+      "customer_name": "Cliente PIX Mensal",
+      "customer_email": null,
+      "amount": 29,
+      "plan": "pro",
+      "provider": "pix",
+      "status": "pending",
+      "created_at": "2026-09-30T21:17:47.126Z",
+      "updated_at": "2026-09-30T21:17:47.126Z",
+      "is_recurring": true
+    },
+    {
+      "payment_id": "PIX_PAGO_1790803067142",
+      "user_phone": "+551199947218",
+      "user_id": "usr_1790803067142_4b54708c",
+      "amount": 29,
+      "provider": "pix_admin",
+      "status": "approved",
+      "created_at": "2026-09-30T21:17:47.150Z",
+      "is_recurring": true
     }
   ],
   "billing_settings": {
@@ -16589,6 +18637,276 @@
     "mercadopago_token": ""
   },
   "state_logs": [
+    {
+      "id": "st_1790803142269_ssbk",
+      "user_id": "usr_1790803142167_ab858429",
+      "state": "alta",
+      "energy": "alta",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:02.269Z"
+    },
+    {
+      "id": "st_1790803142248_txr4",
+      "user_id": "usr_1790803142167_ab858429",
+      "state": "media",
+      "energy": "media",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:02.248Z"
+    },
+    {
+      "id": "st_1790803142222_n9iu",
+      "user_id": "usr_1790803142167_ab858429",
+      "state": "baixa",
+      "energy": "baixa",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:02.222Z"
+    },
+    {
+      "id": "st_1790803141757_225e",
+      "user_id": "usr_1790803141650_2aadeb3f",
+      "state": "sobrecarga_tempo",
+      "energy": "sobrecarga_tempo",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:01.757Z"
+    },
+    {
+      "id": "st_1790803141717_b688",
+      "user_id": "usr_1790803141650_2aadeb3f",
+      "state": "boa",
+      "energy": "boa",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:01.717Z"
+    },
+    {
+      "id": "st_1790803141689_5col",
+      "user_id": "usr_1790803141650_2aadeb3f",
+      "state": "baixa",
+      "energy": "baixa",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:01.689Z"
+    },
+    {
+      "id": "st_1790803141308_y9w9",
+      "user_id": "demo_user",
+      "state": "baixa",
+      "energy": "baixa",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:01.308Z"
+    },
+    {
+      "id": "st_1790803141273_mumu",
+      "user_id": "demo_user",
+      "state": "sobrecarregado",
+      "energy": "sobrecarregado",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:01.273Z"
+    },
+    {
+      "id": "st_1790803141215_i4md",
+      "user_id": "demo_user",
+      "state": "boa",
+      "energy": "boa",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:01.215Z"
+    },
+    {
+      "id": "st_1790803141190_lx6b",
+      "user_id": "demo_user",
+      "state": "baixa",
+      "energy": "baixa",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "",
+      "created_at": "2026-09-30T21:19:01.190Z"
+    },
+    {
+      "id": "st_1790803069188_jcxk",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "state": "sem_rumo",
+      "energy": "sem_rumo",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "Teste estado",
+      "created_at": "2026-09-30T21:17:49.188Z"
+    },
+    {
+      "id": "st_1790803069162_dp0e",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "state": "hiperfoco",
+      "energy": "hiperfoco",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "Teste estado",
+      "created_at": "2026-09-30T21:17:49.162Z"
+    },
+    {
+      "id": "st_1790803069139_01o9",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "state": "paralisado",
+      "energy": "paralisado",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "Teste estado",
+      "created_at": "2026-09-30T21:17:49.139Z"
+    },
+    {
+      "id": "st_1790803069114_d78g",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "state": "disperso",
+      "energy": "disperso",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "Teste estado",
+      "created_at": "2026-09-30T21:17:49.114Z"
+    },
+    {
+      "id": "st_1790803069090_qy09",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "state": "sobrecarregado",
+      "energy": "sobrecarregado",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "Teste estado",
+      "created_at": "2026-09-30T21:17:49.090Z"
+    },
+    {
+      "id": "st_1790803069065_7k3l",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "state": "boa",
+      "energy": "boa",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "Teste estado",
+      "created_at": "2026-09-30T21:17:49.065Z"
+    },
+    {
+      "id": "st_1790803069038_jihf",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "state": "media",
+      "energy": "media",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "Teste estado",
+      "created_at": "2026-09-30T21:17:49.038Z"
+    },
+    {
+      "id": "st_1790803069008_w32x",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "state": "baixa",
+      "energy": "baixa",
+      "focus": "medio",
+      "overload": "moderada",
+      "clarity": "media",
+      "willingness": "media",
+      "barrier_start": false,
+      "barrier_decide": false,
+      "need_break": false,
+      "notes": "Teste estado",
+      "created_at": "2026-09-30T21:17:49.008Z"
+    },
     {
       "id": "st_1790424010978_ghqx",
       "user_id": "usr_1790424010900_6639f1f4",
@@ -19351,6 +21669,19 @@
   ],
   "sensory_logs": [
     {
+      "id": "sens_1790803069288_g1q8",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "sound": "normal",
+      "light": "normal",
+      "people": "normal",
+      "temperature": "ok",
+      "textures": "ok",
+      "notifications": "normal",
+      "visual_stimuli": "normal",
+      "action_taken": "Diminuiu o brilho da tela",
+      "created_at": "2026-09-30T21:17:49.288Z"
+    },
+    {
       "id": "sens_1789687888640_p9f8",
       "user_id": "usr_1789687888460_8fb40bfb",
       "sound": "normal",
@@ -19497,6 +21828,24 @@
   "reflections": [],
   "ai_memory": [],
   "strategy_feedback": [
+    {
+      "id": "fb_1790803141321_qs9a",
+      "user_id": "demo_user",
+      "strategy": "pausa_sem_culpa_respirar",
+      "helped": "sim",
+      "better_suggestion": "",
+      "task_title": "",
+      "created_at": "2026-09-30T21:19:01.321Z"
+    },
+    {
+      "id": "fb_1790803069335_tg77",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "strategy": "geral",
+      "helped": "sim",
+      "better_suggestion": "",
+      "task_title": "",
+      "created_at": "2026-09-30T21:17:49.335Z"
+    },
     {
       "id": "fb_1790424010347_wwnr",
       "user_id": "demo_user",
@@ -19759,9 +22108,31 @@
       "hide_secondary_tasks": true,
       "quiet_mode": true,
       "low_stimulus_visual": true
+    },
+    "usr_1790803068975_185cb2c3": {
+      "instruction_length": "passo_a_passo",
+      "format": "misto",
+      "when_tired": "passos_minimos",
+      "low_stimulus_mode": false,
+      "reduced_motion": false,
+      "font_size": "normal",
+      "gentle_reminders_enabled": true,
+      "notifications_frequency": "moderada",
+      "hide_secondary_tasks": true,
+      "quiet_mode": true,
+      "low_stimulus_visual": true
     }
   },
   "worries": [
+    {
+      "id": "wry_1790803069247_ehnk",
+      "user_id": "usr_1790803068975_185cb2c3",
+      "text": "Medo de esquecer o compromisso das 15h",
+      "category": "geral",
+      "status": "resolvida",
+      "created_at": "2026-09-30T21:17:49.248Z",
+      "resolved_at": "2026-09-30T21:17:49.263Z"
+    },
     {
       "id": "wry_1789687888616_i80q",
       "user_id": "usr_1789687888460_8fb40bfb",
@@ -20218,6 +22589,40 @@
       "energy": "baixa",
       "overflow_warning": null,
       "updated_at": "2026-09-17T23:31:28.633Z"
+    },
+    "usr_1790803068975_185cb2c3_2026-09-30": {
+      "user_id": "usr_1790803068975_185cb2c3",
+      "date": "2026-09-30",
+      "essential": [
+        {
+          "title": "Avançar na única prioridade de hoje por 5 minutos",
+          "duration_minutes": 5
+        }
+      ],
+      "essentials": [
+        {
+          "title": "Avançar na única prioridade de hoje por 5 minutos",
+          "duration_minutes": 5
+        }
+      ],
+      "all_essentials": [
+        {
+          "title": "Avançar na única prioridade de hoje por 5 minutos",
+          "duration_minutes": 5
+        }
+      ],
+      "breaks": [
+        {
+          "title": "Pausa suave para água e respiração",
+          "duration_minutes": 5,
+          "is_break": true
+        }
+      ],
+      "if_possible": [],
+      "can_wait": [],
+      "energy": "baixa",
+      "overflow_warning": null,
+      "updated_at": "2026-09-30T21:17:49.275Z"
     }
   }
 }
