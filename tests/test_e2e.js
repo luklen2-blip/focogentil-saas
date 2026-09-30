@@ -82,7 +82,7 @@ async function runE2ETests() {
         'Content-Type': 'application/x-www-form-urlencoded'
       });
       assert.strictEqual(resExpired.status, 200);
-      assert(resExpired.body.includes('Seus 30 minutos de teste gratuito se esgotaram'), 'Deve informar expiração');
+      assert(resExpired.body.includes('teste gratuito se esgot') || resExpired.body.includes('1 hora de teste gratuito'), 'Deve informar expiração');
       assert(resExpired.body.includes('PIX') && resExpired.body.includes('Cartão'), 'Deve exigir PIX ou Cartão');
     });
 

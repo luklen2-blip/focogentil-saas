@@ -897,7 +897,7 @@ const server = http.createServer(async (req, res) => {
     if (!db.isAuthorized(cleanPhone)) {
       const checkoutUrlWithPhone = `${CHECKOUT_URL}?phone=${encodeURIComponent(cleanPhone)}`;
       const checkoutMsg = (
-        "🔒 *Seus 30 minutos de teste gratuito se esgotaram!*\n\n" +
+        "🔒 *Seu período de 1 hora de teste gratuito se esgotou!*\n\n" +
         "Para continuar usando o *FocoGentil* e ter seu *Acesso Vitalício* (sem nenhuma mensalidade),\n" +
         "o pagamento é feito exclusivamente por *PIX* ou *Cartão de Crédito*:\n\n" +
         "⚡ *PIX Instantâneo* (Ativação imediata via QR Code)\n" +
@@ -1267,7 +1267,7 @@ const server = http.createServer(async (req, res) => {
       raw_plan: rawPlan,
       has_pro_access: hasPro,
       is_trial_active: true,
-      trial_minutes_remaining: 30
+      trial_minutes_remaining: 60
     }));
     return;
   }
@@ -1321,7 +1321,7 @@ const server = http.createServer(async (req, res) => {
         is_authorized: false,
         trial_status: trialStatus,
         response_text: (
-          "🔒 *ACESSO PAUSADO: Seus 30 minutos de teste gratuito terminaram!*\n\n" +
+          "🔒 *ACESSO PAUSADO: Seu período de 1 hora de teste gratuito terminou!*\n\n" +
           "A partir de agora, o acesso vitalício é liberado exclusivamente via *PIX* ou *Cartão de Crédito (1x)*:\n\n" +
           "⚡ *PIX Instantâneo* (Ativação imediata)\n" +
           "💳 *Cartão de Crédito* (1x sem mensalidades futuras)\n\n" +
@@ -1397,7 +1397,7 @@ const server = http.createServer(async (req, res) => {
     db.expireTrialNow(phone);
     const status = db.getTrialStatus(phone);
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ success: true, message: "Teste de 30 minutos expirado!", trial_status: status }));
+    res.end(JSON.stringify({ success: true, message: "Teste de 1 hora expirado!", trial_status: status }));
     return;
   }
 
@@ -1407,7 +1407,7 @@ const server = http.createServer(async (req, res) => {
     db.resetTrial(phone);
     const status = db.getTrialStatus(phone);
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ success: true, message: "Teste de 30 minutos reiniciado!", trial_status: status }));
+    res.end(JSON.stringify({ success: true, message: "Teste de 1 hora reiniciado!", trial_status: status }));
     return;
   }
 

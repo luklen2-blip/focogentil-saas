@@ -136,7 +136,7 @@ class LocalDatabase {
       calm_mode: false,
       created_at: new Date().toISOString(),
       trial_started_at: new Date().toISOString(),
-      trial_duration_minutes: 30
+      trial_duration_minutes: 60
     };
 
     // Indexa por ID e também por telefone se existir (para compatibilidade total com Twilio/WhatsApp)
@@ -268,7 +268,7 @@ class LocalDatabase {
         calm_mode: false,
         created_at: new Date().toISOString(),
         trial_started_at: new Date().toISOString(),
-        trial_duration_minutes: 30
+        trial_duration_minutes: 60
       };
       this.data.users[norm] = existing;
       this.data.users[userId] = existing;
@@ -286,7 +286,7 @@ class LocalDatabase {
       return { in_trial: false, remaining_seconds: 0, is_lifetime: true };
     }
     const startedAt = new Date(user.trial_started_at || user.created_at || Date.now()).getTime();
-    const durationMs = (user.trial_duration_minutes || 30) * 60 * 1000;
+    const durationMs = (user.trial_duration_minutes || 60) * 60 * 1000;
     const expiresAt = startedAt + durationMs;
     const now = Date.now();
     const remainingMs = expiresAt - now;
@@ -310,8 +310,8 @@ class LocalDatabase {
 
   expireTrialNow(userIdOrPhone) {
     const user = this.getUser(userIdOrPhone) || this.registerOrGetUser(userIdOrPhone);
-    user.trial_started_at = new Date(Date.now() - 35 * 60 * 1000).toISOString();
-    user.created_at = new Date(Date.now() - 35 * 60 * 1000).toISOString();
+    user.trial_started_at = new Date(Date.now() - 65 * 60 * 1000).toISOString();
+    user.created_at = new Date(Date.now() - 65 * 60 * 1000).toISOString();
     this._save();
     return user;
   }

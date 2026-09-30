@@ -418,11 +418,11 @@
   <div class="top-bar">
     <div>
       <strong>🧠 FocoGentil - Simulador do WhatsApp</strong>
-      <span class="badge" id="licenseStatus" style="background: #1f6feb;">⏳ Teste Grátis: 30:00 restantes</span>
+      <span class="badge" id="licenseStatus" style="background: #1f6feb;">⏳ Teste Grátis: 60:00 restantes</span>
     </div>
     <div class="top-actions">
-      <button class="btn-action btn-outline" style="border-color: #ecc94b; color: #ecc94b;" onclick="simulateExpireTrial()" title="Simula o fim dos 30 minutos para testar o pedido de pagamento">Expirar 30 min ⏱️</button>
-      <button class="btn-action btn-outline" onclick="simulateResetTrial()" title="Reinicia o contador de 30 minutos">Reiniciar 30 min 🔄</button>
+      <button class="btn-action btn-outline" style="border-color: #ecc94b; color: #ecc94b;" onclick="simulateExpireTrial()" title="Simula o fim de 1 hora para testar o pedido de pagamento">Expirar 1 hora ⏱️</button>
+      <button class="btn-action btn-outline" onclick="simulateResetTrial()" title="Reinicia o contador de 1 hora">Reiniciar 1 hora 🔄</button>
       <button class="btn-action" onclick="simulatePaymentActivation()">Liberar Vitalício (PIX) 💎</button>
       <button class="btn-action btn-outline" style="border-color: #53bdeb; color: #53bdeb; font-weight: bold;" onclick="openCheckoutModal()" title="Abrir checkout direto na tela">Checkout 🛍️</button>
       <button class="btn-action btn-outline" style="border-color: #8696a0; color: #cfd8dc;" onclick="goToCheckout()" title="Abrir página completa de checkout">Página Cheia ↗</button>
@@ -610,7 +610,7 @@
       
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       msgDiv.innerHTML = `
-        <div style="color: #e53e3e; font-weight: bold; margin-bottom: 6px;">🔒 Teste Gratuito de 30 minutos esgotado!</div>
+        <div style="color: #e53e3e; font-weight: bold; margin-bottom: 6px;">🔒 Teste Gratuito de 1 hora esgotado!</div>
         ${text.replace(/\n/g, '<br>')}
         <div class="checkout-bubble-box">
           <div style="font-weight: 700; color: #ecc94b; margin-bottom: 4px;">⚡ Liberar Acesso Vitalício (Sem Mensalidades):</div>
@@ -682,7 +682,7 @@
       if (e.key === 'Enter') sendMessage();
     }
 
-    let remainingSeconds = 1800; // 30 minutos padrão
+    let remainingSeconds = 3600; // 1 hora (60 minutos) padrão
     let isLifetime = false;
 
     function applyTrialStatus(status) {
@@ -896,7 +896,7 @@
       });
       const data = await res.json();
       applyTrialStatus(data.trial_status);
-      addCheckoutNotice("⏱️ [Simulação] O período de 30 minutos de teste foi finalizado! A partir de agora, o acesso é liberado exclusivamente via PIX ou Cartão (1x).");
+      addCheckoutNotice("⏱️ [Simulação] O período de 1 hora de teste foi finalizado! A partir de agora, o acesso é liberado exclusivamente via PIX ou Cartão (1x).");
       openCheckoutModal();
     }
 
@@ -908,7 +908,7 @@
       });
       const data = await res.json();
       applyTrialStatus(data.trial_status);
-      addMessage("🔄 [Simulação] Período de teste de 30 minutos reiniciado com sucesso! Pode fatiar tarefas normalmente.", 'out');
+      addMessage("🔄 [Simulação] Período de teste de 1 hora reiniciado com sucesso! Pode fatiar tarefas normalmente.", 'out');
     }
 
     async function simulatePaymentActivation() {
