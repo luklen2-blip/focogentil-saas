@@ -86,7 +86,7 @@ async function runAuditTests() {
     assert.ok(!html.includes('Teoria das Colheres'), 'Não deve conter Teoria das Colheres');
     assert.ok(!html.includes('cura procrastinação'), 'Não deve prometer cura de procrastinação');
     assert.ok(html.includes('R$ 19,90') || html.includes('R$ 97'), 'Preço vitalício R$ 19,90 / R$ 97 presente');
-    assert.ok(html.includes('R$ 29'), 'Preço Pro R$ 29 presente');
+    assert.ok(html.includes('https://pay.kiwify.com.br/hrilODa') || html.includes('Kiwify') || html.includes('R$ 29'), 'Link Kiwify presente');
     console.log('✅ [TESTE A PASSOU] Abrir página inicial: headline, subheadline, energia e preços validados');
     passed++;
   } catch (e) {

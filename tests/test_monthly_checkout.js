@@ -104,30 +104,26 @@ async function runTests() {
 
     // 3. Inspeção do HTML de checkout.html
     const checkoutHtml = fs.readFileSync(path.join(__dirname, '../public/checkout.html'), 'utf8');
-    assert(checkoutHtml.includes('tabMensal'), 'checkout.html deve ter a aba do Plano Mensal');
+    assert(checkoutHtml.includes('https://pay.kiwify.com.br/hrilODa'), 'checkout.html deve conter link seguro da Kiwify');
     assert(checkoutHtml.includes('tabVitalicio'), 'checkout.html deve ter a aba do Plano Vitalício');
     assert(checkoutHtml.includes('switchPlan'), 'checkout.html deve ter função switchPlan');
-    assert(checkoutHtml.includes('cardNumber'), 'checkout.html deve exibir campos de cartão de crédito');
-    assert(checkoutHtml.includes('cardExpiry'), 'checkout.html deve conter campo de validade do cartão');
-    assert(checkoutHtml.includes('cardCvv'), 'checkout.html deve conter campo de CVV');
-    assert(checkoutHtml.includes('incomingPlan === \'mensal\''), 'checkout.html deve ler o parâmetro ?plan=mensal da URL');
-    assert(checkoutHtml.includes('/api/subscription/subscribe'), 'checkout.html deve chamar o endpoint de assinatura');
-    console.log('✅ [PASSOU] checkout.html possui seletor de planos, campos de cartão e leitura de ?plan=mensal');
+    assert(checkoutHtml.includes('19,90'), 'checkout.html deve exibir o valor de R$ 19,90');
+    console.log('✅ [PASSOU] checkout.html possui oferta Vitalícia R$ 19,90 e link Kiwify');
 
     // 4. Inspeção do HTML de index.html
     const indexHtml = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf8');
-    assert(indexHtml.includes('/checkout.html?plan=mensal'), 'index.html deve direcionar botão Assinar Pro para /checkout.html?plan=mensal');
+    assert(indexHtml.includes('https://pay.kiwify.com.br/hrilODa'), 'index.html deve direcionar botão para a Kiwify');
     assert(indexHtml.includes('/checkout.html?plan=vitalicio'), 'index.html deve direcionar botão Vitalício para /checkout.html?plan=vitalicio');
-    console.log('✅ [PASSOU] index.html conecta CTAs diretamente aos respectivos planos no checkout');
+    console.log('✅ [PASSOU] index.html conecta CTAs diretamente à Kiwify e ao checkout PIX');
 
     // 5. Inspeção do HTML de app.html
     const appHtml = fs.readFileSync(path.join(__dirname, '../public/app.html'), 'utf8');
-    assert(appHtml.includes('/checkout.html?plan=mensal'), 'app.html deve oferecer link para o Plano Pro Mensal');
+    assert(appHtml.includes('https://pay.kiwify.com.br/hrilODa'), 'app.html deve oferecer link para o checkout da Kiwify');
     assert(appHtml.includes('/checkout.html?plan=vitalicio'), 'app.html deve oferecer link para o Plano Vitalício');
-    console.log('✅ [PASSOU] app.html disponibiliza botões de upgrade para ambos os planos');
+    console.log('✅ [PASSOU] app.html disponibiliza botões de upgrade com Kiwify e Vitalício');
 
     console.log('\n====================================================');
-    console.log('🎉 TODOS OS TESTES DO PLANO MENSAL PASSARAM COM SUCESSO!');
+    console.log('🎉 TODOS OS TESTES PASSARAM COM SUCESSO!');
     console.log('====================================================');
   } finally {
     server.close();

@@ -364,37 +364,33 @@
     </a>
   </div>
 
-  <!-- SELETOR DE PLANO (TABS SUPERIORES) -->
-  <div class="plan-switch-box">
+  <!-- PLANO VITALÍCIO OFICIAL -->
+  <div class="plan-switch-box" style="grid-template-columns: 1fr; margin-bottom: 16px;">
     <!-- Opção 1: Vitalício -->
     <div class="plan-switch-btn active" id="tabVitalicio" onclick="switchPlan('vitalicio')">
       <div class="plan-title-box">
         <h3>
-          💎 Vitalício
+          💎 Acesso Vitalício FocoGentil
           <span class="plan-badge-pill">Sem Mensalidade</span>
         </h3>
-        <p>Acesso completo para sempre sem renovações</p>
+        <p>Acesso completo para sempre sem renovações futuras</p>
       </div>
       <div class="plan-price-callout">
         <div class="val" id="tabVitalicioPrice">R$ 19,90</div>
         <div class="period">pagamento único</div>
       </div>
     </div>
+  </div>
 
-    <!-- Opção 2: Pro Mensal -->
-    <div class="plan-switch-btn" id="tabMensal" onclick="switchPlan('mensal')">
-      <div class="plan-title-box">
-        <h3>
-          🚀 Pro Mensal
-          <span class="plan-badge-pill" style="color: var(--blue);">Flexível</span>
-        </h3>
-        <p>Assinatura mensal • Cancele quando quiser</p>
-      </div>
-      <div class="plan-price-callout">
-        <div class="val">R$ 29,00</div>
-        <div class="period">por mês</div>
-      </div>
+  <!-- Banner Oficial Kiwify -->
+  <div style="background: rgba(40, 180, 99, 0.12); border: 1px solid #28b463; border-radius: 10px; padding: 14px 18px; margin-bottom: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+    <div>
+      <strong style="color: #25d366; font-size: 14px; display: block;">🔒 Prefere pagar no Cartão de Crédito?</strong>
+      <span style="color: var(--text-muted); font-size: 12.5px;">Parcele em até 12x com proteção total no checkout oficial da Kiwify:</span>
     </div>
+    <a href="https://pay.kiwify.com.br/hrilODa" target="_blank" style="background: #28b463; color: #fff; padding: 10px 18px; border-radius: 8px; font-weight: 700; font-size: 13.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(40, 180, 99, 0.3);">
+      💳 Pagar no Cartão via Kiwify (R$ 19,90) ↗
+    </a>
   </div>
 
   <div class="checkout-wrapper">
@@ -448,6 +444,7 @@
         <div class="form-group">
           <label for="phone">Número do WhatsApp (com DDD)</label>
           <input type="tel" id="phone" inputmode="tel" required placeholder="+55 11 99999-8888" value="+5511999998888">
+          <input type="hidden" id="numericKeypadHelper" inputmode="numeric">
           <small style="color: var(--text-muted); font-size: 11px; margin-top: 3px; display: block;">
             É neste número que o copiloto com IA será ativado imediatamente.
           </small>
@@ -456,45 +453,28 @@
         <!-- Forma de Pagamento -->
         <label style="margin-top: 15px;">Forma de Pagamento</label>
         <div class="payment-methods">
-          <!-- Botão Método 1 -->
+          <!-- Botão Método 1: PIX -->
           <div class="pay-btn selected" id="methodBtn1" onclick="selectPaymentMethod('primary')">
             <span id="methodLabel1">⚡ PIX Instantâneo</span>
-            <small id="methodSub1">Ativação imediata</small>
+            <small id="methodSub1">QR Code Oficial Banco Central</small>
           </div>
-          <!-- Botão Método 2 -->
+          <!-- Botão Método 2: Kiwify Cartão -->
           <div class="pay-btn" id="methodBtn2" onclick="selectPaymentMethod('secondary')">
             <span id="methodLabel2">💳 Cartão de Crédito</span>
-            <small id="methodSub2">1x sem juros</small>
+            <small id="methodSub2">Até 12x via Kiwify</small>
           </div>
         </div>
 
-        <!-- Campos de Cartão de Crédito (Exibido quando Cartão está selecionado) -->
-        <div id="cardFieldsBox" class="card-fields-box" style="display: none;">
-          <div class="form-group">
-            <label for="cardNumber">Número do Cartão</label>
-            <input type="text" id="cardNumber" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCardNumber(this)">
-          </div>
-
-          <div class="form-group">
-            <label for="cardName">Nome Impresso no Cartão</label>
-            <input type="text" id="cardName" placeholder="Nome completo igual ao cartão">
-          </div>
-
-          <div class="card-grid-2">
-            <div class="form-group">
-              <label for="cardExpiry">Validade (MM/AA)</label>
-              <input type="text" id="cardExpiry" inputmode="numeric" placeholder="12/28" maxlength="5" oninput="formatCardExpiry(this)">
-            </div>
-            <div class="form-group">
-              <label for="cardCvv">CVV</label>
-              <input type="text" id="cardCvv" inputmode="numeric" placeholder="123" maxlength="4">
-            </div>
-          </div>
-
-          <div class="security-badge">
-            <span>🔒</span>
-            <span id="cardSecurityNote">Seus dados são protegidos com criptografia SSL de 256 bits ponta a ponta.</span>
-          </div>
+        <!-- Opção de Cartão de Crédito via Kiwify (Exibido quando Cartão está selecionado) -->
+        <div id="cardFieldsBox" class="card-fields-box" style="display: none; text-align: center; padding: 20px 16px; border: 1px solid #28b463; border-radius: 8px; background: rgba(40, 180, 99, 0.08);">
+          <div style="font-size: 26px; margin-bottom: 8px;">🔒</div>
+          <h4 style="color: #fff; font-size: 15px; margin-bottom: 6px;">Pagamento com Cartão de Crédito Seguro</h4>
+          <p style="color: var(--text-muted); font-size: 12.5px; line-height: 1.4; margin-bottom: 14px;">
+            O pagamento com cartão é processado com criptografia bancária ponta a ponta na plataforma oficial da <strong>Kiwify</strong> em até 12x.
+          </p>
+          <a href="https://pay.kiwify.com.br/hrilODa" target="_blank" class="btn-submit" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #28b463; text-decoration: none; padding: 13px; font-size: 14px; font-weight: 800; border-radius: 6px;">
+            💳 Concluir Compra no Cartão via Kiwify (R$ 19,90) ↗
+          </a>
         </div>
 
         <!-- Informações do PIX (Exibido quando PIX está selecionado) -->
@@ -681,59 +661,31 @@
       const btnIcon = document.getElementById('btnIcon');
       const btnText = document.getElementById('btnText');
       const pixInfoText = document.getElementById('pixInfoText');
-      const cardSecurityNote = document.getElementById('cardSecurityNote');
 
-      if (currentPlan === 'mensal') {
-        if (choice === 'primary') {
-          // Cartão Recorrente
-          selectedMethod = 'card';
-          btn1.classList.add('selected');
-          btn2.classList.remove('selected');
-          cardBox.style.display = 'block';
-          pixBox.style.display = 'none';
+      if (choice === 'primary') {
+        // PIX Instantâneo
+        selectedMethod = 'pix';
+        btn1.classList.add('selected');
+        btn2.classList.remove('selected');
+        cardBox.style.display = 'none';
+        pixBox.style.display = 'block';
 
-          cardSecurityNote.innerText = 'Cobrança recorrente mensal de R$ 29,00 com cancelamento em 1 clique.';
-          btnIcon.innerText = '💳';
-          btnText.innerText = 'Assinar Plano Pro (R$ 29,00 / mês)';
-        } else {
-          // PIX Mensal
-          selectedMethod = 'pix';
-          btn2.classList.add('selected');
-          btn1.classList.remove('selected');
-          cardBox.style.display = 'none';
-          pixBox.style.display = 'block';
-
-          pixInfoText.innerText = '⚡ Pague R$ 29,00 via PIX para liberar seus primeiros 30 dias imediatos. Ao final de cada ciclo, você receberá uma chave PIX amigável de renovação sem cobranças automáticas forçadas.';
-          btnIcon.innerText = '⚡';
-          btnText.innerText = 'Pagar 1º Mês via PIX (R$ 29,00)';
-        }
+        const formatted = Number(currentSettings.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        pixInfoText.innerText = `⚡ Ao clicar no botão abaixo, geraremos o QR Code oficial do Banco Central no valor de ${formatted} para ativação vitalícia instantânea.`;
+        btnIcon.innerText = '⚡';
+        btnText.innerText = `Gerar PIX e Liberar Acesso Vitalício (${formatted})`;
+        btnSubmit.style.background = '#00a884';
       } else {
-        // Vitalício
-        if (choice === 'primary') {
-          // PIX Instantâneo
-          selectedMethod = 'pix';
-          btn1.classList.add('selected');
-          btn2.classList.remove('selected');
-          cardBox.style.display = 'none';
-          pixBox.style.display = 'block';
+        // Cartão Kiwify
+        selectedMethod = 'card';
+        btn2.classList.add('selected');
+        btn1.classList.remove('selected');
+        cardBox.style.display = 'block';
+        pixBox.style.display = 'none';
 
-          const formatted = Number(currentSettings.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-          pixInfoText.innerText = `⚡ Ao clicar no botão abaixo, geraremos o QR Code oficial do Banco Central no valor de ${formatted} para ativação vitalícia instantânea.`;
-          btnIcon.innerText = '⚡';
-          btnText.innerText = `Gerar PIX e Liberar Acesso Vitalício (${formatted})`;
-        } else {
-          // Cartão 1x
-          selectedMethod = 'card';
-          btn2.classList.add('selected');
-          btn1.classList.remove('selected');
-          cardBox.style.display = 'block';
-          pixBox.style.display = 'none';
-
-          const formatted = Number(currentSettings.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-          cardSecurityNote.innerText = `Pagamento único de ${formatted} no cartão de crédito. Sem mensalidades ou assinaturas.`;
-          btnIcon.innerText = '💳';
-          btnText.innerText = `Pagar ${formatted} e Liberar Acesso Vitalício`;
-        }
+        btnIcon.innerText = '💳';
+        btnText.innerText = 'Concluir no Cartão via Kiwify (R$ 19,90) ↗';
+        btnSubmit.style.background = '#28b463';
       }
     }
 
@@ -812,31 +764,12 @@
         return;
       }
 
-      const activeAmount = currentPlan === 'mensal' ? 29.00 : Number(currentSettings.price);
+      const activeAmount = Number(currentSettings.price);
 
-      // Validação de Cartão se Cartão estiver selecionado
+      // Se Cartão estiver selecionado, abre o checkout oficial da Kiwify
       if (selectedMethod === 'card') {
-        const cardNumber = document.getElementById('cardNumber').value.replace(/\s+/g, '');
-        const cardName = document.getElementById('cardName').value.trim();
-        const cardExpiry = document.getElementById('cardExpiry').value.trim();
-        const cardCvv = document.getElementById('cardCvv').value.trim();
-
-        if (cardNumber.length < 13) {
-          alert("Por favor, insira um número de cartão de crédito válido.");
-          return;
-        }
-        if (!cardName) {
-          alert("Por favor, insira o nome impresso no cartão.");
-          return;
-        }
-        if (cardExpiry.length < 5) {
-          alert("Por favor, insira a validade no formato MM/AA.");
-          return;
-        }
-        if (cardCvv.length < 3) {
-          alert("Por favor, insira o código CVV (3 ou 4 dígitos).");
-          return;
-        }
+        window.open('https://pay.kiwify.com.br/hrilODa', '_blank');
+        return;
       }
 
       const originalBtnHtml = btn.innerHTML;
