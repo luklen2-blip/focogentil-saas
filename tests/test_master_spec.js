@@ -327,7 +327,7 @@ async function runMasterSpecTests() {
       });
       assert.strictEqual(resVitalicio.status, 200);
       assert.strictEqual(resVitalicio.json.plan, 'vitalicio');
-      assert(resVitalicio.json.amount === 49.90 || resVitalicio.json.amount === 97.00, 'Valor deve ser o configurado para vitalicio');
+      assert(resVitalicio.json.amount === 19.90 || resVitalicio.json.amount === 49.90 || resVitalicio.json.amount === 97.00, 'Valor deve ser o configurado para vitalicio');
       assert(resVitalicio.json.pix_code.startsWith('000201'));
     });
 

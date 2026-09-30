@@ -28,7 +28,7 @@ class LocalDatabase {
       subscriptions: [],    // [ { id, user_id, plan, status: 'active'|'cancelled', started_at } ]
       payments: [],         // [ { payment_id, user_phone, user_id, amount, status: 'pending'|'approved'|'failed'|'cancelled', provider, created_at, is_recurring: false } ]
       billing_settings: {
-        price: 97.00,
+        price: 19.90,
         pix_key: 'luklen2@gmail.com',
         pix_name: 'Luciano Sant Anna',
         pix_city: 'Rio de Janeiro',
@@ -64,9 +64,9 @@ class LocalDatabase {
         if (!this.data.user_preferences) this.data.user_preferences = {};
         if (!this.data.worries) this.data.worries = [];
         if (!this.data.day_plans) this.data.day_plans = {};
-        if (!this.data.billing_settings || this.data.billing_settings.pix_name !== 'Luciano Sant Anna' || this.data.billing_settings.pix_key !== 'luklen2@gmail.com' || this.data.billing_settings.price !== 97.00) {
+        if (!this.data.billing_settings || this.data.billing_settings.pix_name !== 'Luciano Sant Anna' || this.data.billing_settings.pix_key !== 'luklen2@gmail.com' || this.data.billing_settings.price !== 19.90) {
           this.data.billing_settings = {
-            price: 97.00,
+            price: 19.90,
             pix_key: 'luklen2@gmail.com',
             pix_name: 'Luciano Sant Anna',
             pix_city: 'Rio de Janeiro',
@@ -765,7 +765,7 @@ class LocalDatabase {
   getBillingSettings() {
     const s = this.data.billing_settings || {};
     return {
-      price: s.price !== undefined ? s.price : 97.00,
+      price: s.price !== undefined ? s.price : 19.90,
       pix_key: s.pix_key && s.pix_key !== 'contato.focogentil@gmail.com' ? s.pix_key : 'luklen2@gmail.com',
       pix_name: s.pix_name && s.pix_name !== 'FOCOGENTIL' ? s.pix_name : 'Luciano Sant Anna',
       pix_city: s.pix_city || 'Rio de Janeiro',

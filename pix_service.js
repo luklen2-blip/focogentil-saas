@@ -34,9 +34,9 @@ class PixService {
   /**
    * Gera a string oficial do PIX Copia e Cola (BR Code estático ou dinâmico)
    */
-  generateBrCode({ pixKey = 'luklen2@gmail.com', amount = 97.00, merchantName = 'Luciano Sant Anna', merchantCity = 'Rio de Janeiro', txid = '***' }) {
+  generateBrCode({ pixKey = 'luklen2@gmail.com', amount = 19.90, merchantName = 'Luciano Sant Anna', merchantCity = 'Rio de Janeiro', txid = '***' }) {
     const cleanKey = String(pixKey || 'luklen2@gmail.com').trim();
-    const formattedAmount = Number(amount || 97.00).toFixed(2);
+    const formattedAmount = Number(amount || 19.90).toFixed(2);
     
     // 26: Merchant Account Information
     const gui = this.formatField('00', 'br.gov.bcb.pix');

@@ -510,7 +510,7 @@
       <div class="checkout-price-box">
         <div>
           <div style="font-size: 11px; color: #8696a0;">Valor do Acesso Vitalício:</div>
-          <div class="checkout-price-val" id="modalDisplayPrice">R$ 97,00</div>
+          <div class="checkout-price-val" id="modalDisplayPrice">R$ 19,90</div>
         </div>
         <span style="font-size: 11px; background: rgba(37,211,102,0.15); color: #25d366; border: 1px solid #25d366; padding: 4px 10px; border-radius: 12px; font-weight: bold;">
           Sem Assinatura
@@ -860,7 +860,7 @@
             phone_number: userPhone,
             customer_name: document.getElementById('modalUserName').value,
             payment_id: "CARD_MODAL_" + Date.now(),
-            amount: modalPixData ? modalPixData.amount : 97.00,
+            amount: modalPixData ? modalPixData.amount : 19.90,
             provider: "mercadopago",
             is_recurring: false
           })
@@ -918,7 +918,7 @@
         body: JSON.stringify({
           phone_number: userPhone,
           payment_id: "PIX_" + Date.now(),
-          amount: 97.00,
+          amount: 19.90,
           customer_name: "Você (Simulação)",
           provider: "mercadopago",
           is_recurring: false

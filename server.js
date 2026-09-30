@@ -961,7 +961,7 @@ const server = http.createServer(async (req, res) => {
     const payload = getPayload();
     const phone = payload.phone_number || payload.customer_phone;
     const paymentId = payload.payment_id || 'PAY_' + Date.now();
-    const amount = payload.amount || 97.00;
+    const amount = payload.amount || 19.90;
     const provider = payload.provider || 'mercadopago';
     const customerName = payload.customer_name || 'Cliente';
     const isRecurring = Boolean(payload.is_recurring);
@@ -1059,7 +1059,7 @@ const server = http.createServer(async (req, res) => {
       : Number(settings.price);
     const phone = payload.phone || payload.phone_number || '+5511999998888';
     const customerName = payload.name || payload.customer_name || 'Cliente';
-    const plan = payload.plan || (amount <= 30 ? 'pro' : 'vitalicio');
+    const plan = payload.plan || (amount === 29.00 ? 'pro' : 'vitalicio');
     const paymentId = 'PIX_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 
     // Registra como pending no banco
@@ -1106,8 +1106,8 @@ const server = http.createServer(async (req, res) => {
     const paymentId = payload.payment_id || payload.id;
     const phone = payload.phone || payload.phone_number;
     const name = payload.name || payload.customer_name;
-    const amount = payload.amount || 97.00;
-    const plan = payload.plan || (Number(amount) <= 30 ? 'pro' : 'vitalicio');
+    const amount = payload.amount || 19.90;
+    const plan = payload.plan || (Number(amount) === 29.00 ? 'pro' : 'vitalicio');
 
     // Se payment_id existir, consulta o status real
     if (paymentId) {
@@ -1231,7 +1231,7 @@ const server = http.createServer(async (req, res) => {
     const payload = getPayload();
     const settings = db.getBillingSettings();
     const plan = payload.plan || 'vitalicio';
-    const amount = payload.amount || (plan === 'mensal' || plan === 'pro' ? 29.00 : (Number(settings.price) || 97.00));
+    const amount = payload.amount || (plan === 'mensal' || plan === 'pro' ? 29.00 : (Number(settings.price) || 19.90));
     const paymentId = 'CHG_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 
     const pixCode = pixService.generateBrCode({
